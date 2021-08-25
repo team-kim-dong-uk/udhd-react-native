@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "udhd-react-native",
+    "slug": "udhd-react-native",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "udhd-react-native"
+}
