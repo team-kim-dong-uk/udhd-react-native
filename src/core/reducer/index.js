@@ -3,7 +3,7 @@ import auth from '../redux/auth';
 // import photo from '../redux/photo';
 // import photos from '../redux/photos';
 // import upload from '../redux/upload';
-// import loading from '../redux/loading';
+import loading from '../redux/loading';
 
-const rootReducer = combineReducers({auth});
+const rootReducer = combineReducers({auth, loading});
 export default rootReducer;

@@ -1,28 +1,67 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import AlbumScreen from './components/screen/AlbumScreen';
 import SearchScreen from './components/screen/SearchScreen';
 import MyPageScreen from './components/screen/MyPageScreen';
-import {createStore, combineReducers, applyMiddleware} from 'redux';
-import rootReducer from './core/reducer';
 import { Provider } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import LoginScreen from './components/screen/LoginScreen';
 
-const store = createStore(rootReducer, applyMiddleware());
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+
+import * as authAPI from './api/authAPI';
+// import { loginSuccess } from '../../../core/redux/auth';
+
+
 const App = () => {
+  const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth);
+
+  const setUser = async () => {
+    try {
+      // refresh token으로 유저 정보, access token 요청
+      // const tokenResponse = await authAPI.refreshToken();
+      // mock data
+      const tokenResponse = {data: {
+        accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGUyZmVhNzRjMTdjZjUxNTJmYjViNzgiLCJleHAiOjE2Mzg1OTk4NDF9.9slnhorxY7nVWAHtxlfl90wGt1ilRqkUqJvO_NxX0ks'
+      }};
+      dispatch(loginSuccess(tokenResponse.data));
+    } catch (e) {
+      // refresh token이 잘못되어 401에러 발생시 login 페이지로 이동.
+      if (e?.response?.status === 401) {
+      }
+    }
+  };
+
+  // useEffect(() => {
+  //   if (!auth.data) {
+  //     console.log(auth);
+  //     setUser();
+  //   }
+  // }, [auth]);
+
   return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="Album" component={AlbumScreen} />
-          <Tab.Screen name="Search" component={SearchScreen} />
-          <Tab.Screen name="MyPage" component={MyPageScreen} />
-        </Tab.Navigator>
+    auth.data ? (
+        <NavigationContainer>
+          <Tab.Navigator>
+            <Tab.Screen name="Album" component={AlbumScreen} />
+            <Tab.Screen name="Search" component={SearchScreen} />
+            <Tab.Screen name="MyPage" component={MyPageScreen} />
+          </Tab.Navigator>
       </NavigationContainer>
-    </Provider>
+      ) : (
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Login" component={LoginScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      )
   );
 }
 

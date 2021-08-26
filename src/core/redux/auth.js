@@ -1,7 +1,8 @@
 import { handleActions } from 'redux-actions';
 import { takeEvery } from 'redux-saga/effects';
 import { createAction } from 'redux-actions';
-// import api from '../../api/client';
+import * as SecureStore from 'expo-secure-store';
+import api from '../../api/client';
 
 const prefix = 'auth/';
 
@@ -19,19 +20,19 @@ const initialState = {
 
 export default handleActions(
   {
-    // [LOGIN_SUCCESS]: (state, action) => {
-    //     typeof window !== 'undefined' && window.localStorage.setItem('refreshToken', action.payload.refreshToken);
-    //     api.defaults.headers.common['Authorization'] = `Bearer ${action.payload.accessToken}`;
-    //     return {
-    //       ...state,
-    //       data: {
-    //         userId: action.payload.userId,
-    //         accessToken: action.payload.accessToken,
-    //       }
-    //     };
-    // },
-    // [LOGIN_FAILURE]: (state, action) =>
-    //   state,
+    [LOGIN_SUCCESS]: (state, action) => {
+        // SecureStore.setItemAsync('refreshToken', action.payload.refreshToken);
+        api.defaults.headers.common['Authorization'] = `Bearer ${action.payload.accessToken}`;
+        return {
+          ...state,
+          data: {
+            userId: action.payload.userId,
+            accessToken: action.payload.accessToken,
+          }
+        };
+    },
+    [LOGIN_FAILURE]: (state, action) =>
+      state,
   },
   initialState,
 );
