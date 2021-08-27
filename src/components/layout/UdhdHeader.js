@@ -1,13 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PhotoGrid from '../PhotoGrid';
-import UdhdHeader from "../layout/UdhdHeader";
 
-const SearchScreen = () => {
+const UdhdHeader = () => {
   return (
     <View>
-      <UdhdHeader/>
-      <PhotoGrid/>
+      <Text>HeaderHeaderHeaderHeaderHeader</Text>
     </View>
   );
 }
@@ -21,4 +19,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchScreen;
+export default UdhdHeader;
