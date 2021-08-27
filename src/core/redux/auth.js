@@ -1,5 +1,4 @@
 import { handleActions } from 'redux-actions';
-import { takeEvery } from 'redux-saga/effects';
 import { createAction } from 'redux-actions';
 import * as SecureStore from 'expo-secure-store';
 import api from '../../api/client';
@@ -36,11 +35,3 @@ export default handleActions(
   },
   initialState,
 );
-
-// function* redirectAfterLoginSaga() {
-//   yield Router.push('/album');
-// }
-
-// export function* authSaga() {
-//   yield takeEvery(LOGIN_SUCCESS, redirectAfterLoginSaga);
-// }

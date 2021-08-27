@@ -16,6 +16,7 @@ const Tab = createBottomTabNavigator();
 
 
 import * as authAPI from './api/authAPI';
+import SearchStackScreen from './components/screen/SearchStackScreen';
 // import { loginSuccess } from '../../../core/redux/auth';
 
 
@@ -29,7 +30,8 @@ const App = () => {
       // const tokenResponse = await authAPI.refreshToken();
       // mock data
       const tokenResponse = {data: {
-        accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGUyZmVhNzRjMTdjZjUxNTJmYjViNzgiLCJleHAiOjE2Mzg1OTk4NDF9.9slnhorxY7nVWAHtxlfl90wGt1ilRqkUqJvO_NxX0ks'
+        accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGUyZmVhNzRjMTdjZjUxNTJmYjViNzgiLCJleHAiOjE2Mzg1OTk4NDF9.9slnhorxY7nVWAHtxlfl90wGt1ilRqkUqJvO_NxX0ks',
+        userId: '60e2fea74c17cf5152fb5b78',
       }};
       dispatch(loginSuccess(tokenResponse.data));
     } catch (e) {
@@ -51,7 +53,7 @@ const App = () => {
         <NavigationContainer>
           <Tab.Navigator>
             <Tab.Screen name="Album" component={AlbumScreen} />
-            <Tab.Screen name="Search" component={SearchScreen} />
+            <Tab.Screen name="Search" component={SearchStackScreen} />
             <Tab.Screen name="MyPage" component={MyPageScreen} />
           </Tab.Navigator>
       </NavigationContainer>

@@ -1,12 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import PhotoGrid from '../PhotoGrid';
 
-const SearchScreen = () => {
+const PhotoScreen = () => {
   return (
     <View>
-      <Text>SearchScreen</Text>
-      <PhotoGrid/>
+      <Text>PhotoScreen</Text>
     </View>
   );
 }
@@ -20,4 +18,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchScreen;
+export default PhotoScreen;
