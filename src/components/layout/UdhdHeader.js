@@ -3,7 +3,6 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import PhotoGrid from '../PhotoGrid';
 import {SearchIcon} from "native-base";
 import SearchBox from "../SearchBox";
-import SearchBox from "../SearchBox";
 
 const UdhdHeader = () => {
   return (
@@ -24,7 +23,7 @@ const UdhdHeader = () => {
 const styles = StyleSheet.create({
     headerContainer: {
       width: '100%',
-        height: '8%',
+      height: '8%',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
