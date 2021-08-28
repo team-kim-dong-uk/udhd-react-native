@@ -30,6 +30,7 @@ const PhotoGrid = () => {
   }, [])
 
   return (
+      <View style={styles.scrollBox}>
       <ScrollView>
           {photos.data.map(photo => (
             <TouchableHighlight
@@ -46,15 +47,13 @@ const PhotoGrid = () => {
           ))}
           {/* {!photos.isEnd && <Text ref={ref}>로딩중...</Text>} */}
       </ScrollView>
+      </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  scrollBox: {
+    height: '100%'
   },
   thumbnail: {
     width: '33%',
