@@ -20,6 +20,8 @@ import SearchStackScreen from './components/screen/SearchStackScreen';
 import HeaderContainer from "@react-navigation/stack/src/views/Header/HeaderContainer";
 import StackNavigator from "@react-navigation/stack/src/navigators/createStackNavigator";
 import {SafeAreaProvider} from "react-native-safe-area-context/src/SafeAreaContext";
+import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
+import AlbumStackScreen from "./components/screen/AlbumStackScreen";
 // import { loginSuccess } from '../../../core/redux/auth';
 
 
@@ -57,7 +59,7 @@ const App = () => {
         <NavigationContainer>
             <Tab.Navigator>
                 <Tab.Screen name="Album!"
-                            component={AlbumScreen}
+                            component={AlbumStackScreen}
                             options={{headerShown: false}}
                             />
                 <Tab.Screen name="Search"
