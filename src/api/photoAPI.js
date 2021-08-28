@@ -9,7 +9,7 @@ export const getPhotos = ({userId, findAfter}) => {
     if (findAfter) {
         query += `&findAfter=${findAfter}`;
     }
-    console.log(findAfter);
+    console.log(client.defaults.baseURL);
     console.log(query);
     return client.get(query);
 }
