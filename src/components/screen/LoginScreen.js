@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../../core/redux/auth';
+import LoginWebviewModal from '../LoginWebviewModal';
 
 const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -14,12 +15,12 @@ const LoginScreen = () => {
     dispatch(loginSuccess(tokenResponse.data));
   }
   return (
-    <View>
-      <Text>LoginScreen</Text>
+    <View style={styles.container}>
       <Button
         title='동진으로 로그인'
         onPress={mockLogin}
       />
+      <LoginWebviewModal/>
     </View>
   );
 }
@@ -31,6 +32,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  webview: {
+    width: 100,
+    height: 100,
+  }
 });
 
 export default LoginScreen;
