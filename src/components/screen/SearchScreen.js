@@ -2,13 +2,16 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PhotoGrid from '../PhotoGrid';
 import UdhdHeader from "../layout/UdhdHeader";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SearchScreen = () => {
   return (
-    <View>
-      <UdhdHeader/>
-      <PhotoGrid/>
-    </View>
+      <SafeAreaView>
+        <View>
+          <UdhdHeader/>
+          <PhotoGrid/>
+        </View>
+      </SafeAreaView>
   );
 }
 
