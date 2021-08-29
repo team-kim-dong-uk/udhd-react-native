@@ -6,6 +6,7 @@ import { Image, ScrollView, StyleSheet, Text, TouchableHighlight, View } from 'r
 import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 
+// TODO 3XN 구현하기
 const PhotoGrid = () => {
   const dispatch = useDispatch();
   const { auth, photos, loading } = useSelector(state => state);
@@ -34,6 +35,7 @@ const PhotoGrid = () => {
       <ScrollView>
           {photos.data.map(photo => (
             <TouchableHighlight
+              style={styles.touchArea}
               key={photo.photoId}
               onPress={() =>
                 navigation.navigate('PhotoDetail', { photoId: photo.photoId })
@@ -56,9 +58,14 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   thumbnail: {
-    width: '33%',
-    height: 100,
+    width: '100%',
+    height: '100%',
   },
+  touchArea: {
+    width: '33%',
+    height: 140,
+    position: 'relative',
+  }
 });
 
 export default PhotoGrid;
