@@ -14,7 +14,7 @@ import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import {StatusBar} from "expo-status-bar";
 
-// TODO 3XN 구현하기
+// TODO 3XN > 스크롤 마지막에 닿았을 때 추가 구현
 const PhotoGrid = () => {
   const [numCols, setColumnNo] = useState(3);
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const PhotoGrid = () => {
   const navigation = useNavigation();
   const {ref, inView} = useInView();
 
-    const loadPhotos = useCallback((e) => {
+    const loadMorePhotos = useCallback((e) => {
         console.log("load photo :)");
     }, []);
 
@@ -72,7 +72,8 @@ const PhotoGrid = () => {
             keyExtractor={item => item.photoId}
             numColumns={numCols}
             key={numCols}
-            onEndReached={loadPhotos}
+            onEndReached={loadMorePhotos}
+            onEndReachedThreshold={0.01}
             ListFooterComponent={<View style={{height: 195}}/>}
         />
         </SafeAreaView>
