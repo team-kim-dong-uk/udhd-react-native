@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {Image, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Image, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import SearchBox from "../SearchBox";
 import Filter from "../Filter";
 
@@ -33,8 +33,10 @@ const UdhdHeader = () => {
                     </Filter>
                 )}
             </View>
+            <TouchableOpacity activeOpacity = { 0.5 } onPress={() => {Alert.alert("navigate to upload page")}}>
             <Image style={styles.upperIcon}
                    source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
+            </TouchableOpacity>
         </View>
     </View>
 
