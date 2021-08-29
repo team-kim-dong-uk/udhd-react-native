@@ -1,7 +1,6 @@
 import React from "react";
 import {
     StyleSheet,
-
     View
 } from "react-native";
 import Modal from "react-native-modal";
@@ -10,7 +9,7 @@ const Filter = ({children, show, onControlModal}) => {
 
     return (
         <Modal
-            animationType="slide"
+            animationType="none"
             transparent={true}
             visible={show}
             onRequestClose={onControlModal}
