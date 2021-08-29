@@ -46,7 +46,7 @@ const UdhdHeader = () => {
 const styles = StyleSheet.create({
     headerContainer: {
       width: '100%',
-      height: '8%',
+      height: 65,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
