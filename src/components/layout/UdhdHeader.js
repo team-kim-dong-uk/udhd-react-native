@@ -1,22 +1,43 @@
-import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import PhotoGrid from '../PhotoGrid';
-import {SearchIcon} from "native-base";
+import React, {useCallback, useState} from 'react';
+import {Image, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import SearchBox from "../SearchBox";
+import Filter from "../Filter";
+
+// TODO 업로드 버튼
+// TODO 이퀄라이저? 필터 버튼 만들기
 
 const UdhdHeader = () => {
+    const [showFilter, setShowFilter] = useState(false);
+
+    const onPressFilter = useCallback((e) => {
+        setShowFilter((prev) => !prev);
+        console.log("press filter");
+    }, []);
+
   return (
     <View style={styles.headerContainer}>
         <Image style={styles.tinyLogo}
                source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
         <SearchBox/>
         <View style={styles.upperTap}>
-            <Image style={styles.upperIcon}
-                   source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
+            <View>
+                <TouchableOpacity activeOpacity = { 0.5 } onPress={onPressFilter}>
+                    <Image style={styles.upperIcon}
+                           source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
+                </TouchableOpacity>
+                {showFilter && (
+                    <Filter show={showFilter} onControlModal={onPressFilter}>
+                        <Pressable onPress={()=>{console.log("make function here")}}><Text style={styles.eachMenu}>hi?</Text></Pressable>
+                        <Pressable><Text style={styles.eachMenu}>hi!</Text></Pressable>
+                        <Pressable><Text style={styles.eachMenu}>Insert Here!</Text></Pressable>
+                    </Filter>
+                )}
+            </View>
             <Image style={styles.upperIcon}
                    source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
         </View>
     </View>
+
   );
 }
 
@@ -29,6 +50,8 @@ const styles = StyleSheet.create({
       justifyContent: 'space-between',
     },
     upperTap: {
+        position: 'absolute',
+        right: 0,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
@@ -45,6 +68,10 @@ const styles = StyleSheet.create({
     },
     searchBox: {
         width: 100,
+    },
+    eachMenu:{
+        width: '100%',
+        height: 30
     }
 
 });
