@@ -9,7 +9,7 @@ import MyPageScreen from './components/screen/MyPageScreen';
 import { Provider } from 'react-redux';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import LoginScreen from './components/screen/LoginScreen';
+import SocialLoginScreen from './components/screen/login/SocialLoginScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -17,6 +17,8 @@ const Tab = createBottomTabNavigator();
 
 import * as authAPI from './api/authAPI';
 import SearchStackScreen from './components/screen/SearchStackScreen';
+import PersonalInfoScreen from './components/screen/login/PersonalInfoScreen';
+import GroupSelectScreen from './components/screen/login/GroupSelectScreen';
 // import { loginSuccess } from '../../../core/redux/auth';
 
 
@@ -49,7 +51,7 @@ const App = () => {
   // }, [auth]);
 
   return (
-    auth.data ? (
+    auth.data && auth.data.nickname && auth.data.group ? (
         <NavigationContainer>
           <Tab.Navigator>
             <Tab.Screen name="Album" component={AlbumScreen} />
@@ -57,13 +59,9 @@ const App = () => {
             <Tab.Screen name="MyPage" component={MyPageScreen} />
           </Tab.Navigator>
       </NavigationContainer>
-      ) : (
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="Login" component={LoginScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      )
+      ) : !auth.data ? <SocialLoginScreen/>
+        : !auth.data.nickname ? <PersonalInfoScreen />
+        : <GroupSelectScreen />
   );
 }
 

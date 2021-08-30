@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { loginSuccess } from '../../core/redux/auth';
-import LoginWebviewModal from '../LoginWebviewModal';
+import { loginSuccess } from '../../../core/redux/auth';
+import LoginWebviewModal from './LoginWebviewModal';
 
-const LoginScreen = () => {
+const SocialLogin = () => {
   const dispatch = useDispatch();
   
   const mockLogin = () => {
@@ -16,10 +16,6 @@ const LoginScreen = () => {
   }
   return (
     <View style={styles.container}>
-      <Button
-        title='동진으로 로그인'
-        onPress={mockLogin}
-      />
       <LoginWebviewModal/>
     </View>
   );
@@ -38,4 +34,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LoginScreen;
+export default SocialLogin;

@@ -12,3 +12,11 @@ export const refreshToken = async () => {
     }
     return client.post('/auth/refresh-token', {refreshToken: token});
 }
+
+export const setNickname = async ({userId, nickname}) => {
+    return client.put(`/users/${userId}/nickname`, {nickname});
+}
+
+export const setGroup = async ({userId, group}) => {
+    return client.put(`/users/${userId}/group`, {group});
+}

@@ -5099,6 +5099,13 @@ react-native-screens@^3.6.0:
   dependencies:
     warn-once "^0.1.0"
 
+react-native-select-multiple@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-select-multiple/-/react-native-select-multiple-2.1.0.tgz#1cc9b3c2a694d85ab5861d035f2252c20b943a08"
+  integrity sha512-sJepp/RNeLorR+/bEUVuWnVEX5klpyf0MHWKy0SN1MIty4vcKhL9ZhPM6Zydm5p6qHeFcvA7Q87FzO1JTdaqkw==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-unimodules@~0.14.5:
   version "0.14.6"
   resolved "https://registry.yarnpkg.com/react-native-unimodules/-/react-native-unimodules-0.14.6.tgz#5460a34d44e880909cb63d9bb4c4d77ff158bf0a"
