@@ -1,5 +1,5 @@
-import React from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {BackHandler, Dimensions, StyleSheet} from 'react-native';
 import WebView from 'react-native-webview';
 import { API_URL } from '@env';
 import { loginSuccess } from '../../../core/redux/auth';
@@ -11,14 +11,31 @@ const INJECTED_JAVASCRIPT =
     '(function() {if(window.document.getElementsByTagName("pre").length>0){window.ReactNativeWebView.postMessage((window.document.getElementsByTagName("pre")[0].innerHTML));}})();';
 const LoginWebviewModal = () => {
   const dispatch = useDispatch();
-  
+  const webview = useRef(null);
+
   const _handleMessage = async event => {
     const data = JSON.parse(event.nativeEvent.data);
     dispatch(loginSuccess(data));
   };
 
+
+  const onAndroidBackPress = ()=> {
+    if (webview.current) {
+      webview.current.goBack();
+      return true; // 앱 종료 방지
+    }
+    return false;
+  };
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', onAndroidBackPress);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', onAndroidBackPress);
+    };
+  }, []); // 다시 적용되는 것 방지
+
   return (
       <WebView
+        ref={webview}
         originWhitelist={['*']}
         source={{ html: `
           <head>
