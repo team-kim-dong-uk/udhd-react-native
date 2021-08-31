@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {SafeAreaView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -59,7 +59,7 @@ const App = () => {
             <Tab.Screen name="MyPage" component={MyPageScreen} />
           </Tab.Navigator>
       </NavigationContainer>
-      ) : !auth.data ? <SocialLoginScreen/>
+      ) : !auth.data ? <SafeAreaView style={styles.container}><SocialLoginScreen/></SafeAreaView>
         : !auth.data.nickname ? <PersonalInfoScreen />
         : <GroupSelectScreen />
   );
@@ -68,10 +68,9 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop:StatusBar.currentHeight
   },
+
 });
 
 export default App;
