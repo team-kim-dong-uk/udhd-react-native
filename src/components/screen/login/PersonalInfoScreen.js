@@ -42,6 +42,7 @@ const PersonalInfoScreen = () => {
         <Button
           title='다음'
           onPress={onBtnClick}
+          disabled={nicknameInput === ''}
         />
       </View>
     </View>

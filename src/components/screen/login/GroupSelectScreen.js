@@ -44,6 +44,7 @@ const GroupSelectScreen = () => {
         <Button
           title='선택완료'
           onPress={onBtnClick}
+          disabled={selectedGroups.length === 0}
         />
       </View>
     </View>
