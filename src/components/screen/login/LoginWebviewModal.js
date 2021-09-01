@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {BackHandler, Dimensions, StyleSheet} from 'react-native';
+import {BackHandler, Dimensions, Platform, StyleSheet} from 'react-native';
 import WebView from 'react-native-webview';
 import { API_URL } from '@env';
 import { loginSuccess } from '../../../core/redux/auth';
@@ -66,7 +66,7 @@ const LoginWebviewModal = () => {
                 <a href='${API_URL}/oauth2/authorization/google'>
                   구글 계정으로 로그인
                 </a>
-                <a href='${API_URL}/oauth2/authorization/apple' style='background-color:black; color: white'>
+                <a href='${API_URL}/oauth2/authorization/apple' style='background-color:black; color:white${Platform.OS === 'android' ? ';display:none':''}'>
                   애플 계정으로 로그인
                 </a>
               </div>
