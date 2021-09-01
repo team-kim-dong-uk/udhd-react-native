@@ -1,7 +1,5 @@
 import { createAction } from 'redux-actions';
 import { call, put} from 'redux-saga/effects';
-import * as authAPI from '../../api/authAPI';
-import { loginSuccess } from '../../core/redux/auth';
 import { finishLoading, startLoading } from '../../core/redux/loading';
 
 export const asyncActionCreator = (actionName) => {
@@ -45,7 +43,7 @@ export default function createAsyncSaga(asyncAction, asyncFunction) {
         // }
       } else {
         console.log(error);
-        yield put(asyncAction.failure({ error }));
+        yield put(asyncAction.failure({ error, status: error?.response?.status }));
       }
     }
     yield put(finishLoading());
