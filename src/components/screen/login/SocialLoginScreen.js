@@ -1,22 +1,54 @@
-import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../../../core/redux/auth';
 import LoginWebviewModal from './LoginWebviewModal';
+import { API_URL } from "@env";
+import { UIButton } from '../../common/UIButton';
 
 const SocialLogin = () => {
   const dispatch = useDispatch();
-  
-  const mockLogin = () => {
-    const tokenResponse = {data: {
-      accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGUyZmVhNzRjMTdjZjUxNTJmYjViNzgiLCJleHAiOjE2Mzg1OTk4NDF9.9slnhorxY7nVWAHtxlfl90wGt1ilRqkUqJvO_NxX0ks',
-      userId: '60e2fea74c17cf5152fb5b78',
-    }};
-    dispatch(loginSuccess(tokenResponse.data));
-  }
+  const [source, setSource] = useState(undefined);
+
+  signupWithSocial = async (social) => {
+    console.log(social);
+    setSource(`${API_URL}/oauth2/authorization/${social}`);
+  };
+
+  closeSocialModal = () => {
+      console.log('close');
+      setSource(undefined);
+  };
+
   return (
     <View style={styles.container}>
-      <LoginWebviewModal/>
+      {source !== undefined ? (
+        <LoginWebviewModal
+          source={source}
+          closeSocialModal={closeSocialModal}
+        />
+      ) : null}
+      <View>
+        <Text>로고 여기</Text>
+      </View>
+      <View>
+        <UIButton
+          title='카카오 계정으로 로그인하기'
+          onPress={() => signupWithSocial('kakao')}
+          style={styles.kakao}
+        />
+        <UIButton
+          title='구글 계정으로 로그인하기'
+          onPress={() => signupWithSocial('google')}
+          style={styles.google}
+        />
+        <UIButton
+          title='애플 계정으로 로그인하기'
+          onPress={() => signupWithSocial('apple')}
+          style={styles.apple}
+          textStyle={styles.appleText}
+        />
+      </View>
     </View>
   );
 }
@@ -28,9 +60,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  webview: {
-    width: 100,
-    height: 100,
+  kakao: {
+    backgroundColor: '#ffdf00',
+    width: '90%',
+  },
+  google: {
+    backgroundColor: 'white'
+  },
+  apple: {
+    backgroundColor: 'black'
+  },
+  appleText: {
+    color: 'white'
   }
 });
 
