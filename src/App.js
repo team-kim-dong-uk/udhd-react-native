@@ -51,17 +51,21 @@ const App = () => {
   // }, [auth]);
 
   return (
-    auth.data && auth.data.nickname && auth.data.group ? (
-        <NavigationContainer>
-          <Tab.Navigator>
-            <Tab.Screen name="Album" component={AlbumScreen} />
-            <Tab.Screen name="Search" component={SearchStackScreen} />
-            <Tab.Screen name="MyPage" component={MyPageScreen} />
-          </Tab.Navigator>
-      </NavigationContainer>
-      ) : !auth.data ? <SafeAreaView style={styles.container}><SocialLoginScreen/></SafeAreaView>
-        : !auth.data.nickname ? <PersonalInfoScreen />
-        : <GroupSelectScreen />
+    <SafeAreaView style={styles.container}>
+      {
+        auth.data && auth.data.nickname && auth.data.group ? (
+          <NavigationContainer>
+            <Tab.Navigator>
+              <Tab.Screen name="Album" component={AlbumScreen} />
+              <Tab.Screen name="Search" component={SearchStackScreen} />
+              <Tab.Screen name="MyPage" component={MyPageScreen} />
+            </Tab.Navigator>
+        </NavigationContainer>
+        ) : !auth.data ? <SocialLoginScreen/>
+          : !auth.data.nickname ? <PersonalInfoScreen />
+          : <GroupSelectScreen />
+      }
+    </SafeAreaView>
   );
 }
 
