@@ -11,13 +11,13 @@ const SocialLogin = () => {
   const [source, setSource] = useState(undefined);
 
   signupWithSocial = async (social) => {
-    console.log(social);
     setSource(`${API_URL}/oauth2/authorization/${social}`);
   };
 
-  closeSocialModal = () => {
-      console.log('close');
-      setSource(undefined);
+  closeSocialModal = (data) => {
+    dispatch(loginSuccess(data));
+    console.log('close');
+      // setSource(undefined);
   };
 
   return (
@@ -42,12 +42,15 @@ const SocialLogin = () => {
           onPress={() => signupWithSocial('google')}
           style={styles.google}
         />
-        <UIButton
-          title='애플 계정으로 로그인하기'
-          onPress={() => signupWithSocial('apple')}
-          style={styles.apple}
-          textStyle={styles.appleText}
-        />
+        {
+          Platform.OS === 'ios' ?
+          <UIButton
+            title='애플 계정으로 로그인하기'
+            onPress={() => signupWithSocial('apple')}
+            style={styles.apple}
+            textStyle={styles.appleText}
+          /> : null
+        }
       </View>
     </View>
   );
@@ -58,17 +61,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   kakao: {
     backgroundColor: '#ffdf00',
-    width: '90%',
+    marginBottom: 10,
   },
   google: {
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    marginBottom: 10,
   },
   apple: {
-    backgroundColor: 'black'
+    backgroundColor: 'black',
+    marginBottom: 10,
   },
   appleText: {
     color: 'white'

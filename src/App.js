@@ -26,30 +26,6 @@ const App = () => {
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth);
 
-  const setUser = async () => {
-    try {
-      // refresh token으로 유저 정보, access token 요청
-      // const tokenResponse = await authAPI.refreshToken();
-      // mock data
-      const tokenResponse = {data: {
-        accessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MGUyZmVhNzRjMTdjZjUxNTJmYjViNzgiLCJleHAiOjE2Mzg1OTk4NDF9.9slnhorxY7nVWAHtxlfl90wGt1ilRqkUqJvO_NxX0ks',
-        userId: '60e2fea74c17cf5152fb5b78',
-      }};
-      dispatch(loginSuccess(tokenResponse.data));
-    } catch (e) {
-      // refresh token이 잘못되어 401에러 발생시 login 페이지로 이동.
-      if (e?.response?.status === 401) {
-      }
-    }
-  };
-
-  // useEffect(() => {
-  //   if (!auth.data) {
-  //     console.log(auth);
-  //     setUser();
-  //   }
-  // }, [auth]);
-
   return (
     <SafeAreaView style={styles.container}>
       {

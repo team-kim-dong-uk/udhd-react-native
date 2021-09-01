@@ -1,25 +1,20 @@
 import React, {useEffect, useRef} from 'react';
 import {BackHandler, Dimensions, Modal, Platform, StyleSheet} from 'react-native';
 import WebView from 'react-native-webview';
-import { API_URL } from '@env';
-import { loginSuccess } from '../../../core/redux/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 const userAgent = `userAgent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'`;
 const INJECTED_JAVASCRIPT =
     '(function() {if(window.document.getElementsByTagName("pre").length>0){window.ReactNativeWebView.postMessage((window.document.getElementsByTagName("pre")[0].innerHTML));}})();';
 const LoginWebviewModal = (props) => {
-  const dispatch = useDispatch();
   const auth = useSelector(state => state.auth);
   const navigation = useNavigation();
   const webview = useRef(null);
 
   const _handleMessage = async event => {
     const data = JSON.parse(event.nativeEvent.data);
-    dispatch(loginSuccess(data));
-    console.log(data);
-    props.closeSocialModal();
+    props.closeSocialModal(data);
   };
 
   // 소셜로그인 진행중에 종료했었다면 중단 지점부터 다시 시작
@@ -55,42 +50,6 @@ const LoginWebviewModal = (props) => {
         ref={webview}
         originWhitelist={['*']}
         source={{uri: props.source}}
-        // source={{ html: `
-        //   <head>
-        //     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
-        //     <style>
-        //     a {
-        //       color: black;
-        //       text-decoration: none;
-        //       text-align: center;
-        //       width: 90%;
-        //       padding: 10;
-        //       font-size: 20;
-        //       border: 1px solid black;
-        //       border-collapse: separate; 
-        //       border-radius: 5;
-        //     }
-        //     </style>
-        //   </head>
-        //   <body>
-        //     <div style='width: 100%; height: 100%'>
-        //       <div id='logo-container' style='height:60%;display:flex;flex-direction:column;justify-content:center;align-items:center'>
-        //         <h1>로고 여기</h1>
-        //       </div>
-        //       <div id='button-container' style='height:35%;display:flex;flex-direction:column;justify-content:space-around;align-items:center'>
-        //         <a href='${API_URL}/oauth2/authorization/kakao' style='background-color:yellow'>
-        //           카카오 계정으로 로그인
-        //         </a>
-        //         <a href='${API_URL}/oauth2/authorization/google'>
-        //           구글 계정으로 로그인
-        //         </a>
-        //         <a href='${API_URL}/oauth2/authorization/apple' style='background-color:black; color:white${Platform.OS === 'android' ? ';display:none':''}'>
-        //           애플 계정으로 로그인
-        //         </a>
-        //       </div>
-        //     </div>
-        //   </body>
-        //   ` }}
         userAgent={userAgent}
         useWebKit={true}
         javaScriptEnabled={true}
