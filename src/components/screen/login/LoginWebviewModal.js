@@ -3,7 +3,7 @@ import {BackHandler, Dimensions, Platform, StyleSheet} from 'react-native';
 import WebView from 'react-native-webview';
 import { API_URL } from '@env';
 import { loginSuccess } from '../../../core/redux/auth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 const userAgent = `userAgent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'`;
@@ -11,12 +11,21 @@ const INJECTED_JAVASCRIPT =
     '(function() {if(window.document.getElementsByTagName("pre").length>0){window.ReactNativeWebView.postMessage((window.document.getElementsByTagName("pre")[0].innerHTML));}})();';
 const LoginWebviewModal = () => {
   const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth);
+  const navigation = useNavigation();
   const webview = useRef(null);
 
   const _handleMessage = async event => {
     const data = JSON.parse(event.nativeEvent.data);
     dispatch(loginSuccess(data));
   };
+
+  // 소셜로그인 진행중에 종료했었다면 중단 지점부터 다시 시작
+  useEffect(() => {
+    if (auth.data) {
+      navigation.navigate('PersonalInfo');
+    }
+  }, [auth]);
 
 
   const onAndroidBackPress = ()=> {

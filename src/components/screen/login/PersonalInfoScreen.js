@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNickname } from '../../../core/redux/auth';
@@ -6,6 +7,14 @@ import { setNickname } from '../../../core/redux/auth';
 const PersonalInfoScreen = () => {
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth);
+  const navigation = useNavigation();
+
+  // 소셜로그인 진행중에 종료했었다면 중단 지점부터 다시 시작
+  useEffect(() => {
+    if (auth.data && auth.data.nickname) {
+      navigation.navigate('GroupSelect');
+    }
+  }, [auth]);
 
   const [nicknameInput, setnicknameInput] = useState('');
 

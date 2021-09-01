@@ -56,14 +56,20 @@ const App = () => {
         auth.data && auth.data.nickname && auth.data.group ? (
           <NavigationContainer>
             <Tab.Navigator>
-              <Tab.Screen name="Album" component={AlbumScreen} />
-              <Tab.Screen name="Search" component={SearchStackScreen} />
-              <Tab.Screen name="MyPage" component={MyPageScreen} />
+              <Tab.Screen name='Album' component={AlbumScreen} />
+              <Tab.Screen name='Search' component={SearchStackScreen} />
+              <Tab.Screen name='MyPage' component={MyPageScreen} />
             </Tab.Navigator>
         </NavigationContainer>
-        ) : !auth.data ? <SocialLoginScreen/>
-          : !auth.data.nickname ? <PersonalInfoScreen />
-          : <GroupSelectScreen />
+        ) : (
+         <NavigationContainer>
+           <Stack.Navigator>
+             <Stack.Screen name='SocialLogin' component={SocialLoginScreen} options={{ headerShown: false }}/>
+             <Stack.Screen name='PersonalInfo' component={PersonalInfoScreen} options={{ title: '회원정보 설정' }}/>
+             <Stack.Screen name='GroupSelect' component={GroupSelectScreen} options={{ title: '선호 연예인 설정' }}/>
+           </Stack.Navigator>
+         </NavigationContainer> 
+        )
       }
     </SafeAreaView>
   );
