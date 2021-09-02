@@ -2,21 +2,34 @@ import React, {useCallback, useState} from 'react';
 import {Alert, Image, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import SearchBox from "../SearchBox";
 import ModalTemplate from "../ModalTemplate";
+import useInput from "../../hooks/useInput";
+import {useDispatch, useSelector} from "react-redux";
+import {getPhotos} from "../../core/redux/photos";
 
 
 const UdhdHeader = () => {
+    const { auth, photos, loading } = useSelector(state => state);
+    const dispatch = useDispatch();
     const [showFilter, setShowFilter] = useState(false);
-
+    const [keyword, onChangeKeyword, setKeyword] = useInput('');
     const onPressFilter = useCallback((e) => {
         setShowFilter((prev) => !prev);
     }, []);
+
+    const onSubmit = useCallback((e) => {
+        dispatch(getPhotos.request({
+            userId: auth.data?.userId,
+            tags : [keyword]
+        }));
+        setKeyword('');
+    }, [keyword, photos]);
 
   return (
     <View>
         <View style={styles.headerContainer}>
             <Image style={styles.tinyLogo}
                    source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
-            <SearchBox />
+            <SearchBox keyword={keyword} onChangeKeyword={onChangeKeyword} onSubmit={onSubmit} />
             <View style={styles.upperTap}>
                 <View>
                     <TouchableOpacity activeOpacity = { 0.5 } onPress={onPressFilter}>

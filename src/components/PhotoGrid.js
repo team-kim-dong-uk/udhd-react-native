@@ -61,7 +61,7 @@ const PhotoGrid = () => {
         </View>
     )
   };
-    console.log(photos.data.length)
+
   return (
       /*<View style={styles.scrollBox}>*/
         <FlatList
