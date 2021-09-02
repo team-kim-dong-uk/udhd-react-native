@@ -35,10 +35,10 @@ const App = () => {
 
   return (
       auth.data && auth.data.nickname && auth.data.group ? (
-        <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
           <NavigationContainer>
             <Tab.Navigator>
-            <Tab.Screen name="Album!"
+            <Tab.Screen name="Album"
                             component={AlbumStackScreen}
                             options={{headerShown: false}}
                             />
@@ -48,7 +48,7 @@ const App = () => {
                 <Tab.Screen name="MyPage" component={MyPageScreen} />
             </Tab.Navigator>
           </NavigationContainer>
-        </SafeAreaProvider>
+      </SafeAreaView>
         ) : (
           <SafeAreaView style={styles.container}>
             <NavigationContainer>
@@ -57,7 +57,7 @@ const App = () => {
                 <Stack.Screen name='PersonalInfo' component={PersonalInfoScreen} options={{ title: '회원정보 설정' }}/>
                 <Stack.Screen name='GroupSelect' component={GroupSelectScreen} options={{ title: '선호 연예인 설정' }}/>
               </Stack.Navigator>
-            </NavigationContainer> 
+            </NavigationContainer>
       </SafeAreaView>
         )
   );
