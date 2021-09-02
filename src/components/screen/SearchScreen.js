@@ -6,12 +6,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SearchScreen = () => {
   return (
-      <SafeAreaView>
         <View>
           <UdhdHeader/>
           <PhotoGrid/>
         </View>
-      </SafeAreaView>
   );
 }
 
