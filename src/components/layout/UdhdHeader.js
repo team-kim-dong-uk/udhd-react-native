@@ -6,51 +6,59 @@ import ModalTemplate from "../ModalTemplate";
 
 const UdhdHeader = () => {
     const [showFilter, setShowFilter] = useState(false);
-    const [showTagBox, setShowTagBox] = useState(false);
 
     const onPressFilter = useCallback((e) => {
         setShowFilter((prev) => !prev);
     }, []);
 
   return (
-    <View style={styles.headerContainer}>
-        <Image style={styles.tinyLogo}
-               source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
-        <SearchBox onControlModal={()=>setShowTagBox(true)}/>
-        {showTagBox && (
-            <View><Text>따란!</Text></View>
-        )}
-        <View style={styles.upperTap}>
-            <View>
-                <TouchableOpacity activeOpacity = { 0.5 } onPress={onPressFilter}>
-                    <Image style={styles.upperIcon}
-                           source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
-                </TouchableOpacity>
-                {showFilter && (
-                    <ModalTemplate style={styles.filter} show={showFilter} onControlModal={onPressFilter}>
-                        <Pressable onPress={()=>{console.log("make function here")}}><Text style={styles.eachMenu}>hi?</Text></Pressable>
-                        <Pressable><Text style={styles.eachMenu}>hi!</Text></Pressable>
-                        <Pressable><Text style={styles.eachMenu}>Insert Here!</Text></Pressable>
-                    </ModalTemplate>
-                )}
-            </View>
-            <TouchableOpacity activeOpacity = { 0.5 } onPress={() => {Alert.alert("navigate to upload page")}}>
-            <Image style={styles.upperIcon}
+    <View>
+        <View style={styles.headerContainer}>
+            <Image style={styles.tinyLogo}
                    source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
-            </TouchableOpacity>
+            <SearchBox />
+            <View style={styles.upperTap}>
+                <View>
+                    <TouchableOpacity activeOpacity = { 0.5 } onPress={onPressFilter}>
+                        <Image style={styles.upperIcon}
+                               source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
+                    </TouchableOpacity>
+                    {showFilter && (
+                        <ModalTemplate style={styles.filter} show={showFilter} onControlModal={onPressFilter}>
+                            <Pressable onPress={()=>{console.log("make function here")}}><Text style={styles.eachMenu}>hi?</Text></Pressable>
+                            <Pressable><Text style={styles.eachMenu}>hi!</Text></Pressable>
+                            <Pressable><Text style={styles.eachMenu}>Insert Here!</Text></Pressable>
+                        </ModalTemplate>
+                    )}
+                </View>
+                <TouchableOpacity activeOpacity = { 0.5 } onPress={() => {Alert.alert("navigate to upload page")}}>
+                <Image style={styles.upperIcon}
+                       source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
+                </TouchableOpacity>
+            </View>
         </View>
-    </View>
+        {
+            <View style={styles.tagBox}>
+            </View>
+        }
 
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
     headerContainer: {
       width: '100%',
-      height: 65,
+      minHeight: 65,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
+    },
+    tagBox:{
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
     upperTap: {
         position: 'absolute',
