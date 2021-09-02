@@ -1,24 +1,25 @@
 import React, {useCallback, useState} from 'react';
 import {Alert, Image, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import SearchBox from "../SearchBox";
-import Filter from "../Filter";
+import ModalTemplate from "../ModalTemplate";
 
-// TODO 업로드 버튼
-// TODO 이퀄라이저? 필터 버튼 만들기
 
 const UdhdHeader = () => {
     const [showFilter, setShowFilter] = useState(false);
+    const [showTagBox, setShowTagBox] = useState(false);
 
     const onPressFilter = useCallback((e) => {
         setShowFilter((prev) => !prev);
-        console.log("press filter");
     }, []);
 
   return (
     <View style={styles.headerContainer}>
         <Image style={styles.tinyLogo}
                source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
-        <SearchBox/>
+        <SearchBox onControlModal={()=>setShowTagBox(true)}/>
+        {showTagBox && (
+            <View><Text>따란!</Text></View>
+        )}
         <View style={styles.upperTap}>
             <View>
                 <TouchableOpacity activeOpacity = { 0.5 } onPress={onPressFilter}>
@@ -26,11 +27,11 @@ const UdhdHeader = () => {
                            source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
                 </TouchableOpacity>
                 {showFilter && (
-                    <Filter show={showFilter} onControlModal={onPressFilter}>
+                    <ModalTemplate style={styles.filter} show={showFilter} onControlModal={onPressFilter}>
                         <Pressable onPress={()=>{console.log("make function here")}}><Text style={styles.eachMenu}>hi?</Text></Pressable>
                         <Pressable><Text style={styles.eachMenu}>hi!</Text></Pressable>
                         <Pressable><Text style={styles.eachMenu}>Insert Here!</Text></Pressable>
-                    </Filter>
+                    </ModalTemplate>
                 )}
             </View>
             <TouchableOpacity activeOpacity = { 0.5 } onPress={() => {Alert.alert("navigate to upload page")}}>
@@ -74,6 +75,24 @@ const styles = StyleSheet.create({
     eachMenu:{
         width: '100%',
         height: 30
+    },
+    filter:{
+        position: 'absolute',
+        top: 35,
+        right: 40,
+        width: 100,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 5,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
     }
 
 });
