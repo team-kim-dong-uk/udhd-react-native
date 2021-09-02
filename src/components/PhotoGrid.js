@@ -64,7 +64,6 @@ const PhotoGrid = () => {
     console.log(photos.data.length)
   return (
       /*<View style={styles.scrollBox}>*/
-        <SafeAreaView style={styles.scrollBox}>
         <FlatList
             columnWrapperStyle={{justifyContent:'space-between'}}
             data={photos.data}
@@ -74,28 +73,9 @@ const PhotoGrid = () => {
             key={numCols}
             onEndReached={loadMorePhotos}
             onEndReachedThreshold={0.01}
-            ListFooterComponent={<View style={{height: 195}}/>}
+            ListFooterComponent={<View style={{height: 65}}/>}
         />
-        </SafeAreaView>
       /*</View>*/
-        /*<ScrollView>
-          {photos.data.map(photo => (
-            <TouchableHighlight
-              style={styles.touchArea}
-              key={photo.photoId}
-              onPress={() =>
-                navigation.navigate('PhotoDetail', { photoId: photo.photoId })
-              }
-            >
-              <Image
-                source={{uri: photo.thumbnailLink}}
-                style={styles.thumbnail}
-                />
-            </TouchableHighlight>
-          ))}
-           {!photos.isEnd && <Text ref={ref}>로딩중...</Text>}
-      </ScrollView>
-      </View>*/
   );
 }
 

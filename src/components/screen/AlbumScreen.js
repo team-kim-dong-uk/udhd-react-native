@@ -9,12 +9,12 @@ const AlbumScreen = () => {
   const auth = useSelector(state => state.auth);
   console.log(auth);
   return (
-    <SafeAreaView>
+    /*<SafeAreaView>*/
       <View>
         <UdhdHeader/>
         <PhotoGrid/>
       </View>
-    </SafeAreaView>
+    /*</SafeAreaView>*/
   );
 }
 
