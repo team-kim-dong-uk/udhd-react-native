@@ -23,6 +23,7 @@ const initialState = {
   data: [],
   isEnd: false,
   loading: false,
+  latestTags: '',
   error: null,
 };
 
@@ -30,11 +31,24 @@ const initialState = {
 export default handleActions(
   {
     [GET_PHOTOS.SUCCESS]: (state, action) => {
-        return {
-          ...state,
-          data: state.data.concat(action.payload.data),
-          isEnd: action.payload.data.length === 0
-        };
+        let newTags = action.payload.config.url.split("tags=")[1].toString();
+        if(state.latestTags == newTags){
+            return {
+                ...state,
+                data: state.data.concat(action.payload.data),
+                isEnd: action.payload.data.length === 0,
+                latestTags: newTags
+            };
+        } else {
+            state.data = action.payload.data
+            return {
+                ...state,
+                data: state.data,
+                isEnd: action.payload.data.length === 0,
+                latestTags: newTags
+            };
+        }
+
     },
     [GET_PHOTOS.FAILURE]: (state, action) => ({
       ...state,
