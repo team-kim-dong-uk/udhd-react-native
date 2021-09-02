@@ -23,7 +23,6 @@ const initialState = {
   data: [],
   isEnd: false,
   loading: false,
-  latestTags: '',
   error: null,
 };
 
@@ -35,16 +34,14 @@ export default handleActions(
             return {
                 ...state,
                 data: state.data.concat(action.payload.data),
-                isEnd: action.payload.data.length === 0,
-                latestTags: newTags
+                isEnd: action.payload.data.length === 0
             };
         } else {
             state.data = action.payload.data
             return {
                 ...state,
                 data: state.data,
-                isEnd: action.payload.data.length === 0,
-                latestTags: newTags
+                isEnd: action.payload.data.length === 0
             };
         }
 
