@@ -31,8 +31,7 @@ const initialState = {
 export default handleActions(
   {
     [GET_PHOTOS.SUCCESS]: (state, action) => {
-        let newTags = action.payload.config.url.split("tags=")[1].toString();
-        if(state.latestTags == newTags){
+        if(action.payload.config.url.includes("findAfter")){
             return {
                 ...state,
                 data: state.data.concat(action.payload.data),
