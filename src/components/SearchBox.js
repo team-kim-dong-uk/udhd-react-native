@@ -5,22 +5,15 @@ import useInput from "../hooks/useInput";
 import { SearchIcon } from 'native-base';
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 
-const SearchBox = ({keyword, onChangeKeyword, onSubmit}) => {
+const SearchBox = ({keyword, onChangeKeyword, onSubmit, targetKeyword, runByTarget}) => {
     const [showSearchIcon, setShowSearchIcon] = useState(true);
 
-    /*const makeTagByKeyword = useCallback(() => {
-        console.log("detect space, keyword ==" + keyword);
-        setKeyword('');
-    }, [keyword]);
-
-    const onKeydownSearch = useCallback((key) => {
-        if (key === ' ') {
-            makeTagByKeyword()
-
+    const detectTarget = useCallback((key) => {
+        if (key === targetKeyword) {
+            runByTarget()
             console.log("changeKeyword ' ' " + keyword);
         }
-    },[makeTagByKeyword]);*/
-
+    },[runByTarget]);
 
     const onChangeSearchIcon = useCallback((e) => {
         setShowSearchIcon((prev) => !prev);
@@ -38,9 +31,9 @@ const SearchBox = ({keyword, onChangeKeyword, onSubmit}) => {
                        onFocus={onChangeSearchIcon}
                        onBlur={onChangeSearchIcon}
                        onSubmitEditing={onSubmit}
-                       /*onKeyPress={({ nativeEvent }) => {
-                           onKeydownSearch(nativeEvent.key)
-                       }}*/
+                       onKeyPress={({ nativeEvent }) => {
+                           detectTarget(nativeEvent.key)
+                       }}
             >
 
             </TextInput>
@@ -51,7 +44,8 @@ const SearchBox = ({keyword, onChangeKeyword, onSubmit}) => {
 
 const styles = StyleSheet.create({
     searchContainer: {
-        width: 170,
+        flex:1,
+        /*width: 170,*/
         flexDirection: 'row',
         alignItems: 'center',
         marginLeft: 20
@@ -61,7 +55,8 @@ const styles = StyleSheet.create({
         height: 20,
     },
     input: {
-        marginLeft: 5
+        marginLeft: 5,
+        width: '100%',
     }
 });
 

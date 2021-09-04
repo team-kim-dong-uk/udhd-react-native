@@ -6,6 +6,7 @@ import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
 import {getPhotos} from "../../core/redux/photos";
 
+// TODO tag box 구현하기!
 
 const UdhdHeader = () => {
     const { auth, photos, loading } = useSelector(state => state);
@@ -15,6 +16,10 @@ const UdhdHeader = () => {
     const onPressFilter = useCallback((e) => {
         setShowFilter((prev) => !prev);
     }, []);
+
+    const makeTagByKeyword = useCallback(() => {
+        console.log("detect space, keyword ==" + keyword);
+    }, [keyword]);
 
     const onSubmit = useCallback((e) => {
         dispatch(getPhotos.request({
@@ -29,7 +34,12 @@ const UdhdHeader = () => {
         <View style={styles.headerContainer}>
             <Image style={styles.tinyLogo}
                    source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
-            <SearchBox keyword={keyword} onChangeKeyword={onChangeKeyword} onSubmit={onSubmit} />
+            <SearchBox keyword={keyword}
+                       onChangeKeyword={onChangeKeyword}
+                       onSubmit={onSubmit}
+                       targetKeyword=" "
+                       runByTarget={makeTagByKeyword}
+                        />
             <View style={styles.upperTap}>
                 <View>
                     <TouchableOpacity activeOpacity = { 0.5 } onPress={onPressFilter}>
@@ -65,7 +75,7 @@ const styles = StyleSheet.create({
       minHeight: 65,
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-between',
+      /*justifyContent: 'space-between',*/
     },
     tagBox:{
         width: '100%',
@@ -74,7 +84,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     upperTap: {
-        position: 'absolute',
+        flex:1,
         right: 0,
         flexDirection: 'row',
         alignItems: 'center',
@@ -84,14 +94,12 @@ const styles = StyleSheet.create({
     tinyLogo:{
       width: 50,
       height: 50,
-      marginLeft: 20,
+      marginLeft: 10,
+      /*flex:1*/
     },
     upperIcon: {
         width: 50,
         height: 50,
-    },
-    searchBox: {
-        width: 100,
     },
     eachMenu:{
         width: '100%',
