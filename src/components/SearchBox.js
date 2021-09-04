@@ -5,15 +5,16 @@ import useInput from "../hooks/useInput";
 import { SearchIcon } from 'native-base';
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 
-const SearchBox = ({keyword, onChangeKeyword, onSubmit, targetKeyword, runByTarget}) => {
+const SearchBox = ({keyword, setKeyword, onChangeKeyword, onSubmit, targetKeyword, runByTarget}) => {
     const [showSearchIcon, setShowSearchIcon] = useState(true);
 
     const detectTarget = useCallback((key) => {
         if (targetKeyword.includes(key)) {
-            runByTarget()
+            runByTarget();
+            setKeyword("");
             console.log("3. changeKeyword : " + keyword);
         }
-    },[runByTarget]);
+    },[runByTarget, keyword]);
 
     const onChangeSearchIcon = useCallback((e) => {
         setShowSearchIcon((prev) => !prev);
@@ -26,8 +27,8 @@ const SearchBox = ({keyword, onChangeKeyword, onSubmit, targetKeyword, runByTarg
 
             <TextInput style={styles.input}
                        placeholder="Type Tag here!"
-                       onChange={onChangeKeyword}
-                       defaultValue={keyword}
+                       onChangeText={onChangeKeyword}
+                       value={keyword}
                        onFocus={onChangeSearchIcon}
                        onBlur={onChangeSearchIcon}
                        onSubmitEditing={onSubmit}

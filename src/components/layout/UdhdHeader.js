@@ -30,7 +30,7 @@ const UdhdHeader = () => {
     const makeTagByKeyword = useCallback(() => {
         console.log("1. detect space, keyword ==" + keyword);
         addSearchTags(keyword);
-        setKeyword('');
+        setKeyword("");
         console.log("2. after? ==" + searchTags);
     }, [keyword, searchTags]);
 
@@ -52,6 +52,7 @@ const UdhdHeader = () => {
                     return <Tag key={text} show={true} text={text}/>
                 })}
                 <SearchBox keyword={keyword}
+                           setKeyword={setKeyword}
                            onChangeKeyword={onChangeKeyword}
                            onSubmit={onSubmit}
                            targetKeyword={targetKeyword}
