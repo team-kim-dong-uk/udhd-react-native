@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
         flex:1,
         flexDirection: 'row',
         alignItems: 'center',
+        marginLeft: 10,
     },
     searchIcon: {
         width: 20,

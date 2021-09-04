@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         /*width: 170,*/
         flexDirection: 'row',
         alignItems: 'center',
-        marginLeft: 20
+        paddingLeft: 5
     },
     tagBox:{
         width: '100%',
