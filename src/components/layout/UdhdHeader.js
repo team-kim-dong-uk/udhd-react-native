@@ -5,6 +5,7 @@ import ModalTemplate from "../ModalTemplate";
 import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
 import {getPhotos} from "../../core/redux/photos";
+import Tag from "../Tag";
 
 // TODO tag box 구현하기!
 
@@ -13,13 +14,25 @@ const UdhdHeader = () => {
     const dispatch = useDispatch();
     const [showFilter, setShowFilter] = useState(false);
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
+    const targetKeyword = [' ', ',']
+    const [searchTags, setSearchTags] = useState([]);
+    const addSearchTags = (tag) => {
+        setSearchTags([
+            ...searchTags,
+            [tag]
+        ]);
+    };
+
     const onPressFilter = useCallback((e) => {
         setShowFilter((prev) => !prev);
     }, []);
 
     const makeTagByKeyword = useCallback(() => {
-        console.log("detect space, keyword ==" + keyword);
-    }, [keyword]);
+        console.log("1. detect space, keyword ==" + keyword);
+        addSearchTags(keyword);
+        setKeyword('');
+        console.log("2. after? ==" + searchTags);
+    }, [keyword, searchTags]);
 
     const onSubmit = useCallback((e) => {
         dispatch(getPhotos.request({
@@ -34,12 +47,17 @@ const UdhdHeader = () => {
         <View style={styles.headerContainer}>
             <Image style={styles.tinyLogo}
                    source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
-            <SearchBox keyword={keyword}
-                       onChangeKeyword={onChangeKeyword}
-                       onSubmit={onSubmit}
-                       targetKeyword=" "
-                       runByTarget={makeTagByKeyword}
-                        />
+            <View style={styles.searchContainer}>
+                {searchTags.map((text) => {
+                    return <Tag key={text} show={true} text={text}/>
+                })}
+                <SearchBox keyword={keyword}
+                           onChangeKeyword={onChangeKeyword}
+                           onSubmit={onSubmit}
+                           targetKeyword={targetKeyword}
+                           runByTarget={makeTagByKeyword}
+                            />
+            </View>
             <View style={styles.upperTap}>
                 <View>
                     <TouchableOpacity activeOpacity = { 0.5 } onPress={onPressFilter}>
@@ -76,6 +94,13 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'center',
       /*justifyContent: 'space-between',*/
+    },
+    searchContainer: {
+        flex:1,
+        /*width: 170,*/
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 20
     },
     tagBox:{
         width: '100%',

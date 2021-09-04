@@ -9,9 +9,9 @@ const SearchBox = ({keyword, onChangeKeyword, onSubmit, targetKeyword, runByTarg
     const [showSearchIcon, setShowSearchIcon] = useState(true);
 
     const detectTarget = useCallback((key) => {
-        if (key === targetKeyword) {
+        if (targetKeyword.includes(key)) {
             runByTarget()
-            console.log("changeKeyword ' ' " + keyword);
+            console.log("3. changeKeyword : " + keyword);
         }
     },[runByTarget]);
 
@@ -21,7 +21,7 @@ const SearchBox = ({keyword, onChangeKeyword, onSubmit, targetKeyword, runByTarg
 
     return (
         <NativeBaseProvider>
-        <View style={styles.searchContainer}>
+        <View style={styles.searchBox}>
             {showSearchIcon && (<SearchIcon style={styles.searchIcon}/>)}
 
             <TextInput style={styles.input}
@@ -43,12 +43,10 @@ const SearchBox = ({keyword, onChangeKeyword, onSubmit, targetKeyword, runByTarg
 }
 
 const styles = StyleSheet.create({
-    searchContainer: {
+    searchBox: {
         flex:1,
-        /*width: 170,*/
         flexDirection: 'row',
         alignItems: 'center',
-        marginLeft: 20
     },
     searchIcon: {
         width: 20,
