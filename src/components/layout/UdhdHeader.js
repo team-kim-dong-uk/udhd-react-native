@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getPhotos} from "../../core/redux/photos";
 import Tag from "../Tag";
 
-// TODO tag box 구현하기!
+// TODO tag 추천 구현하기
 
 const UdhdHeader = () => {
     const [, updateState] = React.useState();
@@ -52,8 +52,9 @@ const UdhdHeader = () => {
     const onSubmit = useCallback((e) => {
         dispatch(getPhotos.request({
             userId: auth.data?.userId,
-            tags : [keyword]
+            tags : searchTags
         }));
+        console.log("searchTags : "+ searchTags);
         setKeyword('');
     }, [keyword, photos]);
 
@@ -96,10 +97,10 @@ const UdhdHeader = () => {
                 </TouchableOpacity>
             </View>
         </View>
-        {/*{
+        {
             <View style={styles.tagBox}>
             </View>
-        }*/}
+        }
 
     </View>
   );
