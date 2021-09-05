@@ -5,14 +5,13 @@ import useInput from "../hooks/useInput";
 import { SearchIcon } from 'native-base';
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 
-const SearchBox = ({keyword, setKeyword, onChangeKeyword, onSubmit, targetKeyword, runByTarget}) => {
+const SearchBox = ({keyword, setKeyword, onChangeKeyword, onSubmit, splitKeyword, runByTarget}) => {
     const [showSearchIcon, setShowSearchIcon] = useState(true);
 
     const detectTarget = useCallback((key) => {
-        if (targetKeyword.includes(key)) {
+        if (splitKeyword.includes(key)) {
             runByTarget();
             setKeyword("");
-            console.log("3. changeKeyword : " + keyword);
         }
     },[runByTarget, keyword]);
 

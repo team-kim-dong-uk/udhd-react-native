@@ -10,28 +10,43 @@ import Tag from "../Tag";
 // TODO tag box 구현하기!
 
 const UdhdHeader = () => {
+    const [, updateState] = React.useState();
+    const forceUpdate = React.useCallback(() => updateState({}), []);
     const { auth, photos, loading } = useSelector(state => state);
     const dispatch = useDispatch();
     const [showFilter, setShowFilter] = useState(false);
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
-    const targetKeyword = [' ', ',']
+    const splitKeyword = [' ', ',']
     const [searchTags, setSearchTags] = useState([]);
+
     const addSearchTags = (tag) => {
-        setSearchTags([
-            ...searchTags,
-            [tag]
-        ]);
+        tag = tag.replace(/\s/g, "");
+        if(tag !== '' && !searchTags.includes(tag)) {
+           setSearchTags(searchTags => [
+                ...searchTags,
+                tag
+            ]);
+        } else {
+            // TODO alert?
+        }
     };
 
     const onPressFilter = useCallback((e) => {
         setShowFilter((prev) => !prev);
     }, []);
 
+    const onPressTag = useCallback((e) => {
+        let idx = searchTags.indexOf(e);
+        if(idx !== -1 ){
+            searchTags.splice(searchTags.indexOf(e), 1);
+            setSearchTags(searchTags);
+            forceUpdate();
+        }
+    }, [searchTags]);
+
     const makeTagByKeyword = useCallback(() => {
-        console.log("1. detect space, keyword ==" + keyword);
         addSearchTags(keyword);
         setKeyword("");
-        console.log("2. after? ==" + searchTags);
     }, [keyword, searchTags]);
 
     const onSubmit = useCallback((e) => {
@@ -48,14 +63,16 @@ const UdhdHeader = () => {
             <Image style={styles.tinyLogo}
                    source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
             <View style={styles.searchContainer}>
+                <View style={styles.tagBox}>
                 {searchTags.map((text) => {
-                    return <Tag key={text} show={true} text={text}/>
+                    return <Tag key={text} text={text} show={true} onPressTag={onPressTag}/>
                 })}
+                </View>
                 <SearchBox keyword={keyword}
                            setKeyword={setKeyword}
                            onChangeKeyword={onChangeKeyword}
                            onSubmit={onSubmit}
-                           targetKeyword={targetKeyword}
+                           splitKeyword={splitKeyword}
                            runByTarget={makeTagByKeyword}
                             />
             </View>
@@ -79,10 +96,10 @@ const UdhdHeader = () => {
                 </TouchableOpacity>
             </View>
         </View>
-        {
+        {/*{
             <View style={styles.tagBox}>
             </View>
-        }
+        }*/}
 
     </View>
   );
@@ -104,10 +121,9 @@ const styles = StyleSheet.create({
         paddingLeft: 5
     },
     tagBox:{
-        width: '100%',
+        /*maxWidth: '50%',*/
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
     },
     upperTap: {
         flex:1,
