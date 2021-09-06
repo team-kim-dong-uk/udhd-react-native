@@ -44,9 +44,14 @@ const UdhdHeader = () => {
         }
     }, [searchTags]);
 
-    const makeTagByKeyword = useCallback(() => {
-        addSearchTags(keyword);
-        setKeyword("");
+    const makeTagByKeyword = useCallback((tag) => {
+        if (splitKeyword.includes(tag)) {
+            console.log("deetect tag!")
+            addSearchTags(keyword);
+            setKeyword("");
+            return true;
+        }
+        return false
     }, [keyword, searchTags]);
 
     const onSubmit = useCallback((e) => {
@@ -73,7 +78,6 @@ const UdhdHeader = () => {
                            setKeyword={setKeyword}
                            onChangeKeyword={onChangeKeyword}
                            onSubmit={onSubmit}
-                           splitKeyword={splitKeyword}
                            runByTarget={makeTagByKeyword}
                             />
             </View>
