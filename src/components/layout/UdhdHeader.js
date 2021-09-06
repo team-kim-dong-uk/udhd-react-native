@@ -1,5 +1,15 @@
-import React, {useCallback, useState} from 'react';
-import {Alert, Image, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+    Alert,
+    FlatList,
+    Image,
+    Pressable,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
+    TouchableOpacity,
+    View
+} from 'react-native';
 import SearchBox from "../SearchBox";
 import ModalTemplate from "../ModalTemplate";
 import useInput from "../../hooks/useInput";
@@ -9,15 +19,42 @@ import Tag from "../Tag";
 
 // TODO tag 추천 구현하기
 
+const mockData = [
+    "지호",
+    "지호123",
+    "오마이걸",
+    "옴걸",
+    "오마이걸123123"
+]
+
 const UdhdHeader = () => {
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
-    const { auth, photos, loading } = useSelector(state => state);
     const dispatch = useDispatch();
+    const { auth, photos, loading } = useSelector(state => state);
+
     const [showFilter, setShowFilter] = useState(false);
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
+    const [isSearching, setIsSearching] = useState(false);
     const splitKeyword = [' ', ',']
     const [searchTags, setSearchTags] = useState([]);
+    const [searchData, setSearchData] = useState([]);
+
+    useEffect(() => {
+        setSearchData(
+            mockData.filter((tag) => {
+                return tag.includes(keyword)
+            })
+        )
+    }, [keyword]);
+
+    const renderItem = ({ item }) => {
+        return (
+            <View style={{flex: 1}}>
+                <Text>{item}</Text>
+            </View>
+        )
+    };
 
     const addSearchTags = (tag) => {
         tag = tag.replace(/\s/g, "");
@@ -66,8 +103,9 @@ const UdhdHeader = () => {
   return (
     <View>
         <View style={styles.headerContainer}>
-            <Image style={styles.tinyLogo}
+            {!isSearching && (<Image style={styles.tinyLogo}
                    source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
+            )}
             <View style={styles.searchContainer}>
                 <View style={styles.tagBox}>
                 {searchTags.map((text) => {
@@ -81,6 +119,7 @@ const UdhdHeader = () => {
                            runByTarget={makeTagByKeyword}
                             />
             </View>
+            {!isSearching && (
             <View style={styles.upperTap}>
                 <View>
                     <TouchableOpacity activeOpacity = { 0.5 } onPress={onPressFilter}>
@@ -100,10 +139,17 @@ const UdhdHeader = () => {
                        source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
                 </TouchableOpacity>
             </View>
+            )}
         </View>
         {
-            <View style={styles.tagBox}>
-            </View>
+            /*<View style={styles.tagBox}>
+            </View>*/
+            <FlatList
+                data={searchData}
+                renderItem={renderItem}
+                keyExtractor={item => item}
+                ListFooterComponent={<View style={{height: 65}}/>}
+            />
         }
 
     </View>
