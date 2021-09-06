@@ -2,12 +2,15 @@ import React, {useCallback, useState} from 'react';
 import {Alert, Image, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import SearchBox from "../SearchBox";
 import Filter from "../Filter";
+import { useNavigation } from '@react-navigation/native';
 
 // TODO 업로드 버튼
 // TODO 이퀄라이저? 필터 버튼 만들기
 
 const UdhdHeader = () => {
     const [showFilter, setShowFilter] = useState(false);
+
+    const navigation = useNavigation();
 
     const onPressFilter = useCallback((e) => {
         setShowFilter((prev) => !prev);
@@ -33,7 +36,7 @@ const UdhdHeader = () => {
                     </Filter>
                 )}
             </View>
-            <TouchableOpacity activeOpacity = { 0.5 } onPress={() => {Alert.alert("navigate to upload page")}}>
+            <TouchableOpacity activeOpacity = { 0.5 } onPress={() => {navigation.navigate('UploadSelect')}}>
             <Image style={styles.upperIcon}
                    source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
             </TouchableOpacity>
