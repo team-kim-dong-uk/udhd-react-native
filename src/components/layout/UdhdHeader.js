@@ -50,9 +50,12 @@ const UdhdHeader = () => {
 
     const renderItem = ({ item }) => {
         return (
-            <View style={{flex: 1}}>
-                <Text>{item}</Text>
-            </View>
+            <TouchableOpacity activeOpacity = { 0.5 }
+                              onPress={() => addSearchTags(item)}>
+                <View style={{flex: 1}}>
+                    <Text>{item}</Text>
+                </View>
+            </TouchableOpacity>
         )
     };
 
