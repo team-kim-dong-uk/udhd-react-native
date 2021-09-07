@@ -18,15 +18,7 @@ import {getPhotos} from "../../core/redux/photos";
 import Tag from "../Tag";
 import {getTags} from "../../core/redux/tags";
 
-// TODO tag 추천 구현하기
-
-const mockData = [
-    "지호",
-    "지호123",
-    "오마이걸",
-    "옴걸",
-    "오마이걸123123"
-]
+const splitKeyword = [' ', ',']
 
 const UdhdHeader = () => {
     const [, updateState] = React.useState();
@@ -37,7 +29,7 @@ const UdhdHeader = () => {
     const [showFilter, setShowFilter] = useState(false);
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
     const [isSearching, setIsSearching] = useState(false);
-    const splitKeyword = [' ', ',']
+
     const [searchTags, setSearchTags] = useState([]);
     const [matchedTags, setMatchedTags] = useState([]);
 
