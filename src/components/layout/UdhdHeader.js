@@ -16,6 +16,7 @@ import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
 import {getPhotos} from "../../core/redux/photos";
 import Tag from "../Tag";
+import {getTags} from "../../core/redux/tags";
 
 // TODO tag 추천 구현하기
 
@@ -31,45 +32,14 @@ const UdhdHeader = () => {
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
     const dispatch = useDispatch();
-    const { auth, photos, loading } = useSelector(state => state);
+    const { auth, photos, loading, tags } = useSelector(state => state);
 
     const [showFilter, setShowFilter] = useState(false);
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
     const [isSearching, setIsSearching] = useState(false);
     const splitKeyword = [' ', ',']
     const [searchTags, setSearchTags] = useState([]);
-    const [searchData, setSearchData] = useState([]);
-
-    useEffect(() => {
-        setSearchData(
-            mockData.filter((tag) => {
-                return tag.includes(keyword)
-            })
-        )
-    }, [keyword]);
-
-    const renderItem = ({ item }) => {
-        return (
-            <TouchableOpacity activeOpacity = { 0.5 }
-                              onPress={() => addSearchTags(item)}>
-                <View style={{flex: 1}}>
-                    <Text>{item}</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    };
-
-    const addSearchTags = (tag) => {
-        tag = tag.replace(/\s/g, "");
-        if(tag !== '' && !searchTags.includes(tag)) {
-           setSearchTags(searchTags => [
-                ...searchTags,
-                tag
-            ]);
-        } else {
-            // TODO alert?
-        }
-    };
+    const [matchedTags, setMatchedTags] = useState([]);
 
     const onPressFilter = useCallback((e) => {
         setShowFilter((prev) => !prev);
@@ -83,6 +53,18 @@ const UdhdHeader = () => {
             forceUpdate();
         }
     }, [searchTags]);
+
+    const addSearchTags = (tag) => {
+        tag = tag.replace(/\s/g, "");
+        if(tag !== '' && !searchTags.includes(tag)) {
+           setSearchTags(searchTags => [
+                ...searchTags,
+                tag
+            ]);
+        } else {
+            // TODO alert?
+        }
+    };
 
     const makeTagByKeyword = useCallback((tag) => {
         if (splitKeyword.includes(tag)) {
@@ -102,6 +84,35 @@ const UdhdHeader = () => {
         console.log("searchTags : "+ searchTags);
         setKeyword('');
     }, [keyword, photos]);
+
+    useEffect(() => {
+        if(keyword !== ''){
+            setMatchedTags(
+                tags.data.filter((tag) => {
+                    return tag.keyword.includes(keyword);
+                })
+            )
+        }
+    }, [keyword]);
+
+    useEffect(() => {
+        if (tags.data.length == 0) {
+            dispatch(getTags.request({userId: auth.data?.userId}));
+        } else {
+            //console.log(tags)
+        }
+    }, [])
+
+    const renderItem = ({ item }) => {
+        return (
+            <TouchableOpacity activeOpacity = { 0.5 }
+                              onPress={() => addSearchTags(item.keyword)}>
+                <View style={{flex: 1}}>
+                    <Text>{item.keyword}</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    };
 
   return (
     <View>
@@ -148,9 +159,9 @@ const UdhdHeader = () => {
             /*<View style={styles.tagBox}>
             </View>*/
             <FlatList
-                data={searchData}
+                data={matchedTags}
                 renderItem={renderItem}
-                keyExtractor={item => item}
+                keyExtractor={item => item.keyword}
                 ListFooterComponent={<View style={{height: 65}}/>}
             />
         }
