@@ -37,6 +37,7 @@ const UdhdHeader = () => {
         setShowFilter((prev) => !prev);
     }, []);
 
+
     const onPressTag = useCallback((e) => {
         let idx = searchTags.indexOf(e);
         if(idx !== -1 ){
@@ -44,7 +45,7 @@ const UdhdHeader = () => {
             setSearchTags(searchTags);
             forceUpdate();
         }
-    }, [searchTags]);
+    }, [searchTags, keyword]);
 
     const addSearchTags = (tag) => {
         tag = tag.replace(/\s/g, "");
@@ -53,20 +54,11 @@ const UdhdHeader = () => {
                 ...searchTags,
                 tag
             ]);
+           setKeyword("")
         } else {
             // TODO alert?
         }
     };
-
-    const makeTagByKeyword = useCallback((tag) => {
-        if (splitKeyword.includes(tag)) {
-            console.log("deetect tag!")
-            addSearchTags(keyword);
-            setKeyword("");
-            return true;
-        }
-        return false
-    }, [keyword, searchTags]);
 
     const onSubmit = useCallback((e) => {
         dispatch(getPhotos.request({
@@ -77,30 +69,43 @@ const UdhdHeader = () => {
         setKeyword('');
     }, [keyword, photos]);
 
+    /*
+    * when detect changing on keyword,
+    * */
     useEffect(() => {
         if(keyword !== ''){
+            // 1. set recommended tags by using keyword, if keyword !== ''
             setMatchedTags(
                 tags.data.filter((tag) => {
                     return tag.keyword.includes(keyword);
                 })
             )
+            // 2. if keyword have ' ' , -> divide into tag.
+            if (keyword.includes(" ") || keyword.includes(",")){
+                addSearchTags(keyword);
+                setKeyword("");
+            }
+        } else {
+            setMatchedTags([]);
         }
     }, [keyword]);
 
+    /*
+    * 1. fetch tags at loading this component
+    * */
     useEffect(() => {
         if (tags.data.length == 0) {
             dispatch(getTags.request({userId: auth.data?.userId}));
-        } else {
-            //console.log(tags)
         }
     }, [])
 
+    // rendering text on FlatList that show recommended tags
     const renderItem = ({ item }) => {
         return (
             <TouchableOpacity activeOpacity = { 0.5 }
                               onPress={() => addSearchTags(item.keyword)}>
                 <View style={{flex: 1}}>
-                    <Text>{item.keyword}</Text>
+                    <Text>{item.keyword} ==== {item.count}</Text>
                 </View>
             </TouchableOpacity>
         )
@@ -122,7 +127,7 @@ const UdhdHeader = () => {
                            setKeyword={setKeyword}
                            onChangeKeyword={onChangeKeyword}
                            onSubmit={onSubmit}
-                           runByTarget={makeTagByKeyword}
+                           /*runByTarget={makeTagByKeyword}*/
                             />
             </View>
             {!isSearching && (
