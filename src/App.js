@@ -23,7 +23,7 @@ const App = () => {
   const dispatch = useDispatch();
   const {auth, isSearching} = useSelector(state => state);
 
-    const onBackPress = () => {
+    const onBackPressFromSearch = () => {
         if(isSearching.data){
             dispatch(finishSearching())
             return true;
@@ -31,8 +31,8 @@ const App = () => {
     }
 
     useEffect(() => {
-        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-        BackHandler.addEventListener('hardwareBackPress', onBackPress);
+        BackHandler.removeEventListener('hardwareBackPress', onBackPressFromSearch);
+        BackHandler.addEventListener('hardwareBackPress', onBackPressFromSearch);
     }, [isSearching]);
 
   return (
