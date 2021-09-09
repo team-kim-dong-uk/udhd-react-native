@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-    Alert,
+    Alert, BackHandler,
     FlatList,
     Image,
     Pressable,
@@ -17,10 +17,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {getPhotos} from "../../core/redux/photos";
 import Tag from "../Tag";
 import {getTags} from "../../core/redux/tags";
+import {finishSearching, startSearching} from "../../core/redux/searching";
+import {useNavigation} from "@react-navigation/native";
 
 const UdhdHeader = () => {
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
+    const navigation = useNavigation();
     const dispatch = useDispatch();
     const { auth, photos, tags, isSearching } = useSelector(state => state);
 
@@ -29,6 +32,9 @@ const UdhdHeader = () => {
 
     const [recommendedTags, setRecommendedTags] = useState([]);
     const [searchTags, setSearchTags] = useState([]);
+
+    const startSearch = () => {dispatch(startSearching());}
+    const finishSearch = () => {dispatch(finishSearching());}
 
     const onPressFilter = useCallback((e) => {
         setShowFilter((prev) => !prev);
@@ -43,7 +49,6 @@ const UdhdHeader = () => {
         }
     }, [searchTags, keyword]);
 
-    // TODO useCallback과 어떤 차이?
     const addSearchTags = (tag) => {
         tag = tag.replace(/\s/g, "");
         if(tag !== '' && !searchTags.includes(tag)) {
@@ -63,6 +68,7 @@ const UdhdHeader = () => {
             tags : searchTags
         }));
         setKeyword('');
+        finishSearch();
     }, [keyword, photos]);
 
     /*
@@ -91,7 +97,6 @@ const UdhdHeader = () => {
     * 1. fetch tags at loading this component
     * */
     useEffect(() => {
-        console.log("is searching : " + JSON.stringify(isSearching))
         if (tags.data.length == 0) {
             dispatch(getTags.request({userId: auth.data?.userId}));
         }
@@ -116,15 +121,26 @@ const UdhdHeader = () => {
                    source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
             )}
             <View style={styles.searchContainer}>
+                {isSearching.data &&
+                    (<Pressable onPress={finishSearch}>
+                        <View>
+                            <Text>[뒤로]</Text>
+                        </View>
+                    </Pressable>)
+                }
                 <View style={styles.tagBox}>
                 {searchTags.map((text) => {
                     return <Tag key={text} text={text} onPressTag={onPressTag}/>
                 })}
                 </View>
-                <SearchBox keyword={keyword}
-                           onChangeKeyword={onChangeKeyword}
-                           onSubmit={onSubmit}
-                            />
+                {/*// TODO press 감지를 잘 못함*/}
+                <Pressable onPress={startSearch}>
+                    <SearchBox keyword={keyword}
+                               onChangeKeyword={onChangeKeyword}
+                               onSubmit={onSubmit}
+                               onFocus={startSearch}
+                                />
+                </Pressable>
             </View>
             {!isSearching.data && (
             <View style={styles.upperTap}>
