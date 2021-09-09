@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {BackHandler, SafeAreaViewComponent, StyleSheet, Text, View} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -23,18 +23,17 @@ const App = () => {
   const dispatch = useDispatch();
   const {auth, isSearching} = useSelector(state => state);
 
-    const finishSearch = () => {
+    const onBackPress = () => {
         if(isSearching.data){
             dispatch(finishSearching())
-            console.log("detect bach press and finish searching")
             return true;
-        }
-        return false;
+        }   return false;
     }
 
     useEffect(() => {
-        BackHandler.addEventListener('hardwareBackPress', finishSearch);
-    }, []);
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+        BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    }, [isSearching]);
 
   return (
       auth.data && auth.data.nickname && auth.data.group ? (
