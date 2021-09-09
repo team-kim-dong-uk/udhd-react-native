@@ -12,7 +12,7 @@ const AlbumScreen = () => {
     /*<SafeAreaView>*/
       <View>
         <UdhdHeader/>
-          {!isSearching.data && (<PhotoGrid show={isSearching.data}/>)}
+          {!isSearching.data && (<PhotoGrid show={!isSearching.data}/>)}
       </View>
     /*</SafeAreaView>*/
   );
