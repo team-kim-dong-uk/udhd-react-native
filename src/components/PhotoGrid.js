@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import {StatusBar} from "expo-status-bar";
 
 // TODO 3XN > 스크롤 마지막에 닿았을 때 추가 구현
-const PhotoGrid = () => {
+const PhotoGrid = ({show}) => {
   const [numCols, setColumnNo] = useState(3);
   const dispatch = useDispatch();
   const { auth, photos, loading } = useSelector(state => state);
@@ -62,6 +62,8 @@ const PhotoGrid = () => {
     )
   };
 
+    if(!show)
+        return null;
   return (
       /*<View style={styles.scrollBox}>*/
         <FlatList

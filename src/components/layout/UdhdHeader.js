@@ -23,13 +23,12 @@ import {useNavigation} from "@react-navigation/native";
 const UdhdHeader = () => {
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
-    const navigation = useNavigation();
     const dispatch = useDispatch();
     const { auth, photos, tags, isSearching } = useSelector(state => state);
 
-    const [keyword, onChangeKeyword, setKeyword] = useInput('');
     const [showFilter, setShowFilter] = useState(false);
 
+    const [keyword, onChangeKeyword, setKeyword] = useInput('');
     const [recommendedTags, setRecommendedTags] = useState([]);
     const [searchTags, setSearchTags] = useState([]);
 
@@ -82,9 +81,7 @@ const UdhdHeader = () => {
             } else {
                 // 1. set recommended tags by using keyword, if keyword !== ''
                 setRecommendedTags(
-                    tags.data.filter((tag) => {
-                        return tag.keyword.includes(keyword);
-                    })
+                    tags.data.filter((tag) => {return tag.keyword.includes(keyword);})
                 )
             }
         } else {
