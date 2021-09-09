@@ -1,41 +1,26 @@
-import React, {useCallback, useState} from 'react';
-import {Icon, SearchBar} from 'react-native-elements';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, Text, TextInput, View} from "react-native";
-import useInput from "../hooks/useInput";
 import { SearchIcon } from 'native-base';
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
+import  {finishSearching, startSearching} from "../core/redux/searching";
+import {useDispatch, useSelector} from "react-redux";
 
-const SearchBox = ({keyword, setKeyword, onChangeKeyword, onSubmit, runByTarget}) => {
-    const [, updateState] = React.useState();
-    const forceUpdate = React.useCallback(() => updateState({}), []);
-    const [showSearchIcon, setShowSearchIcon] = useState(true);
-
-    const detectTarget = useCallback((key) => {
-        if(runByTarget(key)){
-            // IF 안으로 들어와도 setKeyword가 작동하지 않음. 다만 setKeyword가 조건문 안에 없으면 바로 작동함
-            //setKeyword('');
-        }
-    },[runByTarget, keyword]);
-
-    const onChangeSearchIcon = useCallback((e) => {
-        setShowSearchIcon((prev) => !prev);
-    }, []);
-
+const SearchBox = ({keyword, onChangeKeyword, onSubmit}) => {
+    const dispatch = useDispatch();
+    const { isSearching } = useSelector(state => state);
+    //TODO 뒤로가기시에 searching 종료
     return (
         <NativeBaseProvider>
         <View style={styles.searchBox}>
-            {showSearchIcon && (<SearchIcon style={styles.searchIcon}/>)}
+            {!isSearching && (<SearchIcon style={styles.searchIcon}/>)}
 
             <TextInput style={styles.input}
                        placeholder="Type Tag here!"
                        onChangeText={onChangeKeyword}
                        value={keyword}
-                       onFocus={onChangeSearchIcon}
-                       onBlur={onChangeSearchIcon}
+                       onFocus={() => {dispatch(startSearching())}}
+                       /*onBlur={() => {dispatch(finishSearching())}}*/
                        onSubmitEditing={onSubmit}
-                       onKeyPress={({ nativeEvent }) => {
-                           detectTarget(nativeEvent.key)
-                       }}
             >
 
             </TextInput>

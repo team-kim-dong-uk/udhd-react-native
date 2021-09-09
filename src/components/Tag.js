@@ -4,10 +4,8 @@ import {
     View
 } from "react-native";
 
-const Tag = ({show, text, onPressTag}) => {
+const Tag = ({text, onPressTag}) => {
 
-    if(!show)
-        return;
     return (
         <TouchableOpacity activeOpacity = { 0.5 } onPress={() => onPressTag(text)}>
             <View style={styles.tagContainer}>

@@ -5,7 +5,7 @@ import {
     Image,
     Pressable,
     StyleSheet,
-    Text,
+    Text, ToastAndroid,
     TouchableHighlight,
     TouchableOpacity,
     View
@@ -18,25 +18,21 @@ import {getPhotos} from "../../core/redux/photos";
 import Tag from "../Tag";
 import {getTags} from "../../core/redux/tags";
 
-const splitKeyword = [' ', ',']
-
 const UdhdHeader = () => {
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
     const dispatch = useDispatch();
-    const { auth, photos, loading, tags } = useSelector(state => state);
+    const { auth, photos, tags, isSearching } = useSelector(state => state);
 
-    const [showFilter, setShowFilter] = useState(false);
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
-    const [isSearching, setIsSearching] = useState(false);
+    const [showFilter, setShowFilter] = useState(false);
 
+    const [recommendedTags, setRecommendedTags] = useState([]);
     const [searchTags, setSearchTags] = useState([]);
-    const [matchedTags, setMatchedTags] = useState([]);
 
     const onPressFilter = useCallback((e) => {
         setShowFilter((prev) => !prev);
     }, []);
-
 
     const onPressTag = useCallback((e) => {
         let idx = searchTags.indexOf(e);
@@ -47,6 +43,7 @@ const UdhdHeader = () => {
         }
     }, [searchTags, keyword]);
 
+    // TODO useCallback과 어떤 차이?
     const addSearchTags = (tag) => {
         tag = tag.replace(/\s/g, "");
         if(tag !== '' && !searchTags.includes(tag)) {
@@ -54,9 +51,9 @@ const UdhdHeader = () => {
                 ...searchTags,
                 tag
             ]);
-           setKeyword("")
+           setKeyword("");
         } else {
-            // TODO alert?
+            ToastAndroid.show('이미 선택한 태그입니다.', ToastAndroid.SHORT);
         }
     };
 
@@ -65,7 +62,6 @@ const UdhdHeader = () => {
             userId: auth.data?.userId,
             tags : searchTags
         }));
-        console.log("searchTags : "+ searchTags);
         setKeyword('');
     }, [keyword, photos]);
 
@@ -74,19 +70,20 @@ const UdhdHeader = () => {
     * */
     useEffect(() => {
         if(keyword !== ''){
-            // 1. set recommended tags by using keyword, if keyword !== ''
-            setMatchedTags(
-                tags.data.filter((tag) => {
-                    return tag.keyword.includes(keyword);
-                })
-            )
-            // 2. if keyword have ' ' , -> divide into tag.
+            // 1. if keyword have ' ' , -> divide into tag.
             if (keyword.includes(" ") || keyword.includes(",")){
                 addSearchTags(keyword);
-                setKeyword("");
+            } else {
+                // 1. set recommended tags by using keyword, if keyword !== ''
+                setRecommendedTags(
+                    tags.data.filter((tag) => {
+                        return tag.keyword.includes(keyword);
+                    })
+                )
             }
         } else {
-            setMatchedTags([]);
+            // when keyword == empty
+            setRecommendedTags([]);
         }
     }, [keyword]);
 
@@ -94,6 +91,7 @@ const UdhdHeader = () => {
     * 1. fetch tags at loading this component
     * */
     useEffect(() => {
+        console.log("is searching : " + JSON.stringify(isSearching))
         if (tags.data.length == 0) {
             dispatch(getTags.request({userId: auth.data?.userId}));
         }
@@ -114,23 +112,21 @@ const UdhdHeader = () => {
   return (
     <View>
         <View style={styles.headerContainer}>
-            {!isSearching && (<Image style={styles.tinyLogo}
+            {!isSearching.data && (<Image style={styles.tinyLogo}
                    source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
             )}
             <View style={styles.searchContainer}>
                 <View style={styles.tagBox}>
                 {searchTags.map((text) => {
-                    return <Tag key={text} text={text} show={true} onPressTag={onPressTag}/>
+                    return <Tag key={text} text={text} onPressTag={onPressTag}/>
                 })}
                 </View>
                 <SearchBox keyword={keyword}
-                           setKeyword={setKeyword}
                            onChangeKeyword={onChangeKeyword}
                            onSubmit={onSubmit}
-                           /*runByTarget={makeTagByKeyword}*/
                             />
             </View>
-            {!isSearching && (
+            {!isSearching.data && (
             <View style={styles.upperTap}>
                 <View>
                     <TouchableOpacity activeOpacity = { 0.5 } onPress={onPressFilter}>
@@ -153,14 +149,14 @@ const UdhdHeader = () => {
             )}
         </View>
         {
-            /*<View style={styles.tagBox}>
-            </View>*/
+            (isSearching.data &&
             <FlatList
-                data={matchedTags}
+                data={recommendedTags}
                 renderItem={renderItem}
                 keyExtractor={item => item.keyword}
                 ListFooterComponent={<View style={{height: 65}}/>}
             />
+            )
         }
 
     </View>
