@@ -17,7 +17,7 @@ import {
   MimeTypes,
   ListQueryBuilder
 } from "@robinbobin/react-native-google-drive-api-wrapper";
-import googlePicker, { setFileList } from '../../../core/redux/googlePicker';
+import googlePicker, { setFileList, toggleSelect } from '../../../core/redux/googlePicker';
 
 const GooglePickerScreen = () => {
   const dispatch = useDispatch();
@@ -42,13 +42,18 @@ const GooglePickerScreen = () => {
     }
   }
 
+  const selectItem = (item) => {
+    dispatch(toggleSelect({fileId: item.id}));
+    alert(item.name)
+  }
+
   const renderItem = ({ item }) => {
     return (
         <View style={{flex: 1}}>
           {
             item.mimeType === 'application/vnd.google-apps.folder'
               ? <Text style={styles.folder}>{item.name}</Text>
-              : <Text>{item.name}</Text>
+              : <TouchableHighlight onPress={() => selectItem(item)}><Text>{item.name}</Text></TouchableHighlight>
           }
           
         </View>

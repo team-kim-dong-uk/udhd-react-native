@@ -9,11 +9,14 @@ import { takeEvery } from 'redux-saga/effects';
 const prefix = 'googlePicker/';
 
 const SET_FILE_LIST = `${prefix}SET_FILE_LIST`;
+const TOGGLE_SELECT = `${prefix}TOGGLE_SELECT`;
 
 export const setFileList = createAction(SET_FILE_LIST);
+export const toggleSelect = createAction(TOGGLE_SELECT, ({fileId}) => ({fileId}));
 
 const initialState = {
   data: [],
+  selected: [],
   loading: false,
   error: null,
 };
@@ -25,8 +28,17 @@ export default handleActions(
         return {
           ...state,
           data: action.payload,
+          selected: []
         };
     },
+    [TOGGLE_SELECT]: (state, action) => {
+      const fileId = action.payload.fileId;
+      const selected = state.selected;
+      return {
+        ...state,
+        selected: selected.includes(fileId) ? selected.filter(i => i !== fileId) : [ ...selected, fileId ]
+      }
+    }
   },
   initialState,
 );
