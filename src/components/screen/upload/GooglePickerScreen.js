@@ -14,18 +14,28 @@ import { Text } from 'react-native';
 import { Button } from 'react-native';
 import {
   GDrive,
-  MimeTypes
+  MimeTypes,
+  ListQueryBuilder
 } from "@robinbobin/react-native-google-drive-api-wrapper";
 import googlePicker, { setFileList } from '../../../core/redux/googlePicker';
 
 const GooglePickerScreen = () => {
   const dispatch = useDispatch();
   const { auth, googlePicker } = useSelector(state => state);
+
+  let gdrive;
+
+  useEffect(() => {
+  }, [auth])
   const loadFile = async () => {
-    const gdrive = new GDrive();
-    gdrive.accessToken = auth.data.googleToken;
+    
     try {
-      const data = await gdrive.files.list();
+
+    gdrive = new GDrive();
+    gdrive.accessToken = auth.data.googleToken;
+      const data = await gdrive.files.list({
+        q: `mimeType = 'application/vnd.google-apps.folder' or mimeType contains 'image'`
+      });
       dispatch(setFileList(data.files));
     } catch (e) {
       console.log(e.toString());
@@ -35,7 +45,12 @@ const GooglePickerScreen = () => {
   const renderItem = ({ item }) => {
     return (
         <View style={{flex: 1}}>
-          <Text>{item.name}</Text>
+          {
+            item.mimeType === 'application/vnd.google-apps.folder'
+              ? <Text style={styles.folder}>{item.name}</Text>
+              : <Text>{item.name}</Text>
+          }
+          
         </View>
     )
   };
@@ -52,18 +67,9 @@ const GooglePickerScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  scrollBox: {
-    width: '100%',
-    height: '100%',
-  },
-  thumbnail: {
-    width: '100%',
-    height: '100%',
-  },
-  touchArea: {
-    height: 140,
-    position: 'relative',
-  },
+  folder: {
+    color: 'blue'
+  }
 });
 
 export default GooglePickerScreen;
