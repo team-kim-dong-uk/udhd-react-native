@@ -18,7 +18,7 @@ import {getPhotos} from "../../core/redux/photos";
 import Tag from "../Tag";
 import {getTags} from "../../core/redux/tags";
 import {finishSearching, startSearching} from "../../core/redux/searching";
-import {useNavigation} from "@react-navigation/native";
+import RecommendTag from "../RecommendTag";
 
 const UdhdHeader = () => {
     const [, updateState] = React.useState();
@@ -48,41 +48,60 @@ const UdhdHeader = () => {
         }
     }, [searchTags, keyword]);
 
+    /*
+    * 1. duplicated
+    * 2. blank
+    * */
     const addSearchTags = (tag) => {
         tag = tag.replace(/\s/g, "");
+        console.log("try to make tag :" + tag)
         if(tag !== '' && !searchTags.includes(tag)) {
            setSearchTags(searchTags => [
                 ...searchTags,
                 tag
             ]);
            setKeyword("");
+        } else if (tag === ''){
+            ToastAndroid.show('공백을 입력할 수 없습니다.', ToastAndroid.SHORT);
+            setKeyword("");
+            return false;
         } else {
             ToastAndroid.show('이미 선택한 태그입니다.', ToastAndroid.SHORT);
+            return false;
         }
     };
 
     const onSubmit = useCallback((e) => {
+        if(searchTags.length === 0){
+            ToastAndroid.show('검색에 사용될 태그가 없어요!', ToastAndroid.SHORT);
+            return false;
+        }
         dispatch(getPhotos.request({
             userId: auth.data?.userId,
             tags : searchTags
         }));
+        console.log("searchTags at submit  : " + searchTags)
         setKeyword('');
         finishSearch();
     }, [keyword, photos]);
 
-    /*
-    * when detect changing on keyword,
-    * */
+    // when keyword is being changed, state must be searching
+    const detectSearching = useCallback(() => {
+        if(!isSearching.data){
+            startSearch();
+        }
+    }, [keyword])
+
+
+    // when detect changing on keyword,
     useEffect(() => {
         if(keyword !== ''){
-            // 1. if keyword have ' ' , -> divide into tag.
+            // if keyword have ' ' , -> divide into tag.
             if (keyword.includes(" ") || keyword.includes(",")){
                 addSearchTags(keyword);
             } else {
-                // 1. set recommended tags by using keyword, if keyword !== ''
-                setRecommendedTags(
-                    tags.data.filter((tag) => {return tag.keyword.includes(keyword);})
-                )
+                //set recommended tags by using keyword, if keyword !== ''
+                setRecommendedTags(tags.data.filter((tag) => {return tag.keyword.includes(keyword);}))
             }
         } else {
             // when keyword == empty
@@ -90,9 +109,8 @@ const UdhdHeader = () => {
         }
     }, [keyword]);
 
-    /*
-    * 1. fetch tags at loading this component
-    * */
+
+    //fetch tags at loading this component
     useEffect(() => {
         if (tags.data.length == 0) {
             dispatch(getTags.request({userId: auth.data?.userId}));
@@ -102,12 +120,7 @@ const UdhdHeader = () => {
     // rendering text on FlatList that show recommended tags
     const renderItem = ({ item }) => {
         return (
-            <TouchableOpacity activeOpacity = { 0.5 }
-                              onPress={() => addSearchTags(item.keyword)}>
-                <View style={{flex: 1}}>
-                    <Text>{item.keyword} ==== {item.count}</Text>
-                </View>
-            </TouchableOpacity>
+            <RecommendTag item={item} onPress={addSearchTags}/>
         )
     };
 
@@ -130,14 +143,19 @@ const UdhdHeader = () => {
                     return <Tag key={text} text={text} onPressTag={onPressTag}/>
                 })}
                 </View>
-                {/*// TODO press 감지를 잘 못함*/}
-                <Pressable onPress={startSearch}>
                     <SearchBox keyword={keyword}
                                onChangeKeyword={onChangeKeyword}
+                               onChange={detectSearching}
                                onSubmit={onSubmit}
                                onFocus={startSearch}
                                 />
-                </Pressable>
+                {isSearching.data &&
+                    (<Pressable onPress={onSubmit}>
+                        <View>
+                            <Text>[검색]</Text>
+                        </View>
+                    </Pressable>)
+                }
             </View>
             {!isSearching.data && (
             <View style={styles.upperTap}>

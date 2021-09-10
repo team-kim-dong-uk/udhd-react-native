@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import {Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import { SearchIcon } from 'native-base';
 import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 import  {finishSearching, startSearching} from "../core/redux/searching";
 import {useDispatch, useSelector} from "react-redux";
 
-const SearchBox = ({keyword, onChangeKeyword, onSubmit, onFocus}) => {
+const SearchBox = ({keyword, onChangeKeyword, onChange, onSubmit, onFocus}) => {
     const { isSearching } = useSelector(state => state);
 
     return (
@@ -16,6 +16,7 @@ const SearchBox = ({keyword, onChangeKeyword, onSubmit, onFocus}) => {
                     <TextInput style={styles.input}
                                placeholder="Type Tag here!"
                                onChangeText={onChangeKeyword}
+                               onChange={onChange}
                                value={keyword}
                                onFocus={onFocus}
                                onSubmitEditing={onSubmit}
