@@ -14,7 +14,7 @@ const SET_NICKNAME = asyncActionCreator(`${prefix}SET_NICKNAME`);
 const SET_GROUP = asyncActionCreator(`${prefix}SET_GROUP`);
 
 export const loginSuccess = createAction(LOGIN_SUCCESS, 
-  ({userId, accessToken, refreshToken, email, nickname, group}) => ({userId, accessToken, refreshToken, email, nickname, group}));
+  ({userId, accessToken, refreshToken, email, nickname, group, googleToken}) => ({userId, accessToken, refreshToken, email, nickname, group, googleToken}));
 export const loginFailure = createAction(LOGIN_FAILURE);
 export const setNickname = createAsyncAction(SET_NICKNAME);
 export const setGroup = createAsyncAction(SET_GROUP);
@@ -41,6 +41,7 @@ export default handleActions(
             nickname: action.payload.nickname,
             group: action.payload.group,
             accessToken: action.payload.accessToken,
+            googleToken: action.payload.googleToken,
           }
         };
     },

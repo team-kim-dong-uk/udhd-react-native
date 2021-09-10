@@ -28,6 +28,7 @@ import { StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native';
 import MainTabScreen from './components/screen/MainTabScreen';
 import UploadSelectScreen from './components/screen/upload/UploadSelectScreen';
+import GooglePickerScreen from './components/screen/upload/GooglePickerScreen';
 // import { loginSuccess } from '../../../core/redux/auth';
 
 
@@ -37,14 +38,15 @@ const App = () => {
 
   return (
       auth.data && auth.data.nickname && auth.data.group ? (
-        <SafeAreaProvider>
+        <SafeAreaView style={styles.container}>
           <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name='Home' component={MainTabScreen} options={{ headerShown: false }}/>
                 <Stack.Screen name='UploadSelect' component={UploadSelectScreen} options={{ headerShown: false }}/>
+                <Stack.Screen name='GooglePicker' component={GooglePickerScreen} options={{ headerShown: false }}/>
               </Stack.Navigator>
           </NavigationContainer>
-        </SafeAreaProvider>
+        </SafeAreaView>
         ) : (
           <SafeAreaView style={styles.container}>
             <NavigationContainer>

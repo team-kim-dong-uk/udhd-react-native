@@ -11,31 +11,21 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Text } from 'react-native';
+import { Button } from 'react-native';
 
 const UploadSelectScreen = () => {
-  
+  const navigation = useNavigation();
 
-  const renderItem = ({ item }) => {
-    return (
-        <View style={{flex: 1}}>
-          <TouchableHighlight
-              style={styles.touchArea}
-              key={item.photoId}
-              onPress={() =>
-                  navigation.navigate('PhotoDetail', { photoId: item.photoId })
-              }
-          >
-            <Image
-                source={{uri: item.thumbnailLink}}
-                style={styles.thumbnail}
-            />
-          </TouchableHighlight>
-        </View>
-    )
-  };
-   
+  const openGoogleDrive = () => {
+    console.log('hi');
+    navigation.navigate('GooglePicker');
+  }
+
   return (
-     <View><Text>hi</Text></View>
+     <View>
+       <Button title='upload from gallery'></Button>
+       <Button title='upload from google drive' onPress={openGoogleDrive}></Button>
+     </View>
   );
 }
 
