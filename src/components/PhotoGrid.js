@@ -14,7 +14,7 @@ import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import {StatusBar} from "expo-status-bar";
 
-// TODO 3XN > 스크롤 마지막에 닿았을 때 추가 구현
+
 const PhotoGrid = ({show}) => {
   const [numCols, setColumnNo] = useState(3);
   const dispatch = useDispatch();
@@ -37,9 +37,9 @@ const PhotoGrid = ({show}) => {
     //     }));
     //   }
     // }
-    if (photos.data.length == 0) {
+    /*if (photos.data.length == 0) {
       dispatch(getPhotos.request({userId: auth.data?.userId}));
-    }
+    }*/
   // }, [inView, dispatch, auth, photos])
   }, [])
 
