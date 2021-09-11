@@ -34,7 +34,8 @@ const GooglePickerScreen = () => {
     gdrive = new GDrive();
     gdrive.accessToken = auth.data.googleToken;
       const data = await gdrive.files.list({
-        q: `mimeType = 'application/vnd.google-apps.folder' or mimeType contains 'image'`
+        q: `mimeType = 'application/vnd.google-apps.folder' or mimeType contains 'image'`,
+        fields: `files(id, name, mimeType, thumbnailLink)`
       });
       dispatch(setFileList(data.files));
     } catch (e) {
@@ -47,13 +48,22 @@ const GooglePickerScreen = () => {
     alert(item.name)
   }
 
+  const confirmSelect = () => {
+
+  }
+
   const renderItem = ({ item }) => {
     return (
         <View style={{flex: 1}}>
           {
             item.mimeType === 'application/vnd.google-apps.folder'
-              ? <Text style={styles.folder}>{item.name}</Text>
-              : <TouchableHighlight onPress={() => selectItem(item)}><Text>{item.name}</Text></TouchableHighlight>
+            ? <Text style={styles.folder}>{item.name}</Text>
+              : <TouchableHighlight onPress={() => selectItem(item)} >
+                  <View>
+                  <Image source={{uri: item.thumbnailLink}} style={styles.image}></Image>
+                  <Text>{item.name}</Text>
+                  </View>
+                </TouchableHighlight>
           }
           
         </View>
@@ -62,10 +72,13 @@ const GooglePickerScreen = () => {
 
   return (
      <View><Text>hi2`</Text>
-     <Button title='clickme' onPress={()=>loadFile()}/>
+     <Button title='load file' onPress={()=>loadFile()}/>
+     <Button title='confirm select' onPress={()=>confirmSelect()}/>
      <FlatList
       data={googlePicker.data}
       renderItem={renderItem}
+      numColumns={3}
+      keyExtractor={item => item.id}
      />
      </View>
   );
@@ -74,6 +87,10 @@ const GooglePickerScreen = () => {
 const styles = StyleSheet.create({
   folder: {
     color: 'blue'
+  },
+  image: {
+    width: 100,
+    height: 100,
   }
 });
 
