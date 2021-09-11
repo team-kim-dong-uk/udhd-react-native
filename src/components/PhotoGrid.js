@@ -14,8 +14,8 @@ import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import {StatusBar} from "expo-status-bar";
 
-// TODO 3XN > 스크롤 마지막에 닿았을 때 추가 구현
-const PhotoGrid = () => {
+
+const PhotoGrid = ({show}) => {
   const [numCols, setColumnNo] = useState(3);
   const dispatch = useDispatch();
   const { auth, photos, loading } = useSelector(state => state);
@@ -37,9 +37,9 @@ const PhotoGrid = () => {
     //     }));
     //   }
     // }
-    if (photos.data.length == 0) {
+    /*if (photos.data.length == 0) {
       dispatch(getPhotos.request({userId: auth.data?.userId}));
-    }
+    }*/
   // }, [inView, dispatch, auth, photos])
   }, [])
 
@@ -61,10 +61,11 @@ const PhotoGrid = () => {
         </View>
     )
   };
-    console.log(photos.data.length)
+
+    if(!show)
+        return null;
   return (
       /*<View style={styles.scrollBox}>*/
-        <SafeAreaView style={styles.scrollBox}>
         <FlatList
             columnWrapperStyle={{justifyContent:'space-between'}}
             data={photos.data}
@@ -74,28 +75,9 @@ const PhotoGrid = () => {
             key={numCols}
             onEndReached={loadMorePhotos}
             onEndReachedThreshold={0.01}
-            ListFooterComponent={<View style={{height: 195}}/>}
+            ListFooterComponent={<View style={{height: 65}}/>}
         />
-        </SafeAreaView>
       /*</View>*/
-        /*<ScrollView>
-          {photos.data.map(photo => (
-            <TouchableHighlight
-              style={styles.touchArea}
-              key={photo.photoId}
-              onPress={() =>
-                navigation.navigate('PhotoDetail', { photoId: photo.photoId })
-              }
-            >
-              <Image
-                source={{uri: photo.thumbnailLink}}
-                style={styles.thumbnail}
-                />
-            </TouchableHighlight>
-          ))}
-           {!photos.isEnd && <Text ref={ref}>로딩중...</Text>}
-      </ScrollView>
-      </View>*/
   );
 }
 

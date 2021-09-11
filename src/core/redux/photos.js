@@ -30,11 +30,21 @@ const initialState = {
 export default handleActions(
   {
     [GET_PHOTOS.SUCCESS]: (state, action) => {
-        return {
-          ...state,
-          data: state.data.concat(action.payload.data),
-          isEnd: action.payload.data.length === 0
-        };
+        if(action.payload.config.url.includes("findAfter")){
+            return {
+                ...state,
+                data: state.data.concat(action.payload.data),
+                isEnd: action.payload.data.length === 0
+            };
+        } else {
+            state.data = action.payload.data
+            return {
+                ...state,
+                data: state.data,
+                isEnd: action.payload.data.length === 0
+            };
+        }
+
     },
     [GET_PHOTOS.FAILURE]: (state, action) => ({
       ...state,
