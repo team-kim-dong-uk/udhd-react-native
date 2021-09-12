@@ -4,18 +4,6 @@ import { Dimensions } from 'react-native';
 
 const PhotoScreen = ({route}) => {
   console.log(route);
-  const [imageWidth, setImageWidth] = useState(0);
-  const [imageHeight, setImageHeight] = useState(0);
-
-  useEffect(() => {
-    Image.getSize(route.params.image, (width, height) => {
-      setImageWidth(width);
-      setImageHeight(height);
-      console.log("width : " + width);
-      console.log("height : " + height);
-    });
-  }, []);
-
 
   return (
     <View style={styles.container}>
