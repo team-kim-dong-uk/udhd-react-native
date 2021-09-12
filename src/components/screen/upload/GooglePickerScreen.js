@@ -61,16 +61,17 @@ const GooglePickerScreen = () => {
         <View style={{flex: 1}}>
           {
             item.mimeType === 'application/vnd.google-apps.folder'
-            ? <TouchableHighlight onPress={() => pressFolder(item)} >
+            ? <TouchableHighlight onPress={() => pressFolder(item)} style={styles.touchArea}>
                 <View>
+                <Image source={require('../../../assets/folder.png')} style={styles.thumbnail}></Image>
                 <Text style={styles.folder}>
                   {item.name}
                 </Text>
                 </View>
               </TouchableHighlight>
-            : <TouchableHighlight onPress={() => selectItem(item)} >
+            : <TouchableHighlight onPress={() => selectItem(item)} style={styles.touchArea}>
                 <View>
-                <Image source={{uri: item.thumbnailLink}} style={styles.image}></Image>
+                <Image source={{uri: item.thumbnailLink}} style={styles.thumbnail}></Image>
                 <Text style={item.selected ? styles.selected : styles.unselected}>
                   {item.name}
                 </Text>
@@ -83,8 +84,7 @@ const GooglePickerScreen = () => {
   };
 
   return (
-     <View><Text>hi2`</Text>
-     <Button title='load file' onPress={()=>loadFile()}/>
+     <View style={styles.scrollBox}>
      <Button title='confirm select' onPress={()=>confirmSelect()}/>
      <FlatList
       data={googlePicker.data}
@@ -97,12 +97,17 @@ const GooglePickerScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  folder: {
-    color: 'blue'
+  scrollBox: {
+    width: '100%',
+    height: '100%',
   },
-  image: {
-    width: 100,
-    height: 100,
+  thumbnail: {
+    width: '100%',
+    height: '80%',
+  },
+  touchArea: {
+    height: 140,
+    position: 'relative',
   },
   selected: {
     color: 'blue',

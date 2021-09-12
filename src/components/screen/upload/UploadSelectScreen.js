@@ -31,15 +31,15 @@ const UploadSelectScreen = () => {
   const renderItem = ({ item }) => {
     return (
         <View style={{flex: 1}}>
-            <TouchableHighlight>
-              <Image source={{uri: item.thumbnailLink}} style={styles.image}></Image>
+            <TouchableHighlight style={styles.touchArea}>
+              <Image source={{uri: item.thumbnailLink}} style={styles.thumbnail}></Image>
             </TouchableHighlight>
         </View>
     )
   };
 
   return (
-     <View>
+     <View style={styles.scrollBox}>
        <Button title='select from gallery' onPress={()=>alert('TODO')}></Button>
        <Button title='select from google drive' onPress={openGoogleDrive}></Button>
        <FlatList
@@ -54,10 +54,18 @@ const UploadSelectScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  image: {
-    width: 100,
-    height: 100,
-  }
+  scrollBox: {
+    width: '100%',
+    height: '100%',
+  },
+  thumbnail: {
+    width: '100%',
+    height: '100%',
+  },
+  touchArea: {
+    height: 140,
+    position: 'relative',
+  },
 });
 
 export default UploadSelectScreen;
