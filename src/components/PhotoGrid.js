@@ -13,6 +13,8 @@ import {
 import FastImage from 'react-native-fast-image';
 import { useNavigation } from '@react-navigation/native';
 import {StatusBar} from "expo-status-bar";
+import {startShowDetail} from "../core/redux/showPhotoDetail";
+import {loginFailure} from "../core/redux/auth";
 
 
 const PhotoGrid = ({show}) => {
@@ -49,8 +51,12 @@ const PhotoGrid = ({show}) => {
           <TouchableHighlight
               style={styles.touchArea}
               key={item.photoId}
-              onPress={() =>
-                  navigation.navigate('PhotoDetail', { photoId: item.photoId })
+              onPress={() =>{
+                  navigation.navigate('PhotoDetail', {
+                      photoId: item.photoId,
+                      image: item.thumbnailLink,
+                  });
+                    dispatch(startShowDetail())}
               }
           >
             <Image

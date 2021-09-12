@@ -1,30 +1,54 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { getPhoto } from '../../core/redux/photo';
+import React, {useEffect, useState} from 'react';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import { Dimensions } from 'react-native';
 
 const PhotoScreen = ({route}) => {
   console.log(route);
-  // const dispatch = useDispatch();
-  //   useEffect(() => {
-  //     dispatch(getPhoto.request(route.params.photoId));
-  //   }, [dispatch]);
-  //   const photo = useSelector(state => state.photo);
+  const [imageWidth, setImageWidth] = useState(0);
+  const [imageHeight, setImageHeight] = useState(0);
+
+  useEffect(() => {
+    Image.getSize(route.params.image, (width, height) => {
+      setImageWidth(width);
+      setImageHeight(height);
+      console.log("width : " + width);
+      console.log("height : " + height);
+    });
+  }, []);
+
 
   return (
-    <View>
-      <Text>PhotoScreen with {route.params.photoId}</Text>
+    <View style={styles.container}>
+      {/*<View stlye={styles.photoContainer}>*/}
+      {/*TODO 누르면 뒤로가기*/}
+      <Pressable>
+        <Image
+            source={{uri: route.params.image}}
+            style={styles.photoContainer}
+        />
+      </Pressable>
+      {/*</View>*/}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: 'black',
+    width: '100%',
+    height: '100%',
   },
+  photoContainer: {
+    backgroundColor: "gray",
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  photo: {
+    width: '100',
+    height: '100',
+  },
+
 });
 
 export default PhotoScreen;
