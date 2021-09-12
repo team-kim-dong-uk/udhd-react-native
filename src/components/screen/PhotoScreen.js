@@ -1,21 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import { Dimensions } from 'react-native';
+import {useNavigation} from "@react-navigation/native";
 
 const PhotoScreen = ({route}) => {
   console.log(route);
-
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      {/*<View stlye={styles.photoContainer}>*/}
-      {/*TODO 누르면 뒤로가기*/}
-      <Pressable>
+      <Pressable onPress={() => navigation.goBack()}>
         <Image
             source={{uri: route.params.image}}
             style={styles.photoContainer}
         />
       </Pressable>
-      {/*</View>*/}
+      {/*TODO 태그 리스트*/}
     </View>
   );
 }
@@ -27,9 +26,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   photoContainer: {
-    backgroundColor: "gray",
     width: '100%',
-    height: '100%',
+    height: '95%',
     resizeMode: 'contain',
   },
   photo: {
