@@ -17,17 +17,20 @@ import {
   MimeTypes,
   ListQueryBuilder
 } from "@robinbobin/react-native-google-drive-api-wrapper";
-import googlePicker, { changeFolder, setFileList, toggleSelect } from '../../../core/redux/googlePicker';
+import googlePicker, { backFolder, changeFolder, setFileList, toggleSelect } from '../../../core/redux/googlePicker';
 import { appendCandidates } from '../../../core/redux/upload';
+import { style } from 'styled-system';
+import { UIButton } from '../../common/UIButton';
 
 const GooglePickerScreen = () => {
   const naviagtion = useNavigation();
   const dispatch = useDispatch();
   const { auth, googlePicker } = useSelector(state => state);
+  const currentFolderId = googlePicker.folderIdStack.slice(-1)[0];
 
   useEffect(() => {
-    loadFile(googlePicker.folderId);
-  }, [googlePicker.folderId]);
+    loadFile(currentFolderId);
+  }, [currentFolderId]);
 
   const loadFile = async (folderId) => {
     try {
@@ -49,6 +52,12 @@ const GooglePickerScreen = () => {
 
   const selectItem = (item) => {
     dispatch(toggleSelect({item}));
+  }
+
+  const goBackFolder = () => {
+    if (currentFolderId !== 'root') {
+      dispatch(backFolder());
+    }
   }
 
   const confirmSelect = () => {
@@ -84,15 +93,20 @@ const GooglePickerScreen = () => {
   };
 
   return (
-     <View style={styles.scrollBox}>
-     <Button title='confirm select' onPress={()=>confirmSelect()}/>
-     <FlatList
-      data={googlePicker.data}
-      renderItem={renderItem}
-      numColumns={3}
-      keyExtractor={item => item.id}
-     />
-     </View>
+    <View style={styles.scrollBox}>
+      <View style={styles.buttonContainer}>
+        <UIButton title='뒤로가기' onPress={()=>goBackFolder()} style={styles.buttons}/>
+        <UIButton title='이미지 전체선택' onPress={()=>confirmSelect()} style={styles.buttons}/>
+        <UIButton title='전체선택 해제' onPress={()=>confirmSelect()} style={styles.buttons}/>
+        <UIButton title='선택 완료' onPress={()=>confirmSelect()} style={styles.buttons}/>
+      </View>
+      <FlatList
+        data={googlePicker.data}
+        renderItem={renderItem}
+        numColumns={3}
+        keyExtractor={item => item.id}
+      />
+    </View>
   );
 }
 
@@ -108,6 +122,14 @@ const styles = StyleSheet.create({
   touchArea: {
     height: 140,
     position: 'relative',
+  },
+  buttons: {
+    width: '25%',
+  },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginBottom: 10,
   },
   selected: {
     color: 'blue',

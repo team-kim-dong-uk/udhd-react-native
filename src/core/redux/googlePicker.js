@@ -9,16 +9,18 @@ import { takeEvery } from 'redux-saga/effects';
 const prefix = 'googlePicker/';
 
 const CHANGE_FOLDER = `${prefix}CHANGE_FOLDER`
+const BACK_FOLDER = `${prefix}BACK_FOLDER`
 const SET_FILE_LIST = `${prefix}SET_FILE_LIST`;
 const TOGGLE_SELECT = `${prefix}TOGGLE_SELECT`;
 
 export const changeFolder = createAction(CHANGE_FOLDER, ({folderId}) => ({folderId}));
+export const backFolder = createAction(BACK_FOLDER);
 export const setFileList = createAction(SET_FILE_LIST);
 export const toggleSelect = createAction(TOGGLE_SELECT, ({item}) => ({item}));
 
 const initialState = {
   data: [],
-  folderId: 'root',
+  folderIdStack: ['root'],
   loading: false,
   error: null,
 };
@@ -30,8 +32,15 @@ export default handleActions(
         return {
           ...state,
           data: [],
-          folderId: action.payload.folderId,
+          folderIdStack: [...state.folderIdStack, action.payload.folderId],
         };
+    },
+    [BACK_FOLDER]: (state, action) => {
+      return {
+        ...state,
+        data: [],
+        folderIdStack: state.folderIdStack.slice(0, -1),
+      }
     },
     [SET_FILE_LIST]: (state, action) => {
         return {
