@@ -15,33 +15,41 @@ import { Button } from 'react-native';
 
 const UploadSelectScreen = () => {
   const navigation = useNavigation();
+  const upload = useSelector(state => state.upload);
 
   const openGoogleDrive = () => {
-    console.log('hi');
     navigation.navigate('GooglePicker');
   }
+
+  const renderItem = ({ item }) => {
+    return (
+        <View style={{flex: 1}}>
+            <TouchableHighlight>
+              <Image source={{uri: item.thumbnailLink}} style={styles.image}></Image>
+            </TouchableHighlight>
+        </View>
+    )
+  };
 
   return (
      <View>
        <Button title='upload from gallery'></Button>
        <Button title='upload from google drive' onPress={openGoogleDrive}></Button>
+       <FlatList
+          data={upload.data}
+          renderItem={renderItem}
+          numColumns={3}
+          keyExtractor={item => item.id}
+        />
      </View>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollBox: {
-    width: '100%',
-    height: '100%',
-  },
-  thumbnail: {
-    width: '100%',
-    height: '100%',
-  },
-  touchArea: {
-    height: 140,
-    position: 'relative',
-  },
+  image: {
+    width: 100,
+    height: 100,
+  }
 });
 
 export default UploadSelectScreen;

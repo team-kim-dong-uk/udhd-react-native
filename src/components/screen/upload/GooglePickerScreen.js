@@ -18,20 +18,16 @@ import {
   ListQueryBuilder
 } from "@robinbobin/react-native-google-drive-api-wrapper";
 import googlePicker, { setFileList, toggleSelect } from '../../../core/redux/googlePicker';
+import { appendCandidates } from '../../../core/redux/upload';
 
 const GooglePickerScreen = () => {
+  const naviagtion = useNavigation();
   const dispatch = useDispatch();
   const { auth, googlePicker } = useSelector(state => state);
 
-  let gdrive;
-
-  useEffect(() => {
-  }, [auth])
   const loadFile = async () => {
-    
     try {
-
-    gdrive = new GDrive();
+    const gdrive = new GDrive();
     gdrive.accessToken = auth.data.googleToken;
       const data = await gdrive.files.list({
         q: `mimeType = 'application/vnd.google-apps.folder' or mimeType contains 'image'`,
@@ -44,12 +40,12 @@ const GooglePickerScreen = () => {
   }
 
   const selectItem = (item) => {
-    dispatch(toggleSelect({fileId: item.id}));
-    alert(item.name)
+    dispatch(toggleSelect({item}));
   }
 
   const confirmSelect = () => {
-
+    dispatch(appendCandidates({data: googlePicker.data.filter(item => item.selected)}))
+    naviagtion.navigate('UploadSelect');
   }
 
   const renderItem = ({ item }) => {
@@ -61,7 +57,9 @@ const GooglePickerScreen = () => {
               : <TouchableHighlight onPress={() => selectItem(item)} >
                   <View>
                   <Image source={{uri: item.thumbnailLink}} style={styles.image}></Image>
-                  <Text>{item.name}</Text>
+                  <Text style={item.selected ? styles.selected : styles.unselected}>
+                    {item.name}
+                  </Text>
                   </View>
                 </TouchableHighlight>
           }
@@ -91,6 +89,12 @@ const styles = StyleSheet.create({
   image: {
     width: 100,
     height: 100,
+  },
+  selected: {
+    color: 'blue',
+  },
+  unselected: {
+    color: 'black',
   }
 });
 

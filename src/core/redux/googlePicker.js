@@ -12,11 +12,10 @@ const SET_FILE_LIST = `${prefix}SET_FILE_LIST`;
 const TOGGLE_SELECT = `${prefix}TOGGLE_SELECT`;
 
 export const setFileList = createAction(SET_FILE_LIST);
-export const toggleSelect = createAction(TOGGLE_SELECT, ({fileId}) => ({fileId}));
+export const toggleSelect = createAction(TOGGLE_SELECT, ({item}) => ({item}));
 
 const initialState = {
   data: [],
-  selected: [],
   loading: false,
   error: null,
 };
@@ -32,11 +31,10 @@ export default handleActions(
         };
     },
     [TOGGLE_SELECT]: (state, action) => {
-      const fileId = action.payload.fileId;
-      const selected = state.selected;
+      const fileId = action.payload.item.id;
       return {
         ...state,
-        selected: selected.includes(fileId) ? selected.filter(i => i !== fileId) : [ ...selected, fileId ]
+        data: state.data.map(item => item.id === fileId ? {...item, selected: !item.selected} : item),
       }
     }
   },
