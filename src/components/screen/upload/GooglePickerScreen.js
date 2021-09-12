@@ -17,7 +17,7 @@ import {
   MimeTypes,
   ListQueryBuilder
 } from "@robinbobin/react-native-google-drive-api-wrapper";
-import googlePicker, { setFileList, toggleSelect } from '../../../core/redux/googlePicker';
+import googlePicker, { changeFolder, setFileList, toggleSelect } from '../../../core/redux/googlePicker';
 import { appendCandidates } from '../../../core/redux/upload';
 
 const GooglePickerScreen = () => {
@@ -25,18 +25,26 @@ const GooglePickerScreen = () => {
   const dispatch = useDispatch();
   const { auth, googlePicker } = useSelector(state => state);
 
-  const loadFile = async () => {
+  useEffect(() => {
+    loadFile(googlePicker.folderId);
+  }, [googlePicker.folderId]);
+
+  const loadFile = async (folderId) => {
     try {
     const gdrive = new GDrive();
     gdrive.accessToken = auth.data.googleToken;
       const data = await gdrive.files.list({
-        q: `mimeType = 'application/vnd.google-apps.folder' or mimeType contains 'image'`,
-        fields: `files(id, name, mimeType, thumbnailLink)`
+        q: `'${folderId}' in parents and (mimeType = 'application/vnd.google-apps.folder' or mimeType contains 'image')`,
+        fields: `files(id, name, mimeType, thumbnailLink, parents)`
       });
       dispatch(setFileList(data.files));
     } catch (e) {
       console.log(e.toString());
     }
+  }
+
+  const pressFolder = (item) => {
+    dispatch(changeFolder({ folderId: item.id }));
   }
 
   const selectItem = (item) => {
@@ -53,15 +61,21 @@ const GooglePickerScreen = () => {
         <View style={{flex: 1}}>
           {
             item.mimeType === 'application/vnd.google-apps.folder'
-            ? <Text style={styles.folder}>{item.name}</Text>
-              : <TouchableHighlight onPress={() => selectItem(item)} >
-                  <View>
-                  <Image source={{uri: item.thumbnailLink}} style={styles.image}></Image>
-                  <Text style={item.selected ? styles.selected : styles.unselected}>
-                    {item.name}
-                  </Text>
-                  </View>
-                </TouchableHighlight>
+            ? <TouchableHighlight onPress={() => pressFolder(item)} >
+                <View>
+                <Text style={styles.folder}>
+                  {item.name}
+                </Text>
+                </View>
+              </TouchableHighlight>
+            : <TouchableHighlight onPress={() => selectItem(item)} >
+                <View>
+                <Image source={{uri: item.thumbnailLink}} style={styles.image}></Image>
+                <Text style={item.selected ? styles.selected : styles.unselected}>
+                  {item.name}
+                </Text>
+                </View>
+              </TouchableHighlight>
           }
           
         </View>
