@@ -9,11 +9,13 @@ const prefix = 'upload/';
 
 // 2. 액션타입에 대해서 정의합니다.
 const APPEND_CANDIDATES = `${prefix}APPEND_CANDIDATES`;
+const REMOVE_CANDIDATE = `${prefix}REMOVE_CANDIDATE`;
 const UPLOAD_PHOTOS = asyncActionCreator(`${prefix}UPLOAD_PHOTOS`);
 const CHECK_PROGRESS = asyncActionCreator(`${prefix}CHECK_PROGRESS`);
 
 // 3. 액션함수에 대해서 정의합니다.
 export const appendCandidates = createAction(APPEND_CANDIDATES, ({data}) => ({data}));
+export const removeCandidate = createAction(REMOVE_CANDIDATE, ({id}) => ({id}));
 export const uploadPhotos = createAsyncAction(UPLOAD_PHOTOS);
 export const checkProgress = createAsyncAction(CHECK_PROGRESS);
 
@@ -38,8 +40,13 @@ export default handleActions(
         return {
           ...state,
           data: [...action.payload.data, ...state.data],
-          numShowItems: 0,
         };
+    },
+    [REMOVE_CANDIDATE]: (state, action) => {
+      return {
+        ...state,
+        data: state.data.filter(item => item.id !== action.payload.id)
+      }
     },
     [UPLOAD_PHOTOS.SUCCESS]: (state, action) => {
       return {

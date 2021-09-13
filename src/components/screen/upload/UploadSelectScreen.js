@@ -10,8 +10,9 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { Text } from 'react-native';
 import { Button } from 'react-native';
-import { checkProgress, uploadPhotos } from '../../../core/redux/upload';
+import { checkProgress, removeCandidate, uploadPhotos } from '../../../core/redux/upload';
 import * as Progress from 'react-native-progress';
+import { UIButton } from '../../common/UIButton';
 
 const UploadSelectScreen = () => {
   const navigation = useNavigation();
@@ -36,6 +37,10 @@ const UploadSelectScreen = () => {
     navigation.navigate('GooglePicker');
   }
 
+  const removeSelected = (id) => {
+    dispatch(removeCandidate({id}));
+  }
+
   const uploadSelected = () => {
     dispatch(uploadPhotos.request({
       data: upload.data,
@@ -46,6 +51,7 @@ const UploadSelectScreen = () => {
   const renderItem = ({ item }) => {
     return (
         <View style={{flex: 1}}>
+            <UIButton title='x' onPress={() => removeSelected(item.id)} style={styles.cancleBtn} textStyle={styles.cancleBtnText}/>
             <TouchableHighlight style={styles.touchArea}>
               <Image source={{uri: item.thumbnailLink}} style={styles.thumbnail}></Image>
             </TouchableHighlight>
@@ -82,6 +88,20 @@ const styles = StyleSheet.create({
     height: 140,
     position: 'relative',
   },
+  cancleBtn: {
+    position: 'absolute',
+    right: '2%',
+    top: '2%',
+    height: 30,
+    width: 30,
+    borderRadius: 15,
+    borderWidth: 1,
+    backgroundColor: '#ccc',
+    zIndex: 10,
+  },
+  cancleBtnText: {
+    fontSize: 15,
+  }
 });
 
 export default UploadSelectScreen;
