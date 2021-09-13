@@ -17,7 +17,7 @@ import {
   MimeTypes,
   ListQueryBuilder
 } from "@robinbobin/react-native-google-drive-api-wrapper";
-import googlePicker, { backFolder, changeFolder, setFileList, toggleSelect } from '../../../core/redux/googlePicker';
+import googlePicker, { backFolder, changeFolder, selectAll, setFileList, toggleSelect, unselectAll } from '../../../core/redux/googlePicker';
 import { appendCandidates } from '../../../core/redux/upload';
 import { style } from 'styled-system';
 import { UIButton } from '../../common/UIButton';
@@ -60,6 +60,14 @@ const GooglePickerScreen = () => {
     }
   }
 
+  const selectAllPress = () => {
+    dispatch(selectAll());
+  }
+
+  const unselectAllPress = () => {
+    dispatch(unselectAll());
+  }
+
   const confirmSelect = () => {
     dispatch(appendCandidates({data: googlePicker.data.filter(item => item.selected)}))
     naviagtion.navigate('UploadSelect');
@@ -96,8 +104,8 @@ const GooglePickerScreen = () => {
     <View style={styles.scrollBox}>
       <View style={styles.buttonContainer}>
         <UIButton title='뒤로가기' onPress={()=>goBackFolder()} style={styles.buttons}/>
-        <UIButton title='이미지 전체선택' onPress={()=>confirmSelect()} style={styles.buttons}/>
-        <UIButton title='전체선택 해제' onPress={()=>confirmSelect()} style={styles.buttons}/>
+        <UIButton title='이미지 전체선택' onPress={()=>selectAllPress()} style={styles.buttons}/>
+        <UIButton title='전체선택 해제' onPress={()=>unselectAllPress()} style={styles.buttons}/>
         <UIButton title='선택 완료' onPress={()=>confirmSelect()} style={styles.buttons}/>
       </View>
       <FlatList

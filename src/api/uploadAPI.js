@@ -6,3 +6,7 @@ export const uploadWithGoogleDrive = ({googleDriveToken, data}) => {
       fileIds: data.map(item => item.id)
     })
 }
+
+export const checkProgress = ({pollingKey}) => {
+  return client.get(`upload/progress/${pollingKey}`);
+}

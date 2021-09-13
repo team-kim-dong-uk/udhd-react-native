@@ -10,12 +10,27 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { Text } from 'react-native';
 import { Button } from 'react-native';
-import { uploadPhotos } from '../../../core/redux/upload';
+import { checkProgress, uploadPhotos } from '../../../core/redux/upload';
+import * as Progress from 'react-native-progress';
 
 const UploadSelectScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { auth, upload } = useSelector(state => state);
+
+  useEffect(() => {
+    let interval;
+    if (upload.uploading) {
+      interval = setInterval(() => dispatch(checkProgress.request({pollingKey: upload.pollingKey})), 1000);
+    }
+    return () => {
+      if (upload.uploading) {
+        clearInterval(interval);
+        alert('업로드 완료!');
+        navigation.navigate('Search');
+      }
+    }
+  }, [upload.uploading]);
 
   const openGoogleDrive = () => {
     navigation.navigate('GooglePicker');
@@ -48,6 +63,7 @@ const UploadSelectScreen = () => {
           numColumns={3}
           keyExtractor={item => item.id}
         />
+        <Progress.Bar progress={upload.progress} width={410}/>
         <Button title='upload' onPress={uploadSelected}></Button>
      </View>
   );
