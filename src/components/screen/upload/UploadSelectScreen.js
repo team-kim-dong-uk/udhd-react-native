@@ -19,11 +19,13 @@ const UploadSelectScreen = () => {
   const dispatch = useDispatch();
   const { auth, upload } = useSelector(state => state);
 
+  // 업로드 버튼 클릭해 업로드 진행상태로 변하면 progress를 1초마다 polling하는 동작을 추가한다.
   useEffect(() => {
     let interval;
     if (upload.uploading) {
       interval = setInterval(() => dispatch(checkProgress.request({pollingKey: upload.pollingKey})), 1000);
     }
+    // 업로드가 끝나면 위의 progress polling 동작을 제거한다.
     return () => {
       if (upload.uploading) {
         clearInterval(interval);
@@ -41,7 +43,8 @@ const UploadSelectScreen = () => {
     dispatch(removeCandidate({id}));
   }
 
-  const uploadSelected = () => {
+  // 업로드 버튼 클릭 시 업로드 진행.
+  const uploadAll = () => {
     dispatch(uploadPhotos.request({
       data: upload.data,
       googleDriveToken: auth.data.googleToken,
@@ -70,7 +73,7 @@ const UploadSelectScreen = () => {
           keyExtractor={item => item.id}
         />
         <Progress.Bar progress={upload.progress} width={410}/>
-        <Button title='upload' onPress={uploadSelected}></Button>
+        <Button title='upload' onPress={uploadAll}></Button>
      </View>
   );
 }

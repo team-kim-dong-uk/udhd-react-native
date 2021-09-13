@@ -32,6 +32,7 @@ const GooglePickerScreen = () => {
     loadFile(currentFolderId);
   }, [currentFolderId]);
 
+  // 해당 폴더에 있는 google drive item 들을 가져온다.
   const loadFile = async (folderId) => {
     try {
     const gdrive = new GDrive();
@@ -46,33 +47,40 @@ const GooglePickerScreen = () => {
     }
   }
 
+  // 폴더 클릭시 해당 폴더로 이동
   const pressFolder = (item) => {
     dispatch(changeFolder({ folderId: item.id }));
   }
 
+  // 이미지 클릭 시 해당 이미지 선택 / 선택해제
   const selectItem = (item) => {
     dispatch(toggleSelect({item}));
   }
 
+  // 뒤로가기 클릭 시 상위 폴더로 이동
   const goBackFolder = () => {
     if (currentFolderId !== 'root') {
       dispatch(backFolder());
     }
   }
 
+  // 이미지 전체선택
   const selectAllPress = () => {
     dispatch(selectAll());
   }
 
+  // 이미지 전체선택 해제
   const unselectAllPress = () => {
     dispatch(unselectAll());
   }
 
+  // 선택완료 클릭시 선택된 데이터들을 들고 업로드 화면으로 이동
   const confirmSelect = () => {
     dispatch(appendCandidates({data: googlePicker.data.filter(item => item.selected)}))
     naviagtion.navigate('UploadSelect');
   }
 
+  //google drive의 각 item 그리기. folder / image 종류에 따라 동작이 다르다.
   const renderItem = ({ item }) => {
     return (
         <View style={{flex: 1}}>

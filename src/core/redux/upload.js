@@ -8,10 +8,10 @@ import createAsyncSaga, { asyncActionCreator, createAsyncAction } from '../../ut
 const prefix = 'upload/';
 
 // 2. 액션타입에 대해서 정의합니다.
-const APPEND_CANDIDATES = `${prefix}APPEND_CANDIDATES`;
-const REMOVE_CANDIDATE = `${prefix}REMOVE_CANDIDATE`;
-const UPLOAD_PHOTOS = asyncActionCreator(`${prefix}UPLOAD_PHOTOS`);
-const CHECK_PROGRESS = asyncActionCreator(`${prefix}CHECK_PROGRESS`);
+const APPEND_CANDIDATES = `${prefix}APPEND_CANDIDATES`;                 // 구글드라이브/갤러리에서 선택한 사진 업로드 예정 목록에 추가
+const REMOVE_CANDIDATE = `${prefix}REMOVE_CANDIDATE`;                   // 업로드 예정 목록에서 특정 사진 제거
+const UPLOAD_PHOTOS = asyncActionCreator(`${prefix}UPLOAD_PHOTOS`);     // 업로드 버튼 클릭시 업로드 요청 전송
+const CHECK_PROGRESS = asyncActionCreator(`${prefix}CHECK_PROGRESS`);   // 업로드 진행률 체크
 
 // 3. 액션함수에 대해서 정의합니다.
 export const appendCandidates = createAction(APPEND_CANDIDATES, ({data}) => ({data}));
@@ -56,7 +56,7 @@ export default handleActions(
       }
     },
     [CHECK_PROGRESS.SUCCESS]: (state, action) => {
-      if (action.payload.data === 100) {
+      if (action.payload.data === 100) {  // 업로드가 완료된 경우
         return {
           ...state,
           progress: 0,
