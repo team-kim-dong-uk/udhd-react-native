@@ -6,12 +6,12 @@ import  {finishSearching, startSearching} from "../core/redux/searching";
 import {useDispatch, useSelector} from "react-redux";
 
 const SearchBox = ({keyword, onChangeKeyword, onChange, onSubmit, onFocus}) => {
-    const { isSearching } = useSelector(state => state);
+    const { searching } = useSelector(state => state);
 
     return (
         <NativeBaseProvider>
                 <View style={styles.searchBox}>
-                    {!isSearching && (<SearchIcon style={styles.searchIcon}/>)}
+                    {!searching && (<SearchIcon style={styles.searchIcon}/>)}
 
                     <TextInput style={styles.input}
                                placeholder="Type Tag here!"

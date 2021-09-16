@@ -24,7 +24,7 @@ const UdhdHeader = () => {
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
     const dispatch = useDispatch();
-    const { auth, photos, tags, isSearching } = useSelector(state => state);
+    const { auth, photos, tags, searching } = useSelector(state => state);
 
     const [showFilter, setShowFilter] = useState(false);
 
@@ -87,7 +87,7 @@ const UdhdHeader = () => {
 
     // when keyword is being changed, state must be searching
     const detectSearching = useCallback(() => {
-        if(!isSearching.data){
+        if(!searching.data){
             startSearch();
         }
     }, [keyword])
@@ -127,11 +127,11 @@ const UdhdHeader = () => {
   return (
     <View>
         <View style={styles.headerContainer}>
-            {!isSearching.data && (<Image style={styles.tinyLogo}
+            {!searching.data && (<Image style={styles.tinyLogo}
                    source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
             )}
             <View style={styles.searchContainer}>
-                {isSearching.data &&
+                {searching.data &&
                     (<Pressable onPress={finishSearch}>
                         <View>
                             <Text>[뒤로]</Text>
@@ -149,7 +149,7 @@ const UdhdHeader = () => {
                                onSubmit={onSubmit}
                                onFocus={startSearch}
                                 />
-                {isSearching.data &&
+                {searching.data &&
                     (<Pressable onPress={onSubmit}>
                         <View>
                             <Text>[검색]</Text>
@@ -157,7 +157,7 @@ const UdhdHeader = () => {
                     </Pressable>)
                 }
             </View>
-            {!isSearching.data && (
+            {!searching.data && (
             <View style={styles.upperTap}>
                 <View>
                     <TouchableOpacity activeOpacity = { 0.5 } onPress={onPressFilter}>
@@ -180,7 +180,7 @@ const UdhdHeader = () => {
             )}
         </View>
         {
-            (isSearching.data &&
+            (searching.data &&
             <FlatList
                 data={recommendedTags}
                 renderItem={renderItem}

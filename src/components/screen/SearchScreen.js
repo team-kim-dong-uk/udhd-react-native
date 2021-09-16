@@ -6,11 +6,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {useSelector} from "react-redux";
 
 const SearchScreen = () => {
-    const {isSearching} = useSelector(state => state);
+    const {searching} = useSelector(state => state);
   return (
         <View>
           <UdhdHeader/>
-            {!isSearching.data && (<PhotoGrid show={!isSearching.data}/>)}
+            {!searching.data && (<PhotoGrid show={!searching.data}/>)}
         </View>
   );
 }

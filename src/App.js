@@ -23,10 +23,10 @@ import PhotoScreen from "./components/screen/PhotoScreen";
 
 const App = () => {
   const dispatch = useDispatch();
-  const {auth, isSearching} = useSelector(state => state);
+  const {auth, searching} = useSelector(state => state);
 
     const onBackPressFromSearch = () => {
-        if(isSearching.data){
+        if(searching.data){
             dispatch(finishSearching())
             return true;
         }   return false;
@@ -35,7 +35,7 @@ const App = () => {
     useEffect(() => {
         BackHandler.removeEventListener('hardwareBackPress', onBackPressFromSearch);
         BackHandler.addEventListener('hardwareBackPress', onBackPressFromSearch);
-    }, [isSearching]);
+    }, [searching]);
 
   return (
       auth.data && auth.data.nickname && auth.data.group ? (

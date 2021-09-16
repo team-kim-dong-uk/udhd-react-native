@@ -5,9 +5,9 @@ import photos from '../redux/photos';
 import tags from '../redux/tags'
 // import upload from '../redux/upload';
 import loading from '../redux/loading';
-import isSearching from "../redux/searching";
 import showPhotoDetail from "../redux/showPhotoDetail";
+import searching from "../redux/searching";
 
 const rootReducer = combineReducers({
-    auth, photo, photos, loading, tags, isSearching, showPhotoDetail});
+    auth, photo, photos, loading, tags, searching, showPhotoDetail});
 export default rootReducer;
