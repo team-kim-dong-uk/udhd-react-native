@@ -5,7 +5,7 @@ import AlbumScreen from "./AlbumScreen";
 
 const Stack = createStackNavigator();
 
-const SearchStackScreen = () => {
+const AlbumStackScreen = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen name="MyAlbum"
@@ -17,4 +17,4 @@ const SearchStackScreen = () => {
         </Stack.Navigator>
     );
 }
-export default SearchStackScreen;
+export default AlbumStackScreen;
