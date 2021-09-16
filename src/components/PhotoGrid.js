@@ -56,8 +56,7 @@ const PhotoGrid = ({show}) => {
                       photoId: item.photoId,
                       image: item.thumbnailLink,
                   });
-                    dispatch(startShowDetail())}
-              }
+              }}
           >
             <Image
                 source={{uri: item.thumbnailLink}}

@@ -18,6 +18,8 @@ import GroupSelectScreen from './components/screen/login/GroupSelectScreen';
 import { StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native';
 import {finishSearching} from "./core/redux/searching";
+import MainTabScreen from "./components/screen/MainTabScreen";
+import PhotoScreen from "./components/screen/PhotoScreen";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -39,16 +41,12 @@ const App = () => {
       auth.data && auth.data.nickname && auth.data.group ? (
       <SafeAreaView style={styles.container}>
           <NavigationContainer>
-            <Tab.Navigator>
-            <Tab.Screen name="Album"
-                            component={AlbumStackScreen}
-                            options={{headerShown: false}}
-                            />
-                <Tab.Screen name="Search"
-                            component={SearchStackScreen}
-                            options={{headerShown: false}}/>
-                <Tab.Screen name="MyPage" component={MyPageScreen} />
-            </Tab.Navigator>
+              <Stack.Navigator>
+                  <Stack.Screen name='MainTab' component={MainTabScreen} options={{ headerShown: false }}/>
+                  <Stack.Screen name="PhotoDetail"
+                                component={PhotoScreen}
+                                options={{headerShown: false}}/>
+              </Stack.Navigator>
           </NavigationContainer>
       </SafeAreaView>
         ) : (

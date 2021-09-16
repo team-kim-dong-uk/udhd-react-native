@@ -11,9 +11,6 @@ const AlbumStackScreen = () => {
             <Stack.Screen name="MyAlbum"
                           component={AlbumScreen}
                           options={{headerShown: false}}/>
-            <Stack.Screen name="PhotoDetail"
-                          component={PhotoScreen}
-                          options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 }
