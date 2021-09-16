@@ -7,7 +7,10 @@ import tags from '../redux/tags'
 import loading from '../redux/loading';
 import showPhotoDetail from "../redux/showPhotoDetail";
 import searching from "../redux/searching";
+import searchTags from "../redux/searchTags";
 
 const rootReducer = combineReducers({
-    auth, photo, photos, loading, tags, searching, showPhotoDetail});
+    auth, photo, photos, loading, tags, searching, showPhotoDetail,
+    searchTags
+    });
 export default rootReducer;
