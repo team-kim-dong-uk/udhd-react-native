@@ -12,8 +12,6 @@ export const getPhotos = ({userId, tags, findAfter}) => {
     if (findAfter) {
         query += `&findAfter=${findAfter}`;
     }
-    console.log(client.defaults.baseURL);
-    console.log(query);
     return client.get(query);
 }
 
