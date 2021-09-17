@@ -3,42 +3,39 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import { Dimensions } from 'react-native';
 import {useNavigation} from "@react-navigation/native";
 import UdhdHeader from "../layout/UdhdHeader";
+import Footer from "../Footer";
 
-const PhotoScreen = ({route}) => {
+const PhotoScreen = ({route, navigation}) => {
   console.log(route);
-  const navigation = useNavigation();
+  //const navigation = useNavigation();
   return (
       <View>
         <UdhdHeader/>
         <View style={styles.container}>
-          <Pressable onPress={() => navigation.goBack()}>
+          <Pressable onPress={() => navigation.goBack()}
+                     style={styles.photoContainer}>
             <Image
                 source={{uri: route.params.image}}
-                style={styles.photoContainer}
             />
           </Pressable>
           {/*TODO 태그 리스트*/}
         </View>
+        <Footer/>
       </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'black',
+    backgroundColor: 'gray',
     width: '100%',
-    height: '100%',
+    height: '90%',
   },
   photoContainer: {
     width: '100%',
-    height: '95%',
+    height: '70%',
     resizeMode: 'contain',
   },
-  photo: {
-    width: '100',
-    height: '100',
-  },
-
 });
 
 export default PhotoScreen;
