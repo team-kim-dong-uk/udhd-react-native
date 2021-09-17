@@ -19,18 +19,18 @@ import Tag from "../Tag";
 import {getTags} from "../../core/redux/tags";
 import {finishSearching, startSearching} from "../../core/redux/searching";
 import RecommendTag from "../RecommendTag";
+import {deleteSearchTags, setSearchTags} from "../../core/redux/searchTags";
 
 const UdhdHeader = () => {
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
     const dispatch = useDispatch();
-    const { auth, photos, tags, searching } = useSelector(state => state);
+    const { auth, photos, tags, searching, searchTags } = useSelector(state => state);
 
     const [showFilter, setShowFilter] = useState(false);
 
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
     const [recommendedTags, setRecommendedTags] = useState([]);
-    const [searchTags, setSearchTags] = useState([]);
 
     const startSearch = () => {dispatch(startSearching());}
     const finishSearch = () => {dispatch(finishSearching());}
@@ -40,28 +40,24 @@ const UdhdHeader = () => {
     }, []);
 
     const onPressTag = useCallback((e) => {
-        let idx = searchTags.indexOf(e);
-        if(idx !== -1 ){
-            searchTags.splice(searchTags.indexOf(e), 1);
-            setSearchTags(searchTags);
-            forceUpdate();
-        }
+        console.log("onPressTag e :" +e)
+        dispatch(deleteSearchTags({tag: e}));
+        forceUpdate();
+
     }, [searchTags, keyword]);
 
     /*
     * 1. duplicated
     * 2. blank
     * */
-    const addSearchTags = (tag) => {
-        tag = tag.replace(/\s/g, "");
-        console.log("try to make tag :" + tag)
-        if(tag !== '' && !searchTags.includes(tag)) {
-           setSearchTags(searchTags => [
-                ...searchTags,
-                tag
-            ]);
-           setKeyword("");
-        } else if (tag === ''){
+    const addSearchTags = useCallback((tagKeyword) => {
+        tagKeyword = tagKeyword.replace(/\s/g, "");
+
+        if(tagKeyword !== '' && !searchTags.data.includes(tagKeyword)) {
+            dispatch(setSearchTags({tag: tagKeyword}));
+            setKeyword("");
+
+        } else if (tagKeyword === ''){
             ToastAndroid.show('공백을 입력할 수 없습니다.', ToastAndroid.SHORT);
             setKeyword("");
             return false;
@@ -69,16 +65,17 @@ const UdhdHeader = () => {
             ToastAndroid.show('이미 선택한 태그입니다.', ToastAndroid.SHORT);
             return false;
         }
-    };
+
+    }, [searchTags])
 
     const onSubmit = useCallback((e) => {
-        if(searchTags.length === 0){
+        if(searchTags.data.length === 0){
             ToastAndroid.show('검색에 사용될 태그가 없어요!', ToastAndroid.SHORT);
             return false;
         }
         dispatch(getPhotos.request({
             userId: auth.data?.userId,
-            tags : searchTags
+            tags : searchTags.data
         }));
         console.log("searchTags at submit  : " + searchTags)
         setKeyword('');
@@ -139,8 +136,8 @@ const UdhdHeader = () => {
                     </Pressable>)
                 }
                 <View style={styles.tagBox}>
-                {searchTags.map((text) => {
-                    return <Tag key={text} text={text} onPressTag={onPressTag}/>
+                {searchTags.data.map((item) => {
+                    return <Tag key={item} text={item} onPressTag={onPressTag}/>
                 })}
                 </View>
                     <SearchBox keyword={keyword}

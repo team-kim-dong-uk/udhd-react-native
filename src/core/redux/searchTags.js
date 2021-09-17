@@ -9,8 +9,10 @@ import {createAction, handleActions} from "redux-actions";
 const prefix = 'search_tag/';
 
 const SET_SEARCH_TAG = `${prefix}SET`;
+const DELETE_SEARCH_TAG = `${prefix}DELETE`;
 
-export const setSearchTags = createAction(SET_SEARCH_TAG, ({tag}) => ({tag}));
+export const setSearchTags = createAction(SET_SEARCH_TAG,({tag}) => ({tag}));
+export const deleteSearchTags = createAction(DELETE_SEARCH_TAG,({tag}) => ({tag}));
 
 const initialState = {
   data: [],
@@ -22,6 +24,17 @@ export default handleActions(
             return {
                 ...state,
                 data: state.data.concat(action.payload.tag)
+            };
+        },
+        [DELETE_SEARCH_TAG]: (state, action) => {
+            console.log(JSON.stringify(action));
+            let idx = state.data.indexOf(action.payload.tag);
+            if (idx != -1){
+                state.data.splice(idx, 1)
+            }
+            return {
+                ...state,
+                data: state.data
             };
         },
     },
