@@ -63,7 +63,10 @@ export default handleActions(
           error: "중복된 닉네임이 이미 존재합니다."
         }
       }
-      return state;
+      return {
+        ...state,
+        error: "에러가 발생했습니다."
+      };
     },
     [SET_GROUP.SUCCESS]: (state, action) => {
       return {

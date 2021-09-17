@@ -1,12 +1,9 @@
-import React from 'react';
-import {SafeAreaViewComponent, StyleSheet, Text, View} from 'react-native';
+import React, {useCallback} from 'react';
+import {BackHandler, SafeAreaViewComponent, StyleSheet, Text, View} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import AlbumScreen from './components/screen/AlbumScreen';
-import SearchScreen from './components/screen/SearchScreen';
 import MyPageScreen from './components/screen/MyPageScreen';
-import { Provider } from 'react-redux';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SocialLoginScreen from './components/screen/login/SocialLoginScreen';
@@ -14,13 +11,7 @@ import SocialLoginScreen from './components/screen/login/SocialLoginScreen';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
-import * as authAPI from './api/authAPI';
 import SearchStackScreen from './components/screen/SearchStackScreen';
-import HeaderContainer from "@react-navigation/stack/src/views/Header/HeaderContainer";
-import StackNavigator from "@react-navigation/stack/src/navigators/createStackNavigator";
-import {SafeAreaProvider} from "react-native-safe-area-context/src/SafeAreaContext";
-import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
 import AlbumStackScreen from "./components/screen/AlbumStackScreen";
 import PersonalInfoScreen from './components/screen/login/PersonalInfoScreen';
 import GroupSelectScreen from './components/screen/login/GroupSelectScreen';
@@ -29,12 +20,24 @@ import { SafeAreaView } from 'react-native';
 import MainTabScreen from './components/screen/MainTabScreen';
 import UploadSelectScreen from './components/screen/upload/UploadSelectScreen';
 import GooglePickerScreen from './components/screen/upload/GooglePickerScreen';
-// import { loginSuccess } from '../../../core/redux/auth';
+import {finishSearching} from "./core/redux/searching";
 
 
 const App = () => {
   const dispatch = useDispatch();
-  const auth = useSelector(state => state.auth);
+  const {auth, isSearching} = useSelector(state => state);
+
+    const onBackPressFromSearch = () => {
+        if(isSearching.data){
+            dispatch(finishSearching())
+            return true;
+        }   return false;
+    }
+
+    useEffect(() => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPressFromSearch);
+        BackHandler.addEventListener('hardwareBackPress', onBackPressFromSearch);
+    }, [isSearching]);
 
   return (
       auth.data && auth.data.nickname && auth.data.group ? (
@@ -55,7 +58,7 @@ const App = () => {
                 <Stack.Screen name='PersonalInfo' component={PersonalInfoScreen} options={{ title: '회원정보 설정' }}/>
                 <Stack.Screen name='GroupSelect' component={GroupSelectScreen} options={{ title: '선호 연예인 설정' }}/>
               </Stack.Navigator>
-            </NavigationContainer> 
+            </NavigationContainer>
       </SafeAreaView>
         )
   );
