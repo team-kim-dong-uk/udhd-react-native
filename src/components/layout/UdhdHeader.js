@@ -17,6 +17,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getPhotos} from "../../core/redux/photos";
 import Tag from "../Tag";
 import {getTags} from "../../core/redux/tags";
+import { useNavigation } from '@react-navigation/native';
 import {finishSearching, startSearching} from "../../core/redux/searching";
 import RecommendTag from "../RecommendTag";
 
@@ -27,6 +28,8 @@ const UdhdHeader = () => {
     const { auth, photos, tags, isSearching } = useSelector(state => state);
 
     const [showFilter, setShowFilter] = useState(false);
+
+    const navigation = useNavigation();
 
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
     const [recommendedTags, setRecommendedTags] = useState([]);
@@ -172,7 +175,7 @@ const UdhdHeader = () => {
                         </ModalTemplate>
                     )}
                 </View>
-                <TouchableOpacity activeOpacity = { 0.5 } onPress={() => {Alert.alert("navigate to upload page")}}>
+                <TouchableOpacity activeOpacity = { 0.5 } onPress={() => {navigation.navigate('UploadSelect')}}>
                 <Image style={styles.upperIcon}
                        source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
                 </TouchableOpacity>
