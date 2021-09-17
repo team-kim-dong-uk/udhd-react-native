@@ -4,12 +4,21 @@ import { Dimensions } from 'react-native';
 import {useNavigation} from "@react-navigation/native";
 import UdhdHeader from "../layout/UdhdHeader";
 import Footer from "../Footer";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import PhotoTagBox from "../PhotoTagBox";
+import {getPhoto} from "../../core/redux/photo";
 
 const PhotoScreen = ({route, navigation}) => {
-    const { searching } = useSelector(state => state);
+    const {auth, searching, photo } = useSelector(state => state);
+    const dispatch = useDispatch();
   //const navigation = useNavigation();
+
+    useEffect(() => {
+        dispatch(getPhoto.request({
+            userId: auth.data?.userId,
+            photoId: route.params.photoId
+        }));
+    }, [])
 
   return (
       <View>
@@ -23,7 +32,7 @@ const PhotoScreen = ({route, navigation}) => {
                           style={styles.photo}
                       />
                   </Pressable>
-                  <PhotoTagBox/>
+                  <PhotoTagBox tags={photo.data.tags}/>
                   <Footer/>
               </View>
           )}

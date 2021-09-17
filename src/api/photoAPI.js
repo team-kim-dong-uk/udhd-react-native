@@ -1,7 +1,8 @@
 import client from './client';
 
-export const getPhoto = (photoId) => {
-    return client.get(`photos/${photoId}`);
+export const getPhoto = ({photoId}) => {
+    let query = `photos/${photoId}`
+    return client.get(query);
 }
 
 export const getPhotos = ({userId, tags, findAfter}) => {

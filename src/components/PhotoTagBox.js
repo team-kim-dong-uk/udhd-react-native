@@ -5,12 +5,14 @@ import {
 } from "react-native";
 import Tag from "./Tag";
 
-const PhotoTagBox = ({style}) => {
+const PhotoTagBox = ({style, tags}) => {
 
     return (
         <View style={styles.container}>
             <View style={styles.tagList}>
-                <Tag key="1" text="이얍" />
+                {tags?.map((tag) => {
+                    return <Tag key={tag} text={tag} />
+                })}
             </View>
 
             <Tag key="0" text="[업]" />
