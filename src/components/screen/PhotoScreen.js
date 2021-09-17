@@ -4,38 +4,49 @@ import { Dimensions } from 'react-native';
 import {useNavigation} from "@react-navigation/native";
 import UdhdHeader from "../layout/UdhdHeader";
 import Footer from "../Footer";
+import {useSelector} from "react-redux";
 
 const PhotoScreen = ({route, navigation}) => {
-  console.log(route);
+    const { searching } = useSelector(state => state);
   //const navigation = useNavigation();
+
   return (
       <View>
         <UdhdHeader/>
-        <View style={styles.container}>
-          <Pressable onPress={() => navigation.goBack()}
-                     style={styles.photoContainer}>
-            <Image
-                source={{uri: route.params.image}}
-            />
-          </Pressable>
-          {/*TODO 태그 리스트*/}
-        </View>
-        <Footer/>
+          {!searching.data && (
+              <View>
+                  <View style={styles.container}>
+                      <Pressable onPress={() => navigation.goBack()}
+                                 style={styles.photoContainer}>
+                          <Image
+                              source={{uri: route.params.image}}
+                              style={styles.photo}
+                          />
+                      </Pressable>
+
+                  </View>
+                  <Footer/>
+              </View>
+          )}
       </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'gray',
+    backgroundColor: 'black',
     width: '100%',
     height: '90%',
   },
   photoContainer: {
     width: '100%',
-    height: '70%',
-    resizeMode: 'contain',
+    height: '80%',
   },
+    photo: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'contain',
+    }
 });
 
 export default PhotoScreen;
