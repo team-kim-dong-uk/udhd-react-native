@@ -5,6 +5,7 @@ import {useNavigation} from "@react-navigation/native";
 import UdhdHeader from "../layout/UdhdHeader";
 import Footer from "../Footer";
 import {useSelector} from "react-redux";
+import PhotoTagBox from "../PhotoTagBox";
 
 const PhotoScreen = ({route, navigation}) => {
     const { searching } = useSelector(state => state);
@@ -14,17 +15,15 @@ const PhotoScreen = ({route, navigation}) => {
       <View>
         <UdhdHeader/>
           {!searching.data && (
-              <View>
-                  <View style={styles.container}>
-                      <Pressable onPress={() => navigation.goBack()}
-                                 style={styles.photoContainer}>
-                          <Image
-                              source={{uri: route.params.image}}
-                              style={styles.photo}
-                          />
-                      </Pressable>
-
-                  </View>
+              <View style={styles.container}>
+                  <Pressable onPress={() => navigation.goBack()}
+                             style={styles.photoContainer}>
+                      <Image
+                          source={{uri: route.params.image}}
+                          style={styles.photo}
+                      />
+                  </Pressable>
+                  <PhotoTagBox/>
                   <Footer/>
               </View>
           )}
@@ -43,6 +42,7 @@ const styles = StyleSheet.create({
     height: '80%',
   },
     photo: {
+        backgroundColor: "gray",
         width: '100%',
         height: '100%',
         resizeMode: 'contain',

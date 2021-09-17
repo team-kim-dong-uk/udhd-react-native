@@ -3,35 +3,34 @@ import {
     StyleSheet, Text,
     View
 } from "react-native";
+import Tag from "./Tag";
 
-const Footer = ({style}) => {
+const PhotoTagBox = ({style}) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.boxContainer}>
-                <Text>  [하투]  </Text>
-                <Text>  [다운로두]  </Text>
-                <Text>  [존잘공유]  </Text>
+            <View style={styles.tagList}>
+                <Tag key="1" text="이얍" />
             </View>
-            <View style={styles.box}>
-                <Text> [사쿠제]  </Text>
-            </View>
+
+            <Tag key="0" text="[업]" />
         </View>
     );
 };
 
-export default Footer;
+export default PhotoTagBox;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
+        backgroundColor: 'pink',
         width: '100%',
         height: '10%',
+        padding: 10,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
     },
-    boxContainer: {
+    tagList:{
         flexDirection: 'row',
         alignItems: 'center',
     }
