@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { height, width } from '../../util/StyleUtil';
 
 
 export const UIButton = (props) => {
@@ -15,10 +16,9 @@ export const UIButton = (props) => {
 const styles = StyleSheet.create({
     button: {
         display: 'flex',
-        height: 50,
-        borderRadius: 5,
-        borderColor: 'black',
-        borderWidth: 1,
+        height: 50 * height,
+        borderRadius: 5 * width,
+        borderWidth: 1 * width,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white',

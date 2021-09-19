@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNickname } from '../../../core/redux/auth';
+import { colors, height, width } from '../../../util/StyleUtil';
+import { UIButton } from '../../common/UIButton';
 
 const PersonalInfoScreen = () => {
   const dispatch = useDispatch();
@@ -27,19 +29,28 @@ const PersonalInfoScreen = () => {
   
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>개인정보 설정</Text>
-      <View style={styles.textContainer}>
-        <Text>{auth.data.email}</Text>
+      <View style={styles.emailContainer}>
+        <Text style={styles.label}>이메일</Text>
+        <TextInput
+          style={styles.emailInput}
+          value={auth.data.email}
+          editable={false}
+        />
+      </View>
+      <View style={styles.nicknameContainer}>
+        <Text style={styles.label}>닉네임</Text>
         <TextInput
           placeholder='닉네임을 입력해주세요'
-          style={styles.textInput}
+          style={styles.nicknameInput}
           onChangeText={nicknameInput => setnicknameInput(nicknameInput)}
           defaultValue={nicknameInput}
         />
         <Text style={styles.error}>{auth.error}</Text>
       </View>
-      <View style={styles.nextBtn}>
-        <Button
+      <View style={styles.bottom}>
+        <UIButton
+          style={styles.nextButton}
+          textStyle={styles.buttonText}
           title='다음'
           onPress={onBtnClick}
           disabled={nicknameInput === ''}
@@ -52,29 +63,82 @@ const PersonalInfoScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    backgroundColor: 'white',
   },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold'
+  emailContainer: {
+    //custom
+    marginTop: 25 * height,
   },
-  textContainer: {
-    height: '10%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  nicknameContainer: {
+    //custom
+    marginTop: 30 * height,
   },
-  textInput: {
-    borderBottomColor: 'black'
+  label: {
+    width: 40.8 * width,
+    height: 22.3 * height,
+    // fontFamily: "NotoSansCJKKR",
+    fontSize: 15 * width,
+    fontWeight: "bold",
+    fontStyle: "normal",
+    letterSpacing: -0.38 * width,
+    textAlign: "left",
+    color: colors.black,
+    //custom
+    marginBottom: 10 * height,
+  },
+  emailInput: {
+    width: 330 * width,
+    height: 45 * height,
+    borderRadius: 5 * width,
+    backgroundColor: colors.inputGrey,
+    // text
+    // fontFamily: "NotoSansCJKKR",
+    fontSize: 15 * width,
+    fontWeight: "bold",
+    fontStyle: "normal",
+    lineHeight: 24 * height,
+    letterSpacing: 0 * width,
+    color: colors.black,
+    // custom
+    paddingLeft: 10 * width,
+  },
+  nicknameInput: {
+    width: 330 * width,
+    height: 45 * height,
+    borderRadius: 5 * width,
+    borderStyle: "solid",
+    borderWidth: 1 * width,
+    borderColor: colors.grey,
+    paddingLeft: 10 * width,
   },
   error: {
-    color: 'red'
+    //custom
+    color: 'red',
+    marginTop: 10 * height,
+    marginLeft: 10 * width,
   },
-  nextBtn: {
-    width: '90%'
-  }
+  bottom: {
+    //custom
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 36 * height,
+  },
+  nextButton: {
+    width: 330 * width,
+    height: 50 * height,
+    backgroundColor: colors.grey,
+    borderWidth: 0,
+  },
+  buttonText: {
+    // fontFamily: "NotoSansCJKKR",
+    fontSize: 15 * width,
+    fontWeight: "normal",
+    fontStyle: "normal",
+    letterSpacing: 0 * width,
+    textAlign: "center",
+    color: colors.white,
+  },
 });
 
 export default PersonalInfoScreen;
