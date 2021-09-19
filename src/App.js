@@ -21,6 +21,7 @@ import MainTabScreen from './components/screen/MainTabScreen';
 import UploadSelectScreen from './components/screen/upload/UploadSelectScreen';
 import GooglePickerScreen from './components/screen/upload/GooglePickerScreen';
 import {finishSearching} from "./core/redux/searching";
+import SettingScreen from './components/screen/SettingScreen';
 
 
 const App = () => {
@@ -47,6 +48,7 @@ const App = () => {
                 <Stack.Screen name='Home' component={MainTabScreen} options={{ headerShown: false }}/>
                 <Stack.Screen name='UploadSelect' component={UploadSelectScreen} options={{ headerShown: false }}/>
                 <Stack.Screen name='GooglePicker' component={GooglePickerScreen} options={{ headerShown: false }}/>
+                <Stack.Screen name='Setting' component={SettingScreen} />
               </Stack.Navigator>
           </NavigationContainer>
         </SafeAreaView>
