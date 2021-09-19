@@ -23,11 +23,17 @@ import GooglePickerScreen from './components/screen/upload/GooglePickerScreen';
 import {finishSearching} from "./core/redux/searching";
 import { LoginHeader } from './components/layout/LoginHeader';
 import { colors } from './util/StyleUtil';
+import { useFonts } from 'expo-font';
 
 
 const App = () => {
+  let [fontsLoaded] = useFonts({
+    'NotoSansCJKkr': require('../assets/fonts/NotoSansCJKkr-Regular.otf'),
+  });
+  
   const dispatch = useDispatch();
   const {auth, isSearching} = useSelector(state => state);
+
 
     const onBackPressFromSearch = () => {
         if(isSearching.data){
@@ -41,6 +47,14 @@ const App = () => {
         BackHandler.addEventListener('hardwareBackPress', onBackPressFromSearch);
     }, [isSearching]);
 
+
+  if (!fontsLoaded) {
+    return (
+      <View>
+        <Text>Loading</Text>
+      </View>
+    )
+  }
   return (
       auth.data && auth.data.nickname && auth.data.group ? (
         <SafeAreaView style={styles.container}>

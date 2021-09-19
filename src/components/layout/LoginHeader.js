@@ -1,8 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 import { TouchableOpacity, StyleSheet, Text } from 'react-native';
-import { height, width, colors } from '../../util/StyleUtil';
-import BackButton from '../../assets/back-button.svg';
+import { height, width, colors, fonts } from '../../util/StyleUtil';
+import BackButton from '../../../assets/back-button.svg';
 
 
 export const LoginHeader = ({ navigation, route, options, back }) => {
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
       marginLeft: 15 * width,
     },
     title: {
-      // fontFamily: "NotoSansCJKKR",
+      fontFamily: fonts.NotoSansCJKkr,
       fontSize: 16 * width,
       fontWeight: "500",
       fontStyle: "normal",
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
       marginRight: 15 * width,
     },
     orderText: {
-      // fontFamily: "NotoSansCJKKR",
+      fontFamily: fonts.NotoSansCJKkr,
       fontSize: 16 * width,
       fontWeight: "500",
       fontStyle: "normal",

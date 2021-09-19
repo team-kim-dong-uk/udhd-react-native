@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setNickname } from '../../../core/redux/auth';
-import { colors, height, width } from '../../../util/StyleUtil';
+import { colors, fonts, height, width } from '../../../util/StyleUtil';
 import { UIButton } from '../../common/UIButton';
 
 const PersonalInfoScreen = () => {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   label: {
     width: 40.8 * width,
     height: 22.3 * height,
-    // fontFamily: "NotoSansCJKKR",
+    fontFamily: fonts.NotoSansCJKkr,
     fontSize: 15 * width,
     fontWeight: "bold",
     fontStyle: "normal",
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     borderRadius: 5 * width,
     backgroundColor: colors.inputGrey,
     // text
-    // fontFamily: "NotoSansCJKKR",
+    fontFamily: fonts.NotoSansCJKkr,
     fontSize: 15 * width,
     fontWeight: "bold",
     fontStyle: "normal",
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     borderWidth: 1 * width,
     borderColor: colors.grey,
     //text
-    // fontFamily: "NotoSansCJKKR",
+    fontFamily: fonts.NotoSansCJKkr,
     fontSize: 15 * width,
     fontWeight: "normal",
     fontStyle: "normal",
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.orange,
   },
   buttonText: {
-    // fontFamily: "NotoSansCJKKR",
+    fontFamily: fonts.NotoSansCJKkr,
     fontSize: 15 * width,
     fontWeight: "normal",
     fontStyle: "normal",

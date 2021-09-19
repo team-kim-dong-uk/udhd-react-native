@@ -11,12 +11,7 @@ export const colors = {
 };
 
 export const fonts = {
-  SpoqaHanSansNeo: 'SpoqaHanSansNeo',
-  SpoqaHanSansNeo_Thin: 'SpoqaHanSansNeo-Thin',
-  SpoqaHanSansNeo_Light: 'SpoqaHanSansNeo-Light',
-  SpoqaHanSansNeo_Medium: 'SpoqaHanSansNeo-Medium',
-  SpoqaHanSansNeo_Regular: 'SpoqaHanSansNeo-Regular',
-  SpoqaHanSansNeo_Bold: 'SpoqaHanSansNeo-Bold',
+  NotoSansCJKkr: 'NotoSansCJKkr',
 };
 
 export const basicDimensions = {
