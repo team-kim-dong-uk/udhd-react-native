@@ -4,10 +4,10 @@ import { height, width } from '../../util/StyleUtil';
 
 
 export const UIButton = (props) => {
-    const { title = 'Enter', style = {}, textStyle = {}, onPress } = props;
+    const { title = 'Enter', style = {}, textStyle = {}, onPress, disabled } = props;
 
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
+        <TouchableOpacity onPress={onPress} style={[styles.button, style]} disabled={disabled}>
             <Text style={[styles.text, textStyle]}>{props.title}</Text>
         </TouchableOpacity>
     );

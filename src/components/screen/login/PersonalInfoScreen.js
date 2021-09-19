@@ -19,6 +19,7 @@ const PersonalInfoScreen = () => {
   }, [auth]);
 
   const [nicknameInput, setnicknameInput] = useState('');
+  const [focused, setFocused] = useState(false);
 
   const onBtnClick = () => {
     dispatch(setNickname.request({
@@ -41,15 +42,18 @@ const PersonalInfoScreen = () => {
         <Text style={styles.label}>닉네임</Text>
         <TextInput
           placeholder='닉네임을 입력해주세요'
-          style={styles.nicknameInput}
+          placeholderTextColor={colors.grey}
+          style={[styles.nicknameInput, focused ? styles.nicknameInputFocused : null]}
           onChangeText={nicknameInput => setnicknameInput(nicknameInput)}
+          onFocus={()=>setFocused(true)}
+          onBlur={()=>setFocused(false)}
           defaultValue={nicknameInput}
         />
         <Text style={styles.error}>{auth.error}</Text>
       </View>
       <View style={styles.bottom}>
         <UIButton
-          style={styles.nextButton}
+          style={[styles.nextButton, nicknameInput !== '' ? styles.nextButtonSubmitable : null]}
           textStyle={styles.buttonText}
           title='다음'
           onPress={onBtnClick}
@@ -110,11 +114,27 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 1 * width,
     borderColor: colors.grey,
+    //text
+    // fontFamily: "NotoSansCJKKR",
+    fontSize: 15 * width,
+    fontWeight: "normal",
+    fontStyle: "normal",
+    letterSpacing: 0,
+    textAlign: "left",
+    color: colors.black,
+    //custom
     paddingLeft: 10 * width,
+  },
+  nicknameInputFocused: {
+    borderColor: colors.black,
   },
   error: {
     //custom
-    color: 'red',
+    fontSize: 15 * width,
+    fontWeight: "normal",
+    fontStyle: "normal",
+    letterSpacing: 0,
+    color: colors.red,
     marginTop: 10 * height,
     marginLeft: 10 * width,
   },
@@ -129,6 +149,9 @@ const styles = StyleSheet.create({
     height: 50 * height,
     backgroundColor: colors.grey,
     borderWidth: 0,
+  },
+  nextButtonSubmitable: {
+    backgroundColor: colors.orange,
   },
   buttonText: {
     // fontFamily: "NotoSansCJKKR",
