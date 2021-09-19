@@ -21,6 +21,8 @@ import MainTabScreen from './components/screen/MainTabScreen';
 import UploadSelectScreen from './components/screen/upload/UploadSelectScreen';
 import GooglePickerScreen from './components/screen/upload/GooglePickerScreen';
 import {finishSearching} from "./core/redux/searching";
+import { LoginHeader } from './components/layout/LoginHeader';
+import { colors } from './util/StyleUtil';
 
 
 const App = () => {
@@ -55,7 +57,16 @@ const App = () => {
             <NavigationContainer>
               <Stack.Navigator>
                 <Stack.Screen name='SocialLogin' component={SocialLoginScreen} options={{ headerShown: false }}/>
-                <Stack.Screen name='PersonalInfo' component={PersonalInfoScreen} options={{ title: '회원정보 설정' }}/>
+                <Stack.Screen
+                  name='PersonalInfo'
+                  component={PersonalInfoScreen}
+                  // options={{ title: '회원정보 설정' }}
+                  options={{
+                    title: '회원정보 설정',
+                    order: 1,
+                    header: (props) => <LoginHeader {...props}/>
+                  }}
+                />
                 <Stack.Screen name='GroupSelect' component={GroupSelectScreen} options={{ title: '선호 연예인 설정' }}/>
               </Stack.Navigator>
             </NavigationContainer>
@@ -67,7 +78,8 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop:StatusBar.currentHeight
+    marginTop:StatusBar.currentHeight,
+    backgroundColor: colors.white,
   },
 
 });
