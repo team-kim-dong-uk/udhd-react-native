@@ -8,6 +8,7 @@ export const colors = {
   inputGrey: '#F8F8F8',
   blue: '#1E83DB',
   red: '#FF4A4A',
+  kakaoYellow: '#FFDF00',
 };
 
 export const fonts = {
