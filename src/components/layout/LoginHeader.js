@@ -69,6 +69,6 @@ const styles = StyleSheet.create({
       color: colors.black,
     },
     currentOrderText: {
-      color: colors.blue,
+      color: colors.orange,
     }
 });

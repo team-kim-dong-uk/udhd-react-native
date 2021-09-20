@@ -74,14 +74,21 @@ const App = () => {
                 <Stack.Screen
                   name='PersonalInfo'
                   component={PersonalInfoScreen}
-                  // options={{ title: '회원정보 설정' }}
                   options={{
                     title: '회원정보 설정',
                     order: 1,
                     header: (props) => <LoginHeader {...props}/>
                   }}
                 />
-                <Stack.Screen name='GroupSelect' component={GroupSelectScreen} options={{ title: '선호 연예인 설정' }}/>
+                <Stack.Screen
+                  name='GroupSelect'
+                  component={GroupSelectScreen}
+                  options={{
+                    title: '선호 연예인 설정',
+                    order: 2,
+                    header: (props) => <LoginHeader {...props}/>
+                  }}
+                />
               </Stack.Navigator>
             </NavigationContainer>
       </SafeAreaView>

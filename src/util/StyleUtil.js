@@ -6,6 +6,7 @@ export const colors = {
   white: '#FFFFFF',
   grey: '#BBBBBB',
   inputGrey: '#F8F8F8',
+  checkboxGrey: '#F2F2F2',
   blue: '#1E83DB',
   red: '#FF4A4A',
   kakaoYellow: '#FFDF00',
