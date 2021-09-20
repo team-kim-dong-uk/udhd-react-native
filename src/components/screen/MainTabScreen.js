@@ -10,14 +10,21 @@ const Tab = createBottomTabNavigator();
 const MainTabScreen = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Album!"
-                      component={AlbumStackScreen}
-                      options={{headerShown: false}}
-                      />
-          <Tab.Screen name="Search"
-                      component={SearchStackScreen}
-                      options={{headerShown: false}}/>
-          <Tab.Screen name="MyPage" component={MyPageScreen} />
+      <Tab.Screen
+        name="Album!"
+        component={AlbumStackScreen}
+        options={{headerShown: false}}
+      />
+      <Tab.Screen
+        name="Search"
+        component={SearchStackScreen}
+        options={{headerShown: false}}
+      />
+      <Tab.Screen
+        name="MyPage"
+        component={MyPageScreen}
+        options={{headerShown: false}}
+      />
       </Tab.Navigator>
   );
 }
