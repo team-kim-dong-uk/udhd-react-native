@@ -32,7 +32,7 @@ const PhotoScreen = ({route, navigation}) => {
                           style={styles.photo}
                       />
                   </Pressable>
-                  <PhotoTagBox tags={photo.data.tags}/>
+                  <PhotoTagBox tags={photo.data?.tags}/>
                   <Footer/>
               </View>
           )}
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   photoContainer: {
     width: '100%',
-    height: '80%',
+    height: '90%',
   },
     photo: {
         backgroundColor: "gray",
