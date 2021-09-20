@@ -10,7 +10,7 @@ const SearchScreen = () => {
   return (
         <View>
           <UdhdHeader/>
-            {!isSearching.data && (<PhotoGrid show={!isSearching.data}/>)}
+            {!isSearching.data && (<PhotoGrid show={!isSearching.data} type='search'/>)}
         </View>
   );
 }

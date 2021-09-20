@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../core/redux/user';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
+import PhotoGrid from '../PhotoGrid';
 
 const MyPageScreen = () => {
   const dispatch = useDispatch();
@@ -36,18 +37,17 @@ const MyPageScreen = () => {
             />
         </TouchableOpacity>
       </View>
-      <UserInfo user={user.data}/>
-      <FlatList/>
+      <View>
+        <UserInfo user={user.data}/>
+        <PhotoGrid show={true} type='upload' style={styles.photos}/>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   header: {
     width: 360 * width,
@@ -71,6 +71,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 15 * width,
   },
+  photos: {
+    width: 360 * width,
+  }
 });
 
 export default MyPageScreen;

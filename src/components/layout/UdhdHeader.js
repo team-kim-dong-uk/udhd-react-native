@@ -14,7 +14,7 @@ import SearchBox from "../SearchBox";
 import ModalTemplate from "../ModalTemplate";
 import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
-import {getPhotos} from "../../core/redux/photos";
+import { getSearchPhotos} from "../../core/redux/photos";
 import Tag from "../Tag";
 import {getTags} from "../../core/redux/tags";
 import { useNavigation } from '@react-navigation/native';
@@ -79,7 +79,7 @@ const UdhdHeader = () => {
             ToastAndroid.show('검색에 사용될 태그가 없어요!', ToastAndroid.SHORT);
             return false;
         }
-        dispatch(getPhotos.request({
+        dispatch(getSearchPhotos.request({
             userId: auth.data?.userId,
             tags : searchTags
         }));
