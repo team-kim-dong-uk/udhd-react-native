@@ -88,7 +88,7 @@ const GooglePickerScreen = () => {
             item.mimeType === 'application/vnd.google-apps.folder'
             ? <TouchableHighlight onPress={() => pressFolder(item)} style={styles.touchArea}>
                 <View>
-                <Image source={require('../../../assets/folder.png')} style={styles.thumbnail}></Image>
+                <Image source={require('../../../../assets/folder.png')} style={styles.thumbnail}></Image>
                 <Text style={styles.folder}>
                   {item.name}
                 </Text>

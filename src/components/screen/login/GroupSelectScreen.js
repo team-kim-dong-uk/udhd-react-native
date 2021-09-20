@@ -1,50 +1,81 @@
 import React, { useState } from 'react';
+import { FlatList } from 'react-native';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import SelectMultiple from 'react-native-select-multiple'
 import { setGroup } from '../../../core/redux/auth';
+import { colors, fonts, width, height } from '../../../util/StyleUtil';
+import CheckBox from '@react-native-community/checkbox';
+import { UIButton } from '../../common/UIButton';
+import { TouchableOpacity } from 'react-native';
 
 const GroupSelectScreen = () => {
   const dispatch = useDispatch();
-  const auth = useSelector(state => state.auth);
+  const auth = useSelector(state => state.auth); 
 
-  const groups = ['오마이걸', '그룹1', '그룹2', '그룹3', '그룹4'];
-  const [selectedGroups, setSelectedGroups] = useState([]);
+  const groups = ['오마이걸', '프로미스나인', '에스파', '트와이스', '더보이즈', '블랙핑크',
+                  '소녀시대', '걸스데이', '이달의소녀'];
+  const [state, setState] = useState({
+    groups: groups.map((groupname) => ({
+      name: groupname,
+      selected: false,
+    })),
+    hasSelected: false,
+  });
 
-  const onSelectionsChange = (selected) => {
-    setSelectedGroups(selected);
-  }
+  
 
   const onBtnClick = () => {
-    if (selectedGroups.length === 0) {
-      alert('연예인을 선택하세요');
-      return;
-    }
     dispatch(setGroup.request({
       userId: auth.data.userId,
-      group: selectedGroups.map(item => item.value)[0],
+      group: state.groups.filter(item => item.selected)[0].name,
     }));
   }
 
+  const changeCheckbox = (index, newValue) => {
+    setState({
+      groups: state.groups.map((item, groupIndex) => 
+        groupIndex === index
+        ? { ...item, selected: newValue }
+        : { ...item, selected: false }
+      ),
+      hasSelected: newValue,
+    });
+  }
+
+  const renderItem = ({ item, index }) => {
+    return (
+        <TouchableOpacity
+          style={styles.row} 
+          onPress={() => changeCheckbox(index, !state.groups[index].selected)}
+        >
+          <CheckBox
+            style={styles.checkbox}
+            value={item.selected}
+            tintColors={{true: colors.orange}}
+            onValueChange={ (newValue) => changeCheckbox(index, newValue)}
+          />
+          <Text style={styles.option}>{item.name}</Text>
+        </TouchableOpacity>
+    )
+  };
+
   return (
     <View style={styles.container}>
-      <View>
-      <Text style={styles.title}>어떤 연예인을 좋아하세요?</Text>
-      <Text>(최대 1개)</Text>
-      </View>
-      <View style={styles.optionContainer}>
-        <SelectMultiple
-          items={groups}
-          selectedItems={selectedGroups}
-          onSelectionsChange={onSelectionsChange}
-          maxSelect={1}
-        />
-      </View>
-      <View style={styles.nextBtn}>
-        <Button
-          title='선택완료'
-          onPress={onBtnClick}
-          disabled={selectedGroups.length === 0}
+      <Text style={styles.question}>어떤 연예인을 좋아하세요?</Text>
+      <FlatList
+        contentContainerStyle={styles.list}
+        data={state.groups}
+        renderItem={renderItem}
+        keyExtractor={item => item.name}
+      />
+      <View style={styles.buttonContainer}>
+
+      <UIButton
+        title='다음'
+        onPress={onBtnClick}
+        style={[styles.nextBtn, state.hasSelected ? styles.nextBtnValid : null]}
+        textStyle={styles.nextBtnText}
+        disabled={!state.hasSelected}
         />
       </View>
     </View>
@@ -55,23 +86,68 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  row: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    marginBottom: 15 * height,
   },
-  title: {
-    fontSize: 30,
-    fontWeight: 'bold'
+  question: {
+    lineHeight: 22.2 * height,
+    fontFamily: fonts.NotoSansCJKkr,
+    fontSize: 15 * width,
+    fontWeight: "bold",
+    fontStyle: "normal",
+    letterSpacing: -0.38 * width,
+    textAlign: "left",
+    color: colors.black,
+    marginLeft: 15 * width,
+    marginTop: 25 * height,
   },
-  optionContainer: {
-    height: '60%',
-    width: '100%',
+  list: {
+    marginTop: 25 * height,
+    padding: 0,
   },
-  textInput: {
-    borderBottomColor: 'black'
+  checkbox: {
+    width: 20 * width,
+    height: 20 * width,
+    borderRadius: 3 * width,
+    left: -6 * width,
+    marginLeft: 15 * width,
+  },
+  option: {
+    fontFamily: fonts.NotoSansCJKkr,
+    fontSize: 15 * width,
+    fontWeight: "normal",
+    fontStyle: "normal",
+    letterSpacing: -0.38 * width,
+    textAlign: "left",
+    color: colors.black,
+    lineHeight: 22.2 * height,
+    marginLeft: 10 * width,
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    marginBottom: 15 * height,
   },
   nextBtn: {
-    width: '90%'
-  }
+    width: 330 * width,
+    height: 50 * height,
+    backgroundColor: colors.grey,
+    borderWidth: 0,
+  },
+  nextBtnValid: {
+    backgroundColor: colors.orange,
+  },
+  nextBtnText: {
+    fontFamily: fonts.NotoSansCJKkr,
+    fontSize: 15 * width,
+    fontWeight: "normal",
+    fontStyle: "normal",
+    letterSpacing: 0,
+    textAlign: "center",
+    color: colors.white,
+  },
 });
 
 export default GroupSelectScreen;

@@ -1,12 +1,14 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { height, width } from '../../util/StyleUtil';
 
 
 export const UIButton = (props) => {
-    const { title = 'Enter', style = {}, textStyle = {}, onPress } = props;
+    const { title = 'Enter', style = {}, textStyle = {}, onPress, disabled, icon} = props;
 
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
+        <TouchableOpacity onPress={onPress} style={[styles.button, style]} disabled={disabled}>
+            {icon ? icon : null}
             <Text style={[styles.text, textStyle]}>{props.title}</Text>
         </TouchableOpacity>
     );
@@ -15,10 +17,10 @@ export const UIButton = (props) => {
 const styles = StyleSheet.create({
     button: {
         display: 'flex',
-        height: 50,
-        borderRadius: 5,
-        borderColor: 'black',
-        borderWidth: 1,
+        flexDirection: 'row',
+        height: 50 * height,
+        borderRadius: 5 * width,
+        borderWidth: 1 * width,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white',
