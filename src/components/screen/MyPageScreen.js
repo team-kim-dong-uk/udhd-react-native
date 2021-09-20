@@ -6,10 +6,13 @@ import SettingIcon from '../../../assets/setting.svg';
 import UserInfo from '../UserInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../core/redux/user';
+import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
 
 const MyPageScreen = () => {
   const dispatch = useDispatch();
   const { user, auth } = useSelector(state => state);
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (!user.data) {
@@ -17,16 +20,21 @@ const MyPageScreen = () => {
     }
   }, []);
 
+  const onSettingBtnClick = () => {
+    navigation.navigate('Setting');
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.nickname}>{user.data && user.data.nickname}</Text>
-        <SettingIcon
-          width={22 * width}
-          height={22 * height}
-          viewBox='0 0 88 88'
-          style={styles.settingIcon}
-        />
+        <TouchableOpacity onPress={onSettingBtnClick} style={styles.settingIcon}>
+          <SettingIcon
+            width={22 * width}
+            height={22 * height}
+            viewBox='0 0 88 88'
+            />
+        </TouchableOpacity>
       </View>
       <UserInfo user={user.data}/>
       <FlatList/>
