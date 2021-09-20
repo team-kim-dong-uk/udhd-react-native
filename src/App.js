@@ -25,6 +25,7 @@ import SettingScreen from './components/screen/SettingScreen';
 import { LoginHeader } from './components/layout/LoginHeader';
 import { colors } from './util/StyleUtil';
 import { useFonts } from 'expo-font';
+import { StackHeader } from './components/layout/StackHeader';
 
 
 const App = () => {
@@ -64,7 +65,14 @@ const App = () => {
                 <Stack.Screen name='Home' component={MainTabScreen} options={{ headerShown: false }}/>
                 <Stack.Screen name='UploadSelect' component={UploadSelectScreen} options={{ headerShown: false }}/>
                 <Stack.Screen name='GooglePicker' component={GooglePickerScreen} options={{ headerShown: false }}/>
-                <Stack.Screen name='Setting' component={SettingScreen} />
+                <Stack.Screen
+                  name='Setting'
+                  component={SettingScreen}
+                  options={{
+                    title: '설정',
+                    header: (props) => <StackHeader {...props}/>
+                  }}
+                />
               </Stack.Navigator>
           </NavigationContainer>
         </SafeAreaView>

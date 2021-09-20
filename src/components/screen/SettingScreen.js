@@ -86,7 +86,6 @@ const SettingScreen = () => {
         renderItem={renderItem}
         keyExtractor={item => item.text}
       />
-      <Text>SettingScreen</Text>
     </View>
   );
 }
