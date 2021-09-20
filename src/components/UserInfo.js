@@ -3,30 +3,31 @@ import {
     StyleSheet, Text, TouchableOpacity,
     View
 } from "react-native";
-import { style } from "styled-system";
 import { colors, fonts, height, width } from "../util/StyleUtil";
 
-const UserInfo = () => {
-
+const UserInfo = ({user}) => {
+  
   return (
+    user ?
     <View style={styles.container}>
+      {/*TODO: profile image setting*/}
       <View style={styles.profileImage}></View>
       <View style={styles.infoContainer}>
-
-      <View style={styles.info}>
-        <Text style={styles.infoType}>등급</Text>
-        <Text style={styles.infoContent}>일반회원</Text>
-      </View>
-      <View style={styles.info}>
-        <Text style={styles.infoType}>업로드</Text>
-        <Text style={styles.infoContent}>100</Text>
-      </View>
-      <View style={styles.info}>
-        <Text style={styles.infoType}>보유사진</Text>
-        <Text style={styles.infoContent}>2000</Text>
-      </View>
+        <View style={styles.info}>
+          <Text style={styles.infoType}>등급</Text>
+          <Text style={styles.infoContent}>일반회원</Text>
+        </View>
+        <View style={styles.info}>
+          <Text style={styles.infoType}>업로드</Text>
+          <Text style={styles.infoContent}>{user.numUploadedPhotos}</Text>
+        </View>
+        <View style={styles.info}>
+          <Text style={styles.infoType}>보유사진</Text>
+          <Text style={styles.infoContent}>{user.numAlbumPhotos}</Text>
+        </View>
       </View>
     </View>
+    : <View style={styles.container}></View>
   );
 };
 const styles = StyleSheet.create({
@@ -35,7 +36,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 360 * width,
     height: 75 * height,
-    borderWidth: 1 * width,
   },
   profileImage: {
     width: 50 * width,

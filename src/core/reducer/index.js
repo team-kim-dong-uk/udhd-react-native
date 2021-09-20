@@ -5,8 +5,9 @@ import photos from '../redux/photos';
 import upload from '../redux/upload';
 import loading from '../redux/loading';
 import isSearching from "../redux/searching";
-import tags from '../redux/tags'
+import tags from '../redux/tags';
+import user from '../redux/user';
 import googlePicker from '../redux/googlePicker';
 
-const rootReducer = combineReducers({auth, photo, photos, loading, googlePicker, upload, tags, isSearching});
+const rootReducer = combineReducers({auth, photo, photos, loading, googlePicker, upload, tags, user, isSearching});
 export default rootReducer;

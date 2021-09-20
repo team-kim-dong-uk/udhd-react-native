@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FlatList } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors, fonts, height, width } from '../../util/StyleUtil';
 import SettingIcon from '../../../assets/setting.svg';
 import UserInfo from '../UserInfo';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '../../core/redux/user';
 
 const MyPageScreen = () => {
+  const dispatch = useDispatch();
+  const { user, auth } = useSelector(state => state);
+
+  useEffect(() => {
+    if (!user.data) {
+      dispatch(getUser.request(auth.data.userId));
+    }
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.nickname}>Nickname</Text>
+        <Text style={styles.nickname}>{user.data && user.data.nickname}</Text>
         <SettingIcon
           width={22 * width}
           height={22 * height}
@@ -17,7 +28,7 @@ const MyPageScreen = () => {
           style={styles.settingIcon}
         />
       </View>
-      <UserInfo/>
+      <UserInfo user={user.data}/>
       <FlatList/>
     </View>
   );
