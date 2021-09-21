@@ -4,10 +4,12 @@ import {
     View
 } from "react-native";
 
-const Tag = ({text, onPressTag}) => {
+const Tag = ({text, onPressTag, onLayout}) => {
 
     return (
-        <TouchableOpacity activeOpacity = { 0.5 } onPress={() => onPressTag(text)}>
+        <TouchableOpacity activeOpacity = { 0.5 }
+                          onPress={() => onPressTag(text)}
+                          onLayout={onLayout}>
             <View style={styles.tagContainer}>
                 <Text>{text}</Text>
             </View>
