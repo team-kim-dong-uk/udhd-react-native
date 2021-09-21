@@ -76,7 +76,6 @@ const PhotoGrid = ({show, type}) => {
         key={numCols}
         onEndReached={loadMorePhotos}
         onEndReachedThreshold={0.01}
-        ListFooterComponent={<View style={{width: 360 * width, height: 65 * height}}/>}
       />
     </View>
   );
