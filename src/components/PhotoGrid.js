@@ -71,12 +71,12 @@ const PhotoGrid = ({show, type}) => {
         columnWrapperStyle={{justifyContent:'space-between'}}
         data={data}
         renderItem={renderItem}
-        keyExtractor={item => item.photoId}
+        keyExtractor={item => item.albumId || item.photoId}
         numColumns={numCols}
         key={numCols}
         onEndReached={loadMorePhotos}
         onEndReachedThreshold={0.01}
-        ListFooterComponent={<View style={{height: 65}}/>}
+        ListFooterComponent={<View style={{width: 360 * width, height: 65 * height}}/>}
       />
     </View>
   );
