@@ -9,6 +9,9 @@ import Tag from "./Tag";
 const PhotoTagBox = ({style, tags}) => {
     const [extended, setExtended] = useState(false);
     const [tagLines, setTagLines] = useState([]);
+
+    const [tempSize, setTempSize] = useState(0);
+
     const windowWidth = Dimensions.get('window').width;
     const onChangeExtended = useCallback((e) => {
         setExtended((prev) => !prev);
@@ -37,6 +40,7 @@ const PhotoTagBox = ({style, tags}) => {
         return 2*space + textSize*text.length;
     }
 
+    // TODO 얘가 component 보다 로딩이 늦음
     useEffect(() => {
         const tagBoxSize = windowWidth * 0.8;
         let resultLines = [];
@@ -55,24 +59,33 @@ const PhotoTagBox = ({style, tags}) => {
         resultLines.push(line);
         setTagLines(resultLines);
     }, [])
-        // TODO 태그 줄바꾸기!!!!!!!
+
     return (
         <View style={extendStyle()}>
             <View style={styles.container}>
-                {tagLines?.map((line) => {
-                    console.log("line is :" + line)
-                    return(
-                        <View style={styles.tagList}>
-                            {line?.map((tag) => {
-                                console.log("tag is :" + tag)
-                                return (
-                                    <Tag key={tag} text={tag}/>
-                                )
-                            })}
-                        </View>
-                    )
-                })}
-                <Tag key="0" text="[업]" onPressTag={onChangeExtended} />
+                <View style={styles.tagBox}>
+                    {extended && tagLines?.map((line) => {
+                        return (
+                            <View style={styles.tagLine}>
+                                {line?.map((tag) => {
+                                    return (<Tag key={tag} text={tag}/>
+                                    )
+                                })}
+                            </View>
+                        )
+                    })}
+                    {!extended && <View style={styles.tagLine}>
+                        {tagLines[0].map((tag)=>{
+                            return (
+                                <Tag key={tag} text={tag}/>
+                            )
+                        })}
+                    </View>
+                    }
+                </View>
+                {tagLines?.length > 1 && (
+                    <Tag key="0" text="[업]" onPressTag={onChangeExtended} />
+                )}
             </View>
         </View>
     );
@@ -96,10 +109,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between'
     },
-    tagList:{
+    tagBox:{
         width: '80%',
         height: '100%',
-        backgroundColor: 'pink',
+        /*flexDirection: 'row',*/
+        alignItems: 'center',
+    },
+    tagLine: {
+        width: '100%',
+        height: 40,
         flexDirection: 'row',
         alignItems: 'center',
     }
