@@ -9,10 +9,8 @@ import Tag from "./Tag";
 const PhotoTagBox = ({style, tags}) => {
     const [extended, setExtended] = useState(false);
     const [tagLines, setTagLines] = useState([]);
-
-    const [tempSize, setTempSize] = useState(0);
-
     const windowWidth = Dimensions.get('window').width;
+
     const onChangeExtended = useCallback((e) => {
         setExtended((prev) => !prev);
     }, [extended])
@@ -40,7 +38,6 @@ const PhotoTagBox = ({style, tags}) => {
         return 2*space + textSize*text.length;
     }
 
-    // TODO 얘가 component 보다 로딩이 늦음
     useEffect(() => {
         const tagBoxSize = windowWidth * 0.8;
         let resultLines = [];
@@ -75,7 +72,7 @@ const PhotoTagBox = ({style, tags}) => {
                         )
                     })}
                     {!extended && <View style={styles.tagLine}>
-                        {tagLines[0].map((tag)=>{
+                        {tagLines[0]?.map((tag)=>{
                             return (
                                 <Tag key={tag} text={tag}/>
                             )
@@ -84,7 +81,9 @@ const PhotoTagBox = ({style, tags}) => {
                     }
                 </View>
                 {tagLines?.length > 1 && (
-                    <Tag key="0" text="[업]" onPressTag={onChangeExtended} />
+                    <View style={{height:'100%', marginTop: 20}}>
+                        <Tag key="0" text="[업]" onPressTag={onChangeExtended}/>
+                    </View>
                 )}
             </View>
         </View>
