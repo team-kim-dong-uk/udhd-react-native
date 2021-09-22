@@ -8,9 +8,6 @@ import Tag from "./Tag";
 
 const PhotoTagBox = ({style, tags}) => {
     const [extended, setExtended] = useState(false);
-    const [tagLines, setTagLines] = useState([]);
-    const windowWidth = Dimensions.get('window').width;
-
     const onChangeExtended = useCallback((e) => {
         setExtended((prev) => !prev);
     }, [extended])
@@ -32,36 +29,12 @@ const PhotoTagBox = ({style, tags}) => {
             }
         }
     };
-    const getTagSize = (text) => {
-        const space = 11;
-        const textSize = 12;
-        return 2*space + textSize*text.length;
-    }
-
-    useEffect(() => {
-        const tagBoxSize = windowWidth * 0.8;
-        let resultLines = [];
-        let line = [];
-        let sumSize = 0;
-        tags?.map((tag) => {
-            sumSize += getTagSize(tag);
-            if(sumSize <= tagBoxSize){
-                line.push(tag);
-            } else {
-                resultLines.push(line);
-                line = [tag];
-                sumSize = getTagSize(tag);
-            }
-        })
-        resultLines.push(line);
-        setTagLines(resultLines);
-    }, [])
 
     return (
         <View style={extendStyle()}>
             <View style={styles.container}>
                 <View style={styles.tagBox}>
-                    {extended && tagLines?.map((line) => {
+                    {extended && tags?.map((line) => {
                         return (
                             <View style={styles.tagLine}>
                                 {line?.map((tag) => {
@@ -71,16 +44,17 @@ const PhotoTagBox = ({style, tags}) => {
                             </View>
                         )
                     })}
-                    {!extended && <View style={styles.tagLine}>
-                        {tagLines[0]?.map((tag)=>{
-                            return (
-                                <Tag key={tag} text={tag}/>
-                            )
-                        })}
-                    </View>
+                    {!extended && tags &&
+                        <View style={styles.tagLine}>
+                            {tags[0]?.map((tag)=>{
+                                return (
+                                    <Tag key={tag} text={tag}/>
+                                )
+                            })}
+                        </View>
                     }
                 </View>
-                {tagLines?.length > 1 && (
+                {tags?.length > 1 && (
                     <View style={{height:'100%', marginTop: 20}}>
                         <Tag key="0" text="[업]" onPressTag={onChangeExtended}/>
                     </View>
