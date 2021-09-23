@@ -27,7 +27,7 @@ const PhotoScreen = ({route, navigation}) => {
     }, [photo])
 
     useEffect(() => {
-        if(route.params.photoId == photo.data.photoId)
+        if(route.params.photoId === photo.data?.photoId)
             setTagLoading(false);
     }, [tagLoading, photo])
 
