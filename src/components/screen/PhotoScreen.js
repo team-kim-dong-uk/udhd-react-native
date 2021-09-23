@@ -61,7 +61,12 @@ const PhotoScreen = ({route, navigation}) => {
         <UdhdHeader/>
           {!searching.data && (
               <View style={styles.container}>
-                  <Pressable onPress={() => navigation.goBack()}
+                  <Pressable onPress={() => {
+                                  navigation.navigate('PhotoFull', {
+                                      photoId: route.params?.photoId,
+                                      image: route.params?.image
+                                  });
+                              }}
                              style={styles.photoContainer}>
                       <Image
                           source={{uri: route.params.image}}

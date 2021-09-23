@@ -20,6 +20,7 @@ import { SafeAreaView } from 'react-native';
 import {finishSearching} from "./core/redux/searching";
 import MainTabScreen from "./components/screen/MainTabScreen";
 import PhotoScreen from "./components/screen/PhotoScreen";
+import PhotoFullScreen from "./components/screen/PhotoFullScreen";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -47,6 +48,9 @@ const App = () => {
                   <Stack.Screen name='MainTab' component={MainTabScreen} options={{ headerShown: false }}/>
                   <Stack.Screen name="PhotoDetail"
                                 component={PhotoScreen}
+                                options={{headerShown: false}}/>
+                  <Stack.Screen name="PhotoFull"
+                                component={PhotoFullScreen}
                                 options={{headerShown: false}}/>
               </Stack.Navigator>
           </NavigationContainer>
