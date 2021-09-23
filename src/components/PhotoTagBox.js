@@ -6,7 +6,7 @@ import {
 } from "react-native";
 import Tag from "./Tag";
 
-const PhotoTagBox = ({style, tags}) => {
+const PhotoTagBox = ({style, tags, isLoading}) => {
     const [extended, setExtended] = useState(false);
     const onChangeExtended = useCallback((e) => {
         setExtended((prev) => !prev);
@@ -34,7 +34,7 @@ const PhotoTagBox = ({style, tags}) => {
         <View style={extendStyle()}>
             <View style={styles.container}>
                 <View style={styles.tagBox}>
-                    {extended && tags?.map((line) => {
+                    {!isLoading && extended && tags?.map((line) => {
                         return (
                             <View style={styles.tagLine}>
                                 {line?.map((tag) => {
@@ -44,7 +44,7 @@ const PhotoTagBox = ({style, tags}) => {
                             </View>
                         )
                     })}
-                    {!extended && tags &&
+                    {!isLoading && !extended && tags &&
                         <View style={styles.tagLine}>
                             {tags[0]?.map((tag)=>{
                                 return (
@@ -54,7 +54,7 @@ const PhotoTagBox = ({style, tags}) => {
                         </View>
                     }
                 </View>
-                {tags?.length > 1 && (
+                {!isLoading && tags?.length > 1 && (
                     <View style={{height:'100%', marginTop: 20}}>
                         <Tag key="0" text="[업]" onPressTag={onChangeExtended}/>
                     </View>
