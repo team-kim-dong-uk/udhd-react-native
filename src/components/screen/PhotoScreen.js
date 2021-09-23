@@ -1,7 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Image, Pressable, StyleSheet, View} from 'react-native';
 import { Dimensions } from 'react-native';
-import {useNavigation} from "@react-navigation/native";
 import UdhdHeader from "../layout/UdhdHeader";
 import Footer from "../Footer";
 import {useDispatch, useSelector} from "react-redux";
@@ -73,7 +72,6 @@ const PhotoScreen = ({route, navigation}) => {
                           style={styles.photo}
                       />
                   </Pressable>
-                  {/*<PhotoTagBox tags={photo.data?.tags}/>*/}
                   <PhotoTagBox tags={tagLines} isLoading={tagLoading}/>
                   <Footer/>
               </View>

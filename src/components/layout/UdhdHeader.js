@@ -1,12 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-    Alert, BackHandler,
+    Alert,
     FlatList,
     Image,
     Pressable,
     StyleSheet,
     Text, ToastAndroid,
-    TouchableHighlight,
     TouchableOpacity,
     View
 } from 'react-native';
@@ -32,15 +31,13 @@ const UdhdHeader = () => {
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
     const [recommendedTags, setRecommendedTags] = useState([]);
 
-    const onPressFilter = useCallback((e) => {
+    const onPressFilter = useCallback(() => {
         setShowFilter((prev) => !prev);
     }, []);
 
     const onPressTag = useCallback((e) => {
-        console.log("onPressTag e :" +e)
         dispatch(deleteSearchTags({tag: e}));
         forceUpdate();
-
     }, [searchTags, keyword]);
 
     /*
@@ -65,7 +62,7 @@ const UdhdHeader = () => {
 
     }, [searchTags])
 
-    const onSubmit = useCallback((e) => {
+    const onSubmit = useCallback(() => {
         if(searchTags.data.length === 0){
             ToastAndroid.show('검색에 사용될 태그가 없어요!', ToastAndroid.SHORT);
             return false;
@@ -106,7 +103,7 @@ const UdhdHeader = () => {
 
     //fetch tags at loading this component
     useEffect(() => {
-        if (tags.data.length == 0) {
+        if (tags.data.length === 0) {
             dispatch(getTags.request({userId: auth.data?.userId}));
         }
     }, [])
@@ -146,7 +143,7 @@ const UdhdHeader = () => {
                 {searching.data &&
                     (<Pressable onPress={onSubmit}>
                         <View>
-                            <Text>[검색]</Text>
+                            <Text>[검색]    </Text>
                         </View>
                     </Pressable>)
                 }

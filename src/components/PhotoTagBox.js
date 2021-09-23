@@ -1,17 +1,16 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useState} from "react";
 import {
-    Dimensions,
-    StyleSheet, Text, ToastAndroid,
+    StyleSheet,
     View
 } from "react-native";
 import Tag from "./Tag";
-import {deleteSearchTags, setSearchTags} from "../core/redux/searchTags";
+import {setSearchTags} from "../core/redux/searchTags";
 import {useDispatch} from "react-redux";
 
-const PhotoTagBox = ({style, tags, isLoading}) => {
+const PhotoTagBox = ({tags, isLoading}) => {
     const dispatch = useDispatch();
     const [extended, setExtended] = useState(false);
-    const onChangeExtended = useCallback((e) => {
+    const onChangeExtended = useCallback(() => {
         setExtended((prev) => !prev);
     }, [extended])
 
