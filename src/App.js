@@ -33,8 +33,10 @@ const App = () => {
     }
 
     useEffect(() => {
-        BackHandler.removeEventListener('hardwareBackPress', onBackPressFromSearch);
         BackHandler.addEventListener('hardwareBackPress', onBackPressFromSearch);
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', onBackPressFromSearch)
+        }
     }, [searching]);
 
   return (
