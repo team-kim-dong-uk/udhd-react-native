@@ -32,9 +32,6 @@ const UdhdHeader = () => {
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
     const [recommendedTags, setRecommendedTags] = useState([]);
 
-    const startSearch = () => {dispatch(startSearching());}
-    const finishSearch = () => {dispatch(finishSearching());}
-
     const onPressFilter = useCallback((e) => {
         setShowFilter((prev) => !prev);
     }, []);
@@ -79,13 +76,13 @@ const UdhdHeader = () => {
         }));
         console.log("searchTags at submit  : " + searchTags)
         setKeyword('');
-        finishSearch();
+        dispatch(finishSearching());
     }, [keyword, photos]);
 
     // when keyword is being changed, state must be searching
     const detectSearching = useCallback(() => {
         if(!searching.data){
-            startSearch();
+            dispatch(startSearching());
         }
     }, [keyword])
 
@@ -129,7 +126,7 @@ const UdhdHeader = () => {
             )}
             <View style={styles.searchContainer}>
                 {searching.data &&
-                    (<Pressable onPress={finishSearch}>
+                    (<Pressable onPress={()=>dispatch(finishSearching())}>
                         <View>
                             <Text>[뒤로]</Text>
                         </View>
@@ -144,7 +141,7 @@ const UdhdHeader = () => {
                                onChangeKeyword={onChangeKeyword}
                                onChange={detectSearching}
                                onSubmit={onSubmit}
-                               onFocus={startSearch}
+                               onFocus={()=>dispatch(startSearching())}
                                 />
                 {searching.data &&
                     (<Pressable onPress={onSubmit}>
