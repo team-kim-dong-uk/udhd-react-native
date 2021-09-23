@@ -21,10 +21,16 @@ const initialState = {
 export default handleActions(
     {
         [SET_SEARCH_TAG]: (state, action) => {
-            return {
-                ...state,
-                data: state.data.concat(action.payload.tag)
-            };
+            if(state.data.includes(action.payload.tag))
+                return {
+                    ...state,
+                    data: state.data
+                }
+            else
+                return {
+                    ...state,
+                    data: state.data.concat(action.payload.tag)
+                };
         },
         [DELETE_SEARCH_TAG]: (state, action) => {
             console.log(JSON.stringify(action));

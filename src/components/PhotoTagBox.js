@@ -5,12 +5,19 @@ import {
     View
 } from "react-native";
 import Tag from "./Tag";
+import {deleteSearchTags, setSearchTags} from "../core/redux/searchTags";
+import {useDispatch} from "react-redux";
 
 const PhotoTagBox = ({style, tags, isLoading}) => {
+    const dispatch = useDispatch();
     const [extended, setExtended] = useState(false);
     const onChangeExtended = useCallback((e) => {
         setExtended((prev) => !prev);
     }, [extended])
+
+    const onPressTag = useCallback((tag) => {
+        dispatch(setSearchTags({tag: tag}));
+    }, []);
 
     const extendStyle = function() {
         if(extended){
@@ -38,7 +45,7 @@ const PhotoTagBox = ({style, tags, isLoading}) => {
                         return (
                             <View style={styles.tagLine}>
                                 {line?.map((tag) => {
-                                    return (<Tag key={tag} text={tag}/>
+                                    return (<Tag key={tag} text={tag} onPressTag={onPressTag}/>
                                     )
                                 })}
                             </View>
@@ -48,7 +55,7 @@ const PhotoTagBox = ({style, tags, isLoading}) => {
                         <View style={styles.tagLine}>
                             {tags[0]?.map((tag)=>{
                                 return (
-                                    <Tag key={tag} text={tag}/>
+                                    <Tag key={tag} text={tag} onPressTag={onPressTag}/>
                                 )
                             })}
                         </View>
