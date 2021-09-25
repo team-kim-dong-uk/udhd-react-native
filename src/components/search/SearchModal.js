@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
     FlatList,
     Pressable,
@@ -18,11 +18,14 @@ import RecommendTag from "./RecommendTag";
 import { colors, fonts, height, width } from '../../util/StyleUtil';
 import BackButton from '../../../assets/back-button.svg';
 import { getTags } from '../../core/redux/tags';
+import { TextInput } from 'react-native';
+import CancelIcon from '../../../assets/cancel-icon-round.svg';
 
 const SearchModal = () => {
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
     const dispatch = useDispatch();
+    const inputRef = useRef();
     const { auth, photos, tags, isSearching } = useSelector(state => state);
 
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
@@ -36,6 +39,11 @@ const SearchModal = () => {
     const onRemoveTag = useCallback((itemToRemove) => {
       setSearchTags([...searchTags.filter(item => !(itemToRemove.keyword === item.keyword && itemToRemove.type === item.type))])
     }, [searchTags]);
+
+    const onClearInput = () => {
+      inputRef.current.clear();
+      inputRef.current.blur();
+    }
 
     /*
     * 1. duplicated
@@ -115,11 +123,11 @@ const SearchModal = () => {
     };
 
   return (
-    //TODO: modal 프레임 스타일 수정(현재 오른쪽 아래로 약간 밀림)
     <ModalTemplate
       style={styles.container}
       show={isSearching.data}
       onControlModal={finishSearch}
+      onShow={()=>{inputRef.current.focus()}}
     >
         <View style={styles.headerContainer}>
           <Pressable style={styles.backButton} onPress={()=>finishSearch()}>
@@ -129,14 +137,25 @@ const SearchModal = () => {
               viewBox='0 0 40 80'
             />
           </Pressable>
-          <SearchBox
-            keyword={keyword}
-            onChangeKeyword={onChangeKeyword}
-            onChange={detectSearching}
-            onSubmit={onSubmit}
-            onFocus={startSearch}
-            style={styles.searchBox}
-          />
+          <View style={styles.searchBox}>
+            <TextInput
+              style={styles.input}
+              placeholder="검색어를 입력해주세요"
+              onChangeText={onChangeKeyword}
+              value={keyword}
+              onFocus={startSearch}
+              onSubmitEditing={onSubmit}
+              selectionColor={colors.black}
+              ref={inputRef}
+            />
+            <Pressable style={styles.cancelIcon} onPress={onClearInput}>
+              <CancelIcon
+                width={15 * width}
+                height={15 * height}
+                viewBox='0 0 60 60'
+              />
+            </Pressable>
+          </View>
           <Pressable onPress={onSubmit} >
             <Text style={styles.finishSearchBtn}>완료</Text>
           </Pressable>
@@ -198,7 +217,29 @@ const styles = StyleSheet.create({
     marginLeft: 15 * width,
   },
   searchBox: {
+    width: 260 * width,
+    height: 30 * height,
+    borderRadius: 5 * width,
+    backgroundColor: colors.inputGrey,
+    flexDirection: 'row',
     marginLeft: 15 * width,
+  },
+  input: {
+    width: '100%',
+    fontFamily: fonts.NotoSansCJKkr,
+    fontSize: 12 * width,
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    letterSpacing: 0,
+    textAlign: 'left',
+    textAlignVertical: 'center',
+    color: colors.black,
+    paddingLeft: 10 * width,
+  },
+  cancelIcon: {
+    position: 'absolute',
+    right: 10 * width,
+    top: 7 * height,
   },
   finishSearchBtn: {
     width: 40 * width,
