@@ -9,7 +9,7 @@ import UserIcon from '../../../assets/user-icon-no-border.svg';
 import TagIcon from '../../../assets/tag-icon-no-border.svg';
 import { Pressable } from "react-native";
 
-const Tag = ({text, type, onPressTag}) => {
+const Tag = ({text, type, onRemoveTag}) => {
 
     return (
       <View style={styles.tagContainer}>
@@ -29,7 +29,7 @@ const Tag = ({text, type, onPressTag}) => {
           : null
         }
         <Text style={styles.text}>{text}</Text>
-        <Pressable onPress={() => onPressTag(text)}>
+        <Pressable onPress={() => onRemoveTag({type, keyword: text})}>
           <CancelIcon
             width={12 * width}
             height={12 * height}

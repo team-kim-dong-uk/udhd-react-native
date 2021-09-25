@@ -11,7 +11,7 @@ import ModalTemplate from "../ModalTemplate";
 import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
 import { getSearchPhotos} from "../../core/redux/photos";
-import Tag from "./Tag";
+import Tag from "./SelectedTag";
 import { useNavigation } from '@react-navigation/native';
 import {finishSearching, startSearching} from "../../core/redux/searching";
 import RecommendTag from "./RecommendTag";
@@ -33,14 +33,9 @@ const SearchModal = () => {
     const startSearch = () => {dispatch(startSearching());}
     const finishSearch = () => {dispatch(finishSearching());}
 
-    const onPressTag = useCallback((e) => {
-        let idx = searchTags.indexOf(e);
-        if(idx !== -1 ){
-            searchTags.splice(searchTags.indexOf(e), 1);
-            setSearchTags(searchTags);
-            forceUpdate();
-        }
-    }, [searchTags, keyword]);
+    const onRemoveTag = useCallback((itemToRemove) => {
+      setSearchTags([...searchTags.filter(item => !(itemToRemove.keyword === item.keyword && itemToRemove.type === item.type))])
+    }, [searchTags]);
 
     /*
     * 1. duplicated
@@ -77,7 +72,7 @@ const SearchModal = () => {
         console.log("searchTags at submit  : " + searchTags)
         setKeyword('');
         finishSearch();
-    }, [keyword, photos]);
+    }, [keyword, searchTags]);
 
     // when keyword is being changed, state must be searching
     const detectSearching = useCallback(() => {
@@ -148,7 +143,7 @@ const SearchModal = () => {
         </View>
         <View style={styles.tagBox}>
           {searchTags.map(({type, keyword}) => {
-              return <Tag key={keyword} text={keyword} type={type} onPressTag={onPressTag}/>
+              return <Tag key={keyword} text={keyword} type={type} onRemoveTag={onRemoveTag}/>
           })}
         </View>
         <View style={styles.searchTypeContainer}>
