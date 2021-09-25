@@ -124,88 +124,62 @@ const SearchModal = () => {
 
     // rendering text on FlatList that show recommended tags
     const renderItem = ({ item }) => {
+      console.log(item);
+      // <RecommendTag item={item} onPress={addSearchTags}/>
+      // <RecommendTag item={item} onPress={addSearchTags}/>
         return (
-            <RecommendTag item={item} onPress={addSearchTags}/>
+        <RecommendTag item={item} onPress={addSearchTags}/>
         )
     };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Pressable style={styles.backButton} onPress={() => {}}>
-          <BackButton
-            width={10 * width}
-            height={20 * height}
-            viewBox='0 0 40 80'
-          />
-        </Pressable>
-        <SearchBox
-          keyword={keyword}
-          onChangeKeyword={onChangeKeyword}
-          onChange={detectSearching}
-          onSubmit={onSubmit}
-          onFocus={startSearch}
-          style={styles.searchBox}
-        />
-        <Pressable onPress={()=>{}}>
-          <Text style={styles.finishSearchBtn}>완료</Text>
-        </Pressable>
-      </View>
-        {/* <View style={styles.headerContainer}>
-           
-                <View style={styles.tagBox}>
-                {searchTags.map((text) => {
-                    return <Tag key={text} text={text} onPressTag={onPressTag}/>
-                })}
-                </View>
-                    <SearchBox keyword={keyword}
-                               onChangeKeyword={onChangeKeyword}
-                               onChange={detectSearching}
-                               onSubmit={onSubmit}
-                               onFocus={startSearch}
-                                />
-                {isSearching.data &&
-                    (<Pressable onPress={onSubmit}>
-                        <View>
-                            <Text>[검색]</Text>
-                        </View>
-                    </Pressable>)
-                }
-            </View>
-            {!isSearching.data && (
-            <View style={styles.upperTap}>
-                <View>
-                    <TouchableOpacity activeOpacity = { 0.5 } onPress={onPressFilter}>
-                        <Image style={styles.upperIcon}
-                               source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
-                    </TouchableOpacity>
-                    {showFilter && (
-                        <ModalTemplate style={styles.filter} show={showFilter} onControlModal={onPressFilter}>
-                            <Pressable onPress={()=>{console.log("make function here")}}><Text style={styles.eachMenu}>hi?</Text></Pressable>
-                            <Pressable><Text style={styles.eachMenu}>hi!</Text></Pressable>
-                            <Pressable><Text style={styles.eachMenu}>Insert Here!</Text></Pressable>
-                        </ModalTemplate>
-                    )}
-                </View>
-                <TouchableOpacity activeOpacity = { 0.5 } onPress={() => {navigation.navigate('UploadSelect')}}>
-                <Image style={styles.upperIcon}
-                       source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
-                </TouchableOpacity>
-            </View>
-            )}
-        </View>
-        {
-            (isSearching.data &&
-            <FlatList
-                data={recommendedTags}
-                renderItem={renderItem}
-                keyExtractor={item => item.keyword}
-                ListFooterComponent={<View style={{height: 65}}/>}
+    //TODO: modal 프레임 스타일 수정(현재 오른쪽 아래로 약간 밀림)
+    <ModalTemplate
+      style={styles.container}
+      show={isSearching.data}
+      onControlModal={finishSearch}
+    >
+        <View style={styles.headerContainer}>
+          <Pressable style={styles.backButton} onPress={()=>finishSearch()}>
+            <BackButton
+              width={10 * width}
+              height={20 * height}
+              viewBox='0 0 40 80'
             />
-            )
-        } */}
-
-    </View>
+          </Pressable>
+          <SearchBox
+            keyword={keyword}
+            onChangeKeyword={onChangeKeyword}
+            onChange={detectSearching}
+            onSubmit={onSubmit}
+            onFocus={startSearch}
+            style={styles.searchBox}
+          />
+          <Pressable onPress={()=>{alert('hoi')}} >
+            <Text style={styles.finishSearchBtn}>완료</Text>
+          </Pressable>
+        </View>
+        <View style={styles.tagBox}>
+          {searchTags.map((text) => {
+              return <Tag key={text} text={text} onPressTag={onPressTag}/>
+          })}
+        </View>
+        <View style={styles.selectTypeContainer}>
+          <View style={styles.selectTypeOption}>
+            <Text style={styles.selectTypeText}>태그</Text>
+          </View>
+          <View style={styles.selectTypeOption}>
+            <Text style={styles.selectTypeText}>업로더</Text>
+          </View>
+        </View>
+        <FlatList
+          contentContainerStyle={{width: 360*width,height:170*height}}
+          data={recommendedTags}
+          renderItem={renderItem}
+          keyExtractor={item => item.keyword}
+          ListFooterComponent={<View style={{height: 65}}/>}
+        />
+    </ModalTemplate>
   );
 }
 
@@ -214,10 +188,10 @@ const styles = StyleSheet.create({
     width: 360 * width,
     height: 640 * height,
     backgroundColor: colors.grey,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    zIndex: 999,
+    margin: 0,
+    padding: 0,
+    flex: 1,
+    alignItems: 'center',
   },
   headerContainer: {
     width: 360 * width,
@@ -227,12 +201,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   backButton: {
+    width: 10 * width,
+    height: 20 * height,
     marginLeft: 15 * width,
   },
   searchBox: {
     marginLeft: 15 * width,
   },
   finishSearchBtn: {
+    width: 40 * width,
+    height: 20 * height,
     fontFamily: fonts.NotoSansCJKkr,
     fontSize: 14 * width,
     fontWeight: "500",
@@ -243,18 +221,37 @@ const styles = StyleSheet.create({
     color: colors.darkBlue,
     marginLeft: 15 * width,
   },
-    searchContainer: {
-        flex:1,
-        /*width: 170,*/
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingLeft: 5
-    },
-    tagBox:{
-        /*maxWidth: '50%',*/
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
+  tagBox:{
+    width: 360 * width,
+    height: 40 * height,
+    backgroundColor: colors.white,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  selectTypeContainer: {
+    width: 360 * width,
+    height: 35 * height,
+    flexDirection: 'row',
+  },
+  selectTypeOption: {
+    width: 180 * width,
+    height: 35 * height,
+    backgroundColor: colors.white,
+    borderBottomColor: colors.orange,
+    borderBottomWidth: 2 * height,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectTypeText: {
+    fontFamily: fonts.NotoSansCJKkr,
+    fontSize: 14 * width,
+    fontWeight: "500",
+    fontStyle: "normal",
+    lineHeight: 22 * height,
+    letterSpacing: 0,
+    textAlign: "center",
+    color: colors.orange,
+  },
     upperTap: {
         flex:1,
         right: 0,
@@ -267,7 +264,6 @@ const styles = StyleSheet.create({
       width: 30 * width,
       height: 30 * height,
       marginLeft: 15 * width,
-      //
     },
     upperIcon: {
         width: 50,

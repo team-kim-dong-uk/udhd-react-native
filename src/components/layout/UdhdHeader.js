@@ -24,6 +24,7 @@ import { colors, fonts, height, width } from '../../util/StyleUtil';
 import FilterIcon from '../../../assets/filter-icon.svg';
 import Filter from '../search/Filter';
 import SearchModal from '../search/SearchModal';
+import { Modal } from 'react-native';
 
 const UdhdHeader = () => {
     const [, updateState] = React.useState();
@@ -159,7 +160,6 @@ const UdhdHeader = () => {
           <Text style={{fontSize: 30 * width}}>+</Text>
         </TouchableOpacity>
       </View>
-
     </View>
   );
 }
