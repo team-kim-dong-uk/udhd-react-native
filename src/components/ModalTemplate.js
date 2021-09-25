@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 
-const ModalTemplate = ({children, show, onControlModal, style}) => {
+const ModalTemplate = ({children, show, onControlModal, onShow, style}) => {
 
     return (
         <Modal
@@ -14,6 +14,7 @@ const ModalTemplate = ({children, show, onControlModal, style}) => {
             visible={show}
             onRequestClose={onControlModal}
             onBackdropPress={onControlModal}
+            onShow={onShow}
             coverScreen={true}
             style={{margin: 0}}
         >
