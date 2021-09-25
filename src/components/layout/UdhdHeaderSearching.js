@@ -20,9 +20,7 @@ import {getTags} from "../../core/redux/tags";
 import { useNavigation } from '@react-navigation/native';
 import {finishSearching, startSearching} from "../../core/redux/searching";
 import RecommendTag from "../RecommendTag";
-import { colors, fonts, height, width } from '../../util/StyleUtil';
-import FilterIcon from '../../../assets/filter-icon.svg';
-import Filter from '../search/Filter';
+import { colors, height, width } from '../../util/StyleUtil';
 
 const UdhdHeader = () => {
     const [, updateState] = React.useState();
@@ -132,31 +130,72 @@ const UdhdHeader = () => {
 
   return (
     <View>
-      <View style={styles.headerContainer}>
-        <Image
-          style={styles.tinyLogo}
-          source={require('../../../assets/drawable-xxxhdpi/symbol_black.webp')}
-        />
-        <View style={styles.searchBox}>
-          <Text style={styles.searchBoxText}>검색어를 입력해주세요</Text>
+        <View style={styles.headerContainer}>
+            {!isSearching.data && (
+                <Image
+                    style={styles.tinyLogo}
+                    source={require('../../../assets/drawable-xxxhdpi/symbol_black.webp')}
+                />
+            )}
+            <View style={styles.searchContainer}>
+                {isSearching.data &&
+                    (<Pressable onPress={finishSearch}>
+                        <View>
+                            <Text>[뒤로]</Text>
+                        </View>
+                    </Pressable>)
+                }
+                <View style={styles.tagBox}>
+                {searchTags.map((text) => {
+                    return <Tag key={text} text={text} onPressTag={onPressTag}/>
+                })}
+                </View>
+                    <SearchBox keyword={keyword}
+                               onChangeKeyword={onChangeKeyword}
+                               onChange={detectSearching}
+                               onSubmit={onSubmit}
+                               onFocus={startSearch}
+                                />
+                {isSearching.data &&
+                    (<Pressable onPress={onSubmit}>
+                        <View>
+                            <Text>[검색]</Text>
+                        </View>
+                    </Pressable>)
+                }
+            </View>
+            {!isSearching.data && (
+            <View style={styles.upperTap}>
+                <View>
+                    <TouchableOpacity activeOpacity = { 0.5 } onPress={onPressFilter}>
+                        <Image style={styles.upperIcon}
+                               source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
+                    </TouchableOpacity>
+                    {showFilter && (
+                        <ModalTemplate style={styles.filter} show={showFilter} onControlModal={onPressFilter}>
+                            <Pressable onPress={()=>{console.log("make function here")}}><Text style={styles.eachMenu}>hi?</Text></Pressable>
+                            <Pressable><Text style={styles.eachMenu}>hi!</Text></Pressable>
+                            <Pressable><Text style={styles.eachMenu}>Insert Here!</Text></Pressable>
+                        </ModalTemplate>
+                    )}
+                </View>
+                <TouchableOpacity activeOpacity = { 0.5 } onPress={() => {navigation.navigate('UploadSelect')}}>
+                <Image style={styles.upperIcon}
+                       source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
+                </TouchableOpacity>
+            </View>
+            )}
         </View>
-        <TouchableOpacity onPress={onPressFilter} style={styles.filterIcon}>
-          <FilterIcon
-            width={24 * width}
-            height={24 * height}
-            viewBox='0 0 96 96'
+        {
+            (isSearching.data &&
+            <FlatList
+                data={recommendedTags}
+                renderItem={renderItem}
+                keyExtractor={item => item.keyword}
+                ListFooterComponent={<View style={{height: 65}}/>}
             />
-        </TouchableOpacity>
-        {showFilter && (
-            <Filter
-              showFilter={showFilter}
-              onPressFilter={onPressFilter}
-            />
-        )}
-        <TouchableOpacity onPress={()=>{}} style={styles.uploadIcon}>
-          <Text style={{fontSize: 30 * width}}>+</Text>
-        </TouchableOpacity>
-      </View>
+            )
+        }
 
     </View>
   );
@@ -169,37 +208,60 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: colors.white,
+        //
+    },
+    searchContainer: {
+        flex:1,
+        /*width: 170,*/
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 5
+    },
+    tagBox:{
+        /*maxWidth: '50%',*/
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    upperTap: {
+        flex:1,
+        right: 0,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        marginRight: 20,
     },
     tinyLogo:{
       width: 30 * width,
       height: 30 * height,
       marginLeft: 15 * width,
+      //
     },
-    searchBox: {
-        width: 202 * width,
-        height: 30 * height,
-        borderRadius: 5 * width,
-        backgroundColor: colors.inputGrey,
-        marginLeft: 15 * width,
-        flexDirection: 'row',
-        alignItems: 'center',
+    upperIcon: {
+        width: 50,
+        height: 50,
     },
-    searchBoxText: {
-        fontFamily: fonts.NotoSansCJKkr,
-        fontSize: 11 * width,
-        fontWeight: "normal",
-        fontStyle: "normal",
-        letterSpacing: 0,
-        textAlign: "left",
-        color: colors.placeholderGrey,
-        marginLeft: 8 * width,
+    eachMenu:{
+        width: '100%',
+        height: 30
     },
-    filterIcon: {
-      marginLeft: 20 * width,
-    },
-    uploadIcon: {
-      marginLeft: 15 * width,
-    },
+    filter:{
+        position: 'absolute',
+        top: 35,
+        right: 40,
+        width: 100,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 5,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    }
 
 });
 
