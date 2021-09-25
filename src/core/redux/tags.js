@@ -1,5 +1,5 @@
-import { handleActions } from 'redux-actions';
-import { takeEvery } from 'redux-saga/effects';
+import { createAction, handleActions } from 'redux-actions';
+import { put, takeEvery } from 'redux-saga/effects';
 import createAsyncSaga, {
   asyncActionCreator,
   createAsyncAction,
@@ -11,16 +11,23 @@ const prefix = 'tags/';
 
 // 2. 액션타입에 대해서 정의합니다.
 const GET_TAGS = asyncActionCreator(`${prefix}GET_TAGS`);
+const SET_SELECTED_TAGS = `${prefix}SET_SELECTED_TAGS`;
 
 // 3. 액션함수에 대해서 정의합니다.
 export const getTags = createAsyncAction(GET_TAGS);
+export const setSelectedTags = createAction(SET_SELECTED_TAGS, ({tags}) => ({tags}));
 
 // 4. saga 비동기 관련 함수가 필요할 경우 작성 합니다. (optional) saga함수들의 모음은 최하단에 나열합니다.
 const getTagsSaga = createAsyncSaga(getTags, tagAPI.getTags);
 
+export function* setSelectedTagsSaga(action) {
+  yield put(setSelectedTags({tags: action.payload.tags}));
+}
+
 // 5. 초기 상태 정의
 const initialState = {
   data: [],
+  selected: [],
   loading: false,
   error: null,
 };
@@ -37,6 +44,10 @@ export default handleActions(
       [GET_TAGS.FAILURE]: (state, action) => ({
           ...state,
           error: action,
+      }),
+      [SET_SELECTED_TAGS]: (state, action) => ({
+        ...state,
+        selected: action.payload.tags,
       }),
   },
   initialState,

@@ -35,7 +35,7 @@ const SearchModal = () => {
 
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
     const [recommendedTags, setRecommendedTags] = useState([]);
-    const [searchTags, setSearchTags] = useState([]);
+    const [searchTags, setSearchTags] = useState(tags.selected);
     const [searchType, setSearchType] = useState('TAG');
 
     const startSearch = () => {dispatch(startSearching());}
@@ -154,7 +154,7 @@ const SearchModal = () => {
             onFocus={startSearch}
             style={styles.searchBox}
           />
-          <Pressable onPress={()=>{alert('hoi')}} >
+          <Pressable onPress={onSubmit} >
             <Text style={styles.finishSearchBtn}>완료</Text>
           </Pressable>
         </View>

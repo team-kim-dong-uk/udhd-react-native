@@ -5,6 +5,7 @@ import createAsyncSaga, {
   createAsyncAction,
 } from '../../util/redux/index';
 import * as photoAPI from '../../api/photoAPI';
+import { setSelectedTagsSaga } from './tags';
 
 // 1. 각 모듈별 함수 구분을 위한 prefix 각 모듈 파일명 + '/' 의 조합으로 구성합니다.
 const prefix = 'photos/';
@@ -74,5 +75,6 @@ export default handleActions(
 export function* photosSaga() {
   yield takeEvery(GET_ALBUM_PHOTOS.REQUEST, getAlbumPhotosSaga);
   yield takeEvery(GET_SEARCH_PHOTOS.REQUEST, getSearchPhotosSaga);
+  yield takeEvery(GET_SEARCH_PHOTOS.REQUEST, setSelectedTagsSaga);
   yield takeEvery(GET_UPLOAD_PHOTOS.REQUEST, getUploadPhotosSaga);
 }
