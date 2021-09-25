@@ -6,13 +6,11 @@ import {
     Text, ToastAndroid,
     View
 } from 'react-native';
-import SearchBox from "./SearchBox";
 import ModalTemplate from "../ModalTemplate";
 import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
 import { getPhotos } from "../../core/redux/photos";
 import Tag from "./SelectedTag";
-import { useNavigation } from '@react-navigation/native';
 import {finishSearching, startSearching} from "../../core/redux/searching";
 import RecommendTag from "./RecommendTag";
 import { colors, fonts, height, width } from '../../util/StyleUtil';

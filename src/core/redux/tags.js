@@ -21,7 +21,7 @@ export const setSelectedTags = createAction(SET_SELECTED_TAGS, ({type, tags}) =>
 const getTagsSaga = createAsyncSaga(getTags, tagAPI.getTags);
 
 export function* setSelectedTagsSaga(action) {
-  yield put(setSelectedTags({tags: action.payload.tags}));
+  yield put(setSelectedTags(action.payload));
 }
 
 // 5. 초기 상태 정의
