@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import SearchBox from "../SearchBox";
+import SearchBox from "../search/SearchBox";
 import ModalTemplate from "../ModalTemplate";
 import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
@@ -23,6 +23,7 @@ import RecommendTag from "../RecommendTag";
 import { colors, fonts, height, width } from '../../util/StyleUtil';
 import FilterIcon from '../../../assets/filter-icon.svg';
 import Filter from '../search/Filter';
+import SearchModal from '../search/SearchModal';
 
 const UdhdHeader = () => {
     const [, updateState] = React.useState();
@@ -137,9 +138,10 @@ const UdhdHeader = () => {
           style={styles.tinyLogo}
           source={require('../../../assets/drawable-xxxhdpi/symbol_black.webp')}
         />
-        <View style={styles.searchBox}>
+        <TouchableOpacity style={styles.searchBox} onPress={startSearch}>
           <Text style={styles.searchBoxText}>검색어를 입력해주세요</Text>
-        </View>
+        </TouchableOpacity>
+        {isSearching.data && <SearchModal/>}
         <TouchableOpacity onPress={onPressFilter} style={styles.filterIcon}>
           <FilterIcon
             width={24 * width}

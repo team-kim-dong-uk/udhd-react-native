@@ -10,7 +10,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import SearchBox from "../search/SearchBox";
+import SearchBox from "./SearchBox";
 import ModalTemplate from "../ModalTemplate";
 import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
@@ -20,9 +20,10 @@ import {getTags} from "../../core/redux/tags";
 import { useNavigation } from '@react-navigation/native';
 import {finishSearching, startSearching} from "../../core/redux/searching";
 import RecommendTag from "../RecommendTag";
-import { colors, height, width } from '../../util/StyleUtil';
+import { colors, fonts, height, width } from '../../util/StyleUtil';
+import BackButton from '../../../assets/back-button.svg';
 
-const UdhdHeader = () => {
+const SearchModal = () => {
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
     const dispatch = useDispatch();
@@ -129,22 +130,29 @@ const UdhdHeader = () => {
     };
 
   return (
-    <View>
-        <View style={styles.headerContainer}>
-            {!isSearching.data && (
-                <Image
-                    style={styles.tinyLogo}
-                    source={require('../../../assets/drawable-xxxhdpi/symbol_black.webp')}
-                />
-            )}
-            <View style={styles.searchContainer}>
-                {isSearching.data &&
-                    (<Pressable onPress={finishSearch}>
-                        <View>
-                            <Text>[뒤로]</Text>
-                        </View>
-                    </Pressable>)
-                }
+    <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <Pressable style={styles.backButton} onPress={() => {}}>
+          <BackButton
+            width={10 * width}
+            height={20 * height}
+            viewBox='0 0 40 80'
+          />
+        </Pressable>
+        <SearchBox
+          keyword={keyword}
+          onChangeKeyword={onChangeKeyword}
+          onChange={detectSearching}
+          onSubmit={onSubmit}
+          onFocus={startSearch}
+          style={styles.searchBox}
+        />
+        <Pressable onPress={()=>{}}>
+          <Text style={styles.finishSearchBtn}>완료</Text>
+        </Pressable>
+      </View>
+        {/* <View style={styles.headerContainer}>
+           
                 <View style={styles.tagBox}>
                 {searchTags.map((text) => {
                     return <Tag key={text} text={text} onPressTag={onPressTag}/>
@@ -195,21 +203,46 @@ const UdhdHeader = () => {
                 ListFooterComponent={<View style={{height: 65}}/>}
             />
             )
-        }
+        } */}
 
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    headerContainer: {
-        width: 360 * width,
-        height: 55 * height,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: colors.white,
-        //
-    },
+  container: {
+    width: 360 * width,
+    height: 640 * height,
+    backgroundColor: colors.grey,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 999,
+  },
+  headerContainer: {
+    width: 360 * width,
+    height: 55 * height,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.white,
+  },
+  backButton: {
+    marginLeft: 15 * width,
+  },
+  searchBox: {
+    marginLeft: 15 * width,
+  },
+  finishSearchBtn: {
+    fontFamily: fonts.NotoSansCJKkr,
+    fontSize: 14 * width,
+    fontWeight: "500",
+    fontStyle: "normal",
+    lineHeight: 22 * height,
+    letterSpacing: 0,
+    textAlign: "center",
+    color: colors.darkBlue,
+    marginLeft: 15 * width,
+  },
     searchContainer: {
         flex:1,
         /*width: 170,*/
@@ -265,4 +298,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default UdhdHeader;
+export default SearchModal;

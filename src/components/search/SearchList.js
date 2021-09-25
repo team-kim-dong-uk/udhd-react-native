@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPhotos } from '../core/redux/photos.js';
+import { getPhotos } from '../../core/redux/photos.js';
 import { useInView } from 'react-intersection-observer';
 import {
     FlatList,

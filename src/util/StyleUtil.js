@@ -10,6 +10,7 @@ export const colors = {
   checkboxGrey: '#F2F2F2',
   switchGrey: '#D2D2D2',
   blue: '#1E83DB',
+  darkBlue: '#121262',
   red: '#FF4A4A',
   kakaoYellow: '#FFDF00',
 };
