@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Image, Pressable, StyleSheet, View} from 'react-native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import { Dimensions } from 'react-native';
 import UdhdHeader from "../layout/UdhdHeader";
 import Footer from "../Footer";
 import {useDispatch, useSelector} from "react-redux";
 import PhotoTagBox from "../PhotoTagBox";
 import {getPhoto} from "../../core/redux/photo";
+import CommonHeader from "../layout/CommonHeader";
+import PhotoInformation from "../PhotoInformation";
 
 const PhotoScreen = ({route, navigation}) => {
     const {auth, searching, photo } = useSelector(state => state);
@@ -57,7 +59,9 @@ const PhotoScreen = ({route, navigation}) => {
 
   return (
       <View>
-        <UdhdHeader/>
+        {/*<UdhdHeader/>*/}
+          <CommonHeader title="이미지 상세" back="bottom">
+          </CommonHeader>
           {!searching.data && (
               <View style={styles.container}>
                   <Pressable onPress={() => {
@@ -72,8 +76,9 @@ const PhotoScreen = ({route, navigation}) => {
                           style={styles.photo}
                       />
                   </Pressable>
-                  <PhotoTagBox tags={tagLines} isLoading={tagLoading}/>
-                  <Footer/>
+                  {/*<PhotoTagBox tags={tagLines} isLoading={tagLoading}/>*/}
+                  {/*<Footer photoId={route.params?.photoId}/>*/}
+                  <PhotoInformation/>
               </View>
           )}
       </View>
