@@ -7,10 +7,15 @@ export const getPhoto = (photoId) => {
 export const getSearchPhotos = ({userId, tags, findAfter}) => {
     let query = `users/${userId}/search?tags=`;
     if (tags) {
+        const uploaderSearch = tags.filter(item => item.type === 'USER');
+        tags = tags.filter(item => item.type === 'TAG').map(item => item.keyword);
         query += tags.toString();
-    }
-    if (findAfter) {
-        query += `&findAfter=${findAfter}`;
+        if (uploaderSearch.length > 0) {
+            query += `&uploaderId=${uploaderSearch[0].userId}`
+        }
+        if (findAfter) {
+            query += `&findAfter=${findAfter}`;
+        }
     }
     return client.get(query);
 }
@@ -18,10 +23,15 @@ export const getSearchPhotos = ({userId, tags, findAfter}) => {
 export const getAlbumPhotos = ({userId, tags, findAfter}) => {
     let query = `users/${userId}/album?tags=`;
     if (tags) {
-        query += tags.toString();
-    }
-    if (findAfter) {
-        query += `&findAfter=${findAfter}`;
+        const uploaderSearch = tags.filter(item => item.type === 'USER');
+        tags = tags.filter(item => item.type === 'TAG').map(item => item.keyword);
+            query += tags.toString();
+            if (uploaderSearch.length > 0) {
+                query += `&uploaderId=${uploaderSearch[0].userId}`
+        }
+        if (findAfter) {
+            query += `&findAfter=${findAfter}`;
+        }
     }
     return client.get(query);
 }

@@ -31,7 +31,7 @@ const UdhdHeader = () => {
       <View style={styles.headerContainer}>
         <Image
           style={styles.tinyLogo}
-          source={require('../../../assets/drawable-xxxhdpi/symbol_black.webp')}
+          source={require('../../../assets/drawable-hdpi/symbol_black.webp')}
         />
         <TouchableOpacity style={styles.searchBox} onPress={startSearch}>
             { 

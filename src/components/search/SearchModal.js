@@ -49,14 +49,11 @@ const SearchModal = () => {
     * 1. duplicated
     * 2. blank
     * */
-    const addSearchTag = ({type, keyword}) => {
-      keyword = keyword.replace(/\s/g, "");
+    const addSearchTag = (item) => {
+      const keyword = item.keyword.replace(/\s/g, "");
         console.log("try to make tag :" + keyword)
         if(keyword !== '' && !searchTags.includes(keyword)) {
-           setSearchTags(searchTags => [
-                ...searchTags,
-                { type, keyword }
-            ]);
+           setSearchTags(searchTags => [ ...searchTags, item]);
            setKeyword("");
         } else if (tag === ''){
             ToastAndroid.show('공백을 입력할 수 없습니다.', ToastAndroid.SHORT);
