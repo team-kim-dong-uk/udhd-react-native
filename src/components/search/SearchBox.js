@@ -1,26 +1,19 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
-import { SearchIcon } from 'native-base';
-import {NativeBaseProvider} from "native-base/src/core/NativeBaseProvider";
-import  {finishSearching, startSearching} from "../../core/redux/searching";
-import {useDispatch, useSelector} from "react-redux";
+import React from 'react';
+import {StyleSheet, TextInput, View} from "react-native";
 import { colors, fonts, height, width } from '../../util/StyleUtil';
 
-const SearchBox = ({keyword, onChangeKeyword, onChange, onSubmit, onFocus, style}) => {
+const SearchBox = ({keyword, onChangeKeyword, onSubmit, onFocus, style}) => {
   return (
-    // <NativeBaseProvider>
       <View style={[styles.searchBox, style]}>
         <TextInput  //TODO: Text vertical align center
           style={styles.input}
           placeholder="검색어를 입력해주세요"
           onChangeText={onChangeKeyword}
-          onChange={onChange}
           value={keyword}
           onFocus={onFocus}
           onSubmitEditing={onSubmit}
         />
       </View>
-    // </NativeBaseProvider>
   )
 }
 

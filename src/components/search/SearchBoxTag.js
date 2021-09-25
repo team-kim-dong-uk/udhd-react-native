@@ -1,12 +1,11 @@
 import React from "react";
 import {
-    StyleSheet, Text, TouchableOpacity,
+    StyleSheet, Text,
     View
 } from "react-native";
 import { colors, fonts, height, width } from "../../util/StyleUtil";
 import UserIcon from '../../../assets/user-icon-white.svg';
 import TagIcon from '../../../assets/tag-icon-white.svg';
-import { Pressable } from "react-native";
 
 const SearchBoxTag = ({type, keyword}) => {
 

@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    StyleSheet, Text, TouchableOpacity,
+    StyleSheet, Text,
     View
 } from "react-native";
 import { colors, fonts, height, width } from "../../util/StyleUtil";

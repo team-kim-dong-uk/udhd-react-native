@@ -4,9 +4,9 @@ import {
     StyleSheet, Text,
     View
 } from "react-native";
-import { colors, fonts, height, width } from "../util/StyleUtil";
-import TagIcon from '../../assets/tag-icon.svg';
-import UserIcon from '../../assets/user-icon.svg';
+import { colors, fonts, height, width } from "../../util/StyleUtil";
+import TagIcon from '../../../assets/tag-icon.svg';
+import UserIcon from '../../../assets/user-icon.svg';
 
 const RecommendTag = ({item, onSelectTag}) => {
 

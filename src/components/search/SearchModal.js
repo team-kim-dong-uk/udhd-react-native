@@ -1,13 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-    Alert, BackHandler,
     FlatList,
-    Image,
     Pressable,
     StyleSheet,
     Text, ToastAndroid,
-    TouchableHighlight,
-    TouchableOpacity,
     View
 } from 'react-native';
 import SearchBox from "./SearchBox";
@@ -16,22 +12,18 @@ import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
 import { getSearchPhotos} from "../../core/redux/photos";
 import Tag from "./Tag";
-import {getTags} from "../../core/redux/tags";
 import { useNavigation } from '@react-navigation/native';
 import {finishSearching, startSearching} from "../../core/redux/searching";
-import RecommendTag from "../RecommendTag";
+import RecommendTag from "./RecommendTag";
 import { colors, fonts, height, width } from '../../util/StyleUtil';
 import BackButton from '../../../assets/back-button.svg';
+import { getTags } from '../../core/redux/tags';
 
 const SearchModal = () => {
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
     const dispatch = useDispatch();
     const { auth, photos, tags, isSearching } = useSelector(state => state);
-
-    const [showFilter, setShowFilter] = useState(false);
-
-    const navigation = useNavigation();
 
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
     const [recommendedTags, setRecommendedTags] = useState([]);
@@ -40,10 +32,6 @@ const SearchModal = () => {
 
     const startSearch = () => {dispatch(startSearching());}
     const finishSearch = () => {dispatch(finishSearching());}
-
-    const onPressFilter = useCallback((e) => {
-        setShowFilter((prev) => !prev);
-    }, []);
 
     const onPressTag = useCallback((e) => {
         let idx = searchTags.indexOf(e);
@@ -93,10 +81,10 @@ const SearchModal = () => {
 
     // when keyword is being changed, state must be searching
     const detectSearching = useCallback(() => {
-        if(!isSearching.data){
-            startSearch();
-        }
-    }, [keyword])
+      if(!isSearching.data){
+          startSearch();
+      }
+  }, [keyword])
 
 
     // when detect changing on keyword,
@@ -115,13 +103,13 @@ const SearchModal = () => {
         }
     }, [keyword]);
 
-
     //fetch tags at loading this component
     useEffect(() => {
-        if (tags.data.length == 0) {
-            dispatch(getTags.request({userId: auth.data?.userId}));
-        }
-    }, [])
+      if (tags.data.length == 0) {
+          dispatch(getTags.request({userId: auth.data?.userId}));
+      }
+  }, [])
+
 
     // rendering text on FlatList that show recommended tags
     const renderItem = ({ item }) => {
