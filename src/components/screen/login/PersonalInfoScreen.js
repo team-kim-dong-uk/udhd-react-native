@@ -27,6 +27,8 @@ const PersonalInfoScreen = () => {
       nickname: nicknameInput,
     }));
   }
+
+  
   
   return (
     <View style={styles.container}>

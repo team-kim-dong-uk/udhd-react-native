@@ -21,9 +21,12 @@ import MainTabScreen from './components/screen/MainTabScreen';
 import UploadSelectScreen from './components/screen/upload/UploadSelectScreen';
 import GooglePickerScreen from './components/screen/upload/GooglePickerScreen';
 import {finishSearching} from "./core/redux/searching";
+import SettingScreen from './components/screen/SettingScreen';
 import { LoginHeader } from './components/layout/LoginHeader';
 import { colors } from './util/StyleUtil';
 import { useFonts } from 'expo-font';
+import { StackHeader } from './components/layout/StackHeader';
+import SplashScreen from './components/screen/SplashScreen';
 
 
 const App = () => {
@@ -50,9 +53,7 @@ const App = () => {
 
   if (!fontsLoaded) {
     return (
-      <View>
-        <Text>Loading</Text>
-      </View>
+      <SplashScreen/>
     )
   }
   return (
@@ -63,6 +64,14 @@ const App = () => {
                 <Stack.Screen name='Home' component={MainTabScreen} options={{ headerShown: false }}/>
                 <Stack.Screen name='UploadSelect' component={UploadSelectScreen} options={{ headerShown: false }}/>
                 <Stack.Screen name='GooglePicker' component={GooglePickerScreen} options={{ headerShown: false }}/>
+                <Stack.Screen
+                  name='Setting'
+                  component={SettingScreen}
+                  options={{
+                    title: '설정',
+                    header: (props) => <StackHeader {...props}/>
+                  }}
+                />
               </Stack.Navigator>
           </NavigationContainer>
         </SafeAreaView>
