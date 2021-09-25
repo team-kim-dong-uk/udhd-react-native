@@ -9,6 +9,8 @@ import SearchIcon from '../../../assets/search-icon.svg';
 import SearchIconActive from '../../../assets/search-icon-active.svg';
 import AlbumIcon from '../../../assets/album-icon.svg';
 import AlbumIconActive from '../../../assets/album-icon-active.svg';
+import MypageIcon from '../../../assets/mypage-icon.svg';
+import MypageIconActive from '../../../assets/mypage-icon-active.svg';
 
 const Tab = createBottomTabNavigator();
 
@@ -58,6 +60,17 @@ const MainTabScreen = () => {
       <Tab.Screen
         name="MyPage"
         component={MyPageScreen}
+        options={{
+          tabBarIcon: ({focused}) => focused 
+          ? <MypageIconActive width={25 * width}
+              height={25 * height}
+              viewBox='0 0 100 100'
+            />
+          : <MypageIcon width={25 * width}
+              height={25 * height}
+              viewBox='0 0 100 100'
+            />,
+        }}
       />
       </Tab.Navigator>
   );
