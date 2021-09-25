@@ -13,9 +13,11 @@ import FilterIcon from '../../../assets/filter-icon.svg';
 import Filter from '../search/Filter';
 import SearchModal from '../search/SearchModal';
 import SearchBoxTag from '../search/SearchBoxTag';
+import { useNavigation } from '@react-navigation/native';
 
 const UdhdHeader = ({type}) => {
     const dispatch = useDispatch();
+    const navigation = useNavigation();
     const {tags, isSearching } = useSelector(state => state);
     const selectedTags = type === 'album' ? tags.selectedAlbumTags : tags.selectedSearchTags;
 
@@ -26,6 +28,10 @@ const UdhdHeader = ({type}) => {
     const onPressFilter = useCallback((e) => {
         setShowFilter((prev) => !prev);
     }, []);
+
+    const onPressUpload = () => {
+        navigation.navigate('UploadSelect');
+    }
 
   return (
     <View>
@@ -53,7 +59,7 @@ const UdhdHeader = ({type}) => {
             showFilter={showFilter}
             onPressFilter={onPressFilter}
         />
-        <TouchableOpacity onPress={()=>{}} style={styles.uploadIcon}>
+        <TouchableOpacity onPress={onPressUpload} style={styles.uploadIcon}>
           <Text style={{fontSize: 30 * width}}>+</Text>
         </TouchableOpacity>
       </View>
