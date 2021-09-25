@@ -15,7 +15,7 @@ import ModalTemplate from "../ModalTemplate";
 import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
 import { getSearchPhotos} from "../../core/redux/photos";
-import Tag from "../Tag";
+import Tag from "./Tag";
 import {getTags} from "../../core/redux/tags";
 import { useNavigation } from '@react-navigation/native';
 import {finishSearching, startSearching} from "../../core/redux/searching";
@@ -221,12 +221,14 @@ const styles = StyleSheet.create({
     color: colors.darkBlue,
     marginLeft: 15 * width,
   },
+  //TODO: 태그 많아지면 가로 스크롤
   tagBox:{
     width: 360 * width,
     height: 40 * height,
     backgroundColor: colors.white,
     flexDirection: 'row',
     alignItems: 'center',
+    paddingLeft: 10 * width,
   },
   selectTypeContainer: {
     width: 360 * width,

@@ -15,7 +15,7 @@ import ModalTemplate from "../ModalTemplate";
 import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
 import { getSearchPhotos} from "../../core/redux/photos";
-import Tag from "../Tag";
+import Tag from "../search/Tag";
 import {getTags} from "../../core/redux/tags";
 import { useNavigation } from '@react-navigation/native';
 import {finishSearching, startSearching} from "../../core/redux/searching";
