@@ -15,6 +15,7 @@ const ModalTemplate = ({children, show, onControlModal, style}) => {
             onRequestClose={onControlModal}
             onBackdropPress={onControlModal}
             coverScreen={true}
+            style={{margin: 0}}
         >
             <View style={style}>
                 {children}
