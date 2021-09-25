@@ -26,6 +26,7 @@ import { LoginHeader } from './components/layout/LoginHeader';
 import { colors } from './util/StyleUtil';
 import { useFonts } from 'expo-font';
 import { StackHeader } from './components/layout/StackHeader';
+import SplashScreen from './components/screen/SplashScreen';
 
 
 const App = () => {
@@ -52,9 +53,7 @@ const App = () => {
 
   if (!fontsLoaded) {
     return (
-      <View>
-        <Text>Loading</Text>
-      </View>
+      <SplashScreen/>
     )
   }
   return (

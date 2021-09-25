@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginSuccess } from '../../../core/redux/auth';
 import LoginWebviewModal from './LoginWebviewModal';
 import { API_URL } from "@env";
@@ -8,9 +8,12 @@ import { UIButton } from '../../common/UIButton';
 import { colors, fonts, height, width } from '../../../util/StyleUtil';
 import KakaoIcon from '../../../../assets/kakao.svg';
 import AppleIcon from '../../../../assets/apple.svg';
+import BrandTextIcon from '../../../../assets/brand-text.svg';
+import { Image } from 'react-native';
 
 const SocialLogin = () => {
   const dispatch = useDispatch();
+  const auth = useSelector(state  => state.auth);
   const [source, setSource] = useState(undefined);
 
   signupWithSocial = async (social) => {
@@ -22,6 +25,13 @@ const SocialLogin = () => {
       // setSource(undefined);
   };
 
+  // 소셜로그인 진행중에 종료했었다면 중단 지점부터 다시 시작
+  useEffect(() => {
+    if (auth.data && !auth.data.nickname) {
+      navigation.navigate('PersonalInfo');
+    }
+  }, [auth]);
+
   return (
     <View style={styles.container}>
       {source !== undefined ? (
@@ -31,7 +41,14 @@ const SocialLogin = () => {
         />
       ) : null}
       <View>
-        <Text style={styles.logo}>로고 여기</Text>
+        <Image
+          style={styles.logo}
+          source={require('../../../../assets/drawable-xxxhdpi/symbol_black.webp')}
+        />
+        <Image
+          style={styles.brandText}
+          source={require('../../../../assets/drawable-xxxhdpi/brand_text.webp')}
+        />
       </View>
       <View style={styles.buttonContainer}>
         <UIButton
@@ -51,11 +68,9 @@ const SocialLogin = () => {
         <UIButton
           title='구글 계정으로 로그인하기'
           icon={
-            <KakaoIcon
-              width={25.8 * width}
-              height={23.9 * height}
-              viewBox='0 0 103.2 95.5'
-              style={styles.socialIcons}
+            <Image
+              style={[styles.socialIcons, styles.googleIcon]}
+              source={require('../../../../assets/drawable-hdpi/google_logo.webp')}
             />
           }
           onPress={() => signupWithSocial('google')}
@@ -91,10 +106,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    marginTop: 164 * height,
+    marginTop: 142 * height,
     width: 100 * width,
-    height: 143 * height,
-    backgroundColor: '#eee',
+    height: 100 * height,
+  },
+  brandText: {
+    marginTop: 10 * height,
+    width: 106.5 * width,
+    height: 33 * height,
   },
   buttonContainer: {
     flex: 1,
@@ -118,6 +137,10 @@ const styles = StyleSheet.create({
   socialIcons: {
     position: 'absolute',
     left: 25 * width,
+  },
+  googleIcon: {
+    width: 25 * width,
+    height: 25 * height,
   },
   kakao: {
     backgroundColor: colors.kakaoYellow,

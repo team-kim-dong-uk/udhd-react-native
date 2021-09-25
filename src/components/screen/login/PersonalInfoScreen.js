@@ -28,16 +28,7 @@ const PersonalInfoScreen = () => {
     }));
   }
 
-  // 불리지 않는 함수. 에러메시지 방지를 위해 만들었다.
-  // PersonalInfo screen 으로 이동하는 코드가 웹뷰쪽에 있지만, rn에서 이를 인식하지 못해 에러를 뱉음.
-  // 이 에러를 해결하기 위해 PersonalInfo screen 으로 navigate하는 함수를 만듦. (불리진 않음)
-  const dummy = () => {
-    useNavigation('PersonalInfo');
-  }
-
-  if (false) {
-    dummy();
-  }
+  
   
   return (
     <View style={styles.container}>
