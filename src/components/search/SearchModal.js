@@ -57,13 +57,13 @@ const SearchModal = () => {
     * 1. duplicated
     * 2. blank
     * */
-    const addSearchTags = (tag) => {
-        tag = tag.replace(/\s/g, "");
-        console.log("try to make tag :" + tag)
-        if(tag !== '' && !searchTags.includes(tag)) {
+    const addSearchTag = ({type, keyword}) => {
+      keyword = keyword.replace(/\s/g, "");
+        console.log("try to make tag :" + keyword)
+        if(keyword !== '' && !searchTags.includes(keyword)) {
            setSearchTags(searchTags => [
                 ...searchTags,
-                tag
+                { type, keyword }
             ]);
            setKeyword("");
         } else if (tag === ''){
@@ -103,7 +103,7 @@ const SearchModal = () => {
         if(keyword !== ''){
             // if keyword have ' ' , -> divide into tag.
             if (keyword.includes(" ") || keyword.includes(",")){
-                addSearchTags(keyword);
+                // addSearchTag(keyword);//TODO:
             } else {
                 //set recommended tags by using keyword, if keyword !== ''
                 setRecommendedTags(tags.data.filter((tag) => {return tag.keyword.includes(keyword);}))
@@ -125,10 +125,8 @@ const SearchModal = () => {
     // rendering text on FlatList that show recommended tags
     const renderItem = ({ item }) => {
       console.log(item);
-      // <RecommendTag item={item} onPress={addSearchTags}/>
-      // <RecommendTag item={item} onPress={addSearchTags}/>
         return (
-        <RecommendTag item={item} onPress={addSearchTags}/>
+        <RecommendTag item={item} onSelectTag={addSearchTag}/>
         )
     };
 
@@ -160,8 +158,8 @@ const SearchModal = () => {
           </Pressable>
         </View>
         <View style={styles.tagBox}>
-          {searchTags.map((text) => {
-              return <Tag key={text} text={text} onPressTag={onPressTag}/>
+          {searchTags.map(({type, keyword}) => {
+              return <Tag key={keyword} text={keyword} type={type} onPressTag={onPressTag}/>
           })}
         </View>
         <View style={styles.selectTypeContainer}>

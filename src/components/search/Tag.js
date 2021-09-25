@@ -9,16 +9,25 @@ import UserIcon from '../../../assets/user-icon-no-border.svg';
 import TagIcon from '../../../assets/tag-icon-no-border.svg';
 import { Pressable } from "react-native";
 
-const Tag = ({text, onPressTag}) => {
+const Tag = ({text, type, onPressTag}) => {
 
     return (
       <View style={styles.tagContainer}>
-        <TagIcon
-          width={12 * width}
-          height={12 * height}
-          viewBox='0 0 48 48'
-          style={styles.icon}
-        />
+        {
+          type === 'TAG' ? <TagIcon
+                            width={12 * width}
+                            height={12 * height}
+                            viewBox='0 0 48 48'
+                            style={styles.icon}
+                          />
+          : type === 'USER' ? <UserIcon
+                                width={12 * width}
+                                height={12 * height}
+                                viewBox='0 0 48 48'
+                                style={styles.icon}
+                              />
+          : null
+        }
         <Text style={styles.text}>{text}</Text>
         <Pressable onPress={() => onPressTag(text)}>
           <CancelIcon

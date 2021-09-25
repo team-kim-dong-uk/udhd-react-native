@@ -8,11 +8,11 @@ import { colors, fonts, height, width } from "../util/StyleUtil";
 import TagIcon from '../../assets/tag-icon.svg';
 import UserIcon from '../../assets/user-icon.svg';
 
-const RecommendTag = ({item, onPress}) => {
+const RecommendTag = ({item, onSelectTag}) => {
 
     return (
         <Pressable activeOpacity = { 0.5 } style={{backgroundColor:"red"}}
-                          onPress={() => onPress(item.keyword)}>
+                          onPress={() => onSelectTag(item)}>
             <View style={styles.container}>
                 <View style={styles.icon}>
                     {item.type === "TAG" && (
