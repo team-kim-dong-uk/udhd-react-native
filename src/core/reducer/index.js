@@ -8,9 +8,10 @@ import loading from '../redux/loading';
 import showPhotoDetail from "../redux/showPhotoDetail";
 import searching from "../redux/searching";
 import searchTags from "../redux/searchTags";
+import album from "../redux/album";
 
 const rootReducer = combineReducers({
     auth, photo, photos, loading, tags, searching, showPhotoDetail,
-    searchTags
+    searchTags, album,
     });
 export default rootReducer;
