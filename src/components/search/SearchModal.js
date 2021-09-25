@@ -36,6 +36,7 @@ const SearchModal = () => {
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
     const [recommendedTags, setRecommendedTags] = useState([]);
     const [searchTags, setSearchTags] = useState([]);
+    const [searchType, setSearchType] = useState('TAG');
 
     const startSearch = () => {dispatch(startSearching());}
     const finishSearch = () => {dispatch(finishSearching());}
@@ -162,17 +163,27 @@ const SearchModal = () => {
               return <Tag key={keyword} text={keyword} type={type} onPressTag={onPressTag}/>
           })}
         </View>
-        <View style={styles.selectTypeContainer}>
-          <View style={styles.selectTypeOption}>
-            <Text style={styles.selectTypeText}>태그</Text>
-          </View>
-          <View style={styles.selectTypeOption}>
-            <Text style={styles.selectTypeText}>업로더</Text>
-          </View>
+        <View style={styles.searchTypeContainer}>
+          <Pressable
+            onPress={()=>setSearchType('TAG')}
+            style={[styles.searchTypeOption, searchType === 'TAG' ? styles.searchTypeOptionActive : null ]}
+          >
+            <Text style={[styles.searchTypeText, searchType === 'TAG' ? styles.searchTypeTextActive : null ]}>
+              태그
+            </Text>
+          </Pressable>
+          <Pressable
+            onPress={()=>setSearchType('USER')}
+            style={[styles.searchTypeOption, searchType === 'USER' ? styles.searchTypeOptionActive : null ]}
+          >
+            <Text style={[styles.searchTypeText, searchType === 'USER' ? styles.searchTypeTextActive : null ]}>
+              업로더
+            </Text>
+          </Pressable>
         </View>
         <FlatList
-          contentContainerStyle={{width: 360*width,height:170*height}}
-          data={recommendedTags}
+          contentContainerStyle={styles.recommendedTagsContainer}
+          data={recommendedTags.filter(item => item.type === searchType)}
           renderItem={renderItem}
           keyExtractor={item => item.keyword}
           ListFooterComponent={<View style={{height: 65}}/>}
@@ -185,7 +196,7 @@ const styles = StyleSheet.create({
   container: {
     width: 360 * width,
     height: 640 * height,
-    backgroundColor: colors.grey,
+    backgroundColor: colors.white,
     margin: 0,
     padding: 0,
     flex: 1,
@@ -228,21 +239,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 10 * width,
   },
-  selectTypeContainer: {
+  searchTypeContainer: {
     width: 360 * width,
     height: 35 * height,
     flexDirection: 'row',
   },
-  selectTypeOption: {
+  searchTypeOption: {
     width: 180 * width,
     height: 35 * height,
     backgroundColor: colors.white,
-    borderBottomColor: colors.orange,
-    borderBottomWidth: 2 * height,
+    borderBottomColor: colors.grey,
+    borderBottomWidth: 0.5 * height,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  selectTypeText: {
+  searchTypeOptionActive: {
+    borderBottomColor: colors.orange,
+    borderBottomWidth: 2 * height,
+  },
+  searchTypeText: {
     fontFamily: fonts.NotoSansCJKkr,
     fontSize: 14 * width,
     fontWeight: "500",
@@ -250,7 +265,13 @@ const styles = StyleSheet.create({
     lineHeight: 22 * height,
     letterSpacing: 0,
     textAlign: "center",
+    color: colors.grey,
+  },
+  searchTypeTextActive: {
     color: colors.orange,
+  },
+  recommendedTagsContainer: {
+    marginTop: 12.5 * height,
   },
     upperTap: {
         flex:1,
