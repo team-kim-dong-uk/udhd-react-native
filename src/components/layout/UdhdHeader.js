@@ -25,6 +25,7 @@ import FilterIcon from '../../../assets/filter-icon.svg';
 import Filter from '../search/Filter';
 import SearchModal from '../search/SearchModal';
 import { Modal } from 'react-native';
+import SearchBoxTag from '../search/SearchBoxTag';
 
 const UdhdHeader = () => {
     const [, updateState] = React.useState();
@@ -140,7 +141,10 @@ const UdhdHeader = () => {
           source={require('../../../assets/drawable-xxxhdpi/symbol_black.webp')}
         />
         <TouchableOpacity style={styles.searchBox} onPress={startSearch}>
-          <Text style={styles.searchBoxText}>검색어를 입력해주세요</Text>
+          {/* <Text style={styles.searchBoxText}>검색어를 입력해주세요</Text> */}
+          {
+              tags.selected.map((item) => <SearchBoxTag {...item}/>)
+          }
         </TouchableOpacity>
         {isSearching.data && <SearchModal/>}
         <TouchableOpacity onPress={onPressFilter} style={styles.filterIcon}>
