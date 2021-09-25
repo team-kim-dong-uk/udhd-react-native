@@ -51,11 +51,14 @@ const SearchModal = ({type}) => {
     * */
     const addSearchTag = (item) => {
       const keyword = item.keyword.replace(/\s/g, "");
-        console.log("try to make tag :" + keyword)
-        if(keyword !== '' && !searchTags.includes(keyword)) {
+        console.log("try to make tag :" + keyword);
+        if (item.type === 'USER' && searchTags.filter(item => item.type === 'USER').length > 0) {
+          ToastAndroid.show('업로더로 검색은 한명만 지정가능합니다.', ToastAndroid.SHORT);
+          return false;
+        } else if(keyword !== '' && !searchTags.map(item => item.keyword).includes(keyword)) {
            setSearchTags(searchTags => [ ...searchTags, item]);
            setKeyword("");
-        } else if (tag === ''){
+        }  else if (tag === ''){
             ToastAndroid.show('공백을 입력할 수 없습니다.', ToastAndroid.SHORT);
             setKeyword("");
             return false;
