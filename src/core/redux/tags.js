@@ -47,7 +47,7 @@ export default handleActions(
       }),
       [SET_SELECTED_TAGS]: (state, action) => ({
         ...state,
-        selected: action.payload.tags,
+        selected: action.payload.tags || [],
       }),
   },
   initialState,
