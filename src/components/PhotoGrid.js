@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { height, width } from '../util/StyleUtil.js';
 
 
-const PhotoGrid = ({show, type}) => {
+const PhotoGrid = ({type}) => {
   const [numCols, setColumnNo] = useState(3);
   const dispatch = useDispatch();
   const { auth, photos, loading } = useSelector(state => state);
@@ -58,8 +58,6 @@ const PhotoGrid = ({show, type}) => {
     )
   };
 
-    if(!show)
-        return null;
   return (
     <View>
       <FlatList

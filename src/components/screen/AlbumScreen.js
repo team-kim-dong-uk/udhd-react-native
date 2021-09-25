@@ -9,7 +9,7 @@ const AlbumScreen = () => {
   return (
       <View>
         <UdhdHeader type='album'/>
-        <PhotoGrid show={true} type='album'/>
+        <PhotoGrid type='album'/>
       </View>
   );
 }
