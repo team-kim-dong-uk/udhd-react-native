@@ -8,7 +8,7 @@ import {useSelector} from "react-redux";
 const SearchScreen = () => {
   return (
         <View>
-          <UdhdHeader/>
+          <UdhdHeader type='search'/>
           <PhotoGrid show={true} type='search'/>
         </View>
   );

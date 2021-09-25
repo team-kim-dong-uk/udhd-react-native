@@ -4,7 +4,18 @@ export const getPhoto = (photoId) => {
     return client.get(`photos/${photoId}`);
 }
 
-export const getSearchPhotos = ({userId, tags, findAfter}) => {
+export const getPhotos = (params) => {
+    switch (params.type) {
+        case 'search':
+            return getSearchPhotos(params);
+        case 'album':
+            return getAlbumPhotos(params);
+        case 'upload':
+            return getUploadPhotos(params);
+    }
+}
+
+const getSearchPhotos = ({userId, tags, findAfter}) => {
     let query = `users/${userId}/search?tags=`;
     if (tags) {
         const uploaderSearch = tags.filter(item => item.type === 'USER');
@@ -20,7 +31,7 @@ export const getSearchPhotos = ({userId, tags, findAfter}) => {
     return client.get(query);
 }
 
-export const getAlbumPhotos = ({userId, tags, findAfter}) => {
+const getAlbumPhotos = ({userId, tags, findAfter}) => {
     let query = `users/${userId}/album?tags=`;
     if (tags) {
         const uploaderSearch = tags.filter(item => item.type === 'USER');
@@ -36,7 +47,7 @@ export const getAlbumPhotos = ({userId, tags, findAfter}) => {
     return client.get(query);
 }
 
-export const getUploadPhotos = ({userId, findAfter}) => {
+const getUploadPhotos = ({userId, findAfter}) => {
     let query = `users/${userId}/uploaded`;
     if (findAfter) {
         query += `findAfter=${findAfter}`;

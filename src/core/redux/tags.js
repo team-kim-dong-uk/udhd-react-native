@@ -15,7 +15,7 @@ const SET_SELECTED_TAGS = `${prefix}SET_SELECTED_TAGS`;
 
 // 3. 액션함수에 대해서 정의합니다.
 export const getTags = createAsyncAction(GET_TAGS);
-export const setSelectedTags = createAction(SET_SELECTED_TAGS, ({tags}) => ({tags}));
+export const setSelectedTags = createAction(SET_SELECTED_TAGS, ({type, tags}) => ({type, tags}));
 
 // 4. saga 비동기 관련 함수가 필요할 경우 작성 합니다. (optional) saga함수들의 모음은 최하단에 나열합니다.
 const getTagsSaga = createAsyncSaga(getTags, tagAPI.getTags);
@@ -27,7 +27,8 @@ export function* setSelectedTagsSaga(action) {
 // 5. 초기 상태 정의
 const initialState = {
   data: [],
-  selected: [],
+  selectedAlbumTags: [],
+  selectedSearchTags: [],
   loading: false,
   error: null,
 };
@@ -45,10 +46,19 @@ export default handleActions(
           ...state,
           error: action,
       }),
-      [SET_SELECTED_TAGS]: (state, action) => ({
-        ...state,
-        selected: action.payload.tags || [],
-      }),
+      [SET_SELECTED_TAGS]: (state, {payload: {type, tags}}) => {
+        if (type === 'album') {
+          return {
+            ...state,
+            selectedAlbumTags: tags || [],
+          }
+        } else {
+          return {
+            ...state,
+            selectedSearchTags: tags || [],
+          }
+        }
+      },
   },
   initialState,
 );

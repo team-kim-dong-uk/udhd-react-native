@@ -14,9 +14,10 @@ import Filter from '../search/Filter';
 import SearchModal from '../search/SearchModal';
 import SearchBoxTag from '../search/SearchBoxTag';
 
-const UdhdHeader = () => {
+const UdhdHeader = ({type}) => {
     const dispatch = useDispatch();
     const {tags, isSearching } = useSelector(state => state);
+    const selectedTags = type === 'album' ? tags.selectedAlbumTags : tags.selectedSearchTags;
 
     const [showFilter, setShowFilter] = useState(false);
 
@@ -35,12 +36,12 @@ const UdhdHeader = () => {
         />
         <TouchableOpacity style={styles.searchBox} onPress={startSearch}>
             { 
-                tags.selected.length === 0
+                selectedTags.length === 0
                     ? <Text style={styles.searchBoxText}>검색어를 입력해주세요</Text>
-                    : tags.selected.map((item) => <SearchBoxTag key={item.keyword} {...item}/>)
+                    : selectedTags.map((item) => <SearchBoxTag key={item.keyword} {...item}/>)
             }
         </TouchableOpacity>
-        {isSearching.data && <SearchModal/>}
+        {isSearching.data && <SearchModal type={type}/>}
         <TouchableOpacity onPress={onPressFilter} style={styles.filterIcon}>
           <FilterIcon
             width={24 * width}

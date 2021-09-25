@@ -10,7 +10,7 @@ import SearchBox from "./SearchBox";
 import ModalTemplate from "../ModalTemplate";
 import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
-import { getSearchPhotos} from "../../core/redux/photos";
+import { getPhotos } from "../../core/redux/photos";
 import Tag from "./SelectedTag";
 import { useNavigation } from '@react-navigation/native';
 import {finishSearching, startSearching} from "../../core/redux/searching";
@@ -21,16 +21,16 @@ import { getTags } from '../../core/redux/tags';
 import { TextInput } from 'react-native';
 import CancelIcon from '../../../assets/cancel-icon-round.svg';
 
-const SearchModal = () => {
-    const [, updateState] = React.useState();
-    const forceUpdate = React.useCallback(() => updateState({}), []);
+const SearchModal = ({type}) => {
     const dispatch = useDispatch();
     const inputRef = useRef();
-    const { auth, photos, tags, isSearching } = useSelector(state => state);
+    const { auth, tags, isSearching } = useSelector(state => state);
 
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
     const [recommendedTags, setRecommendedTags] = useState([]);
-    const [searchTags, setSearchTags] = useState(tags.selected);
+
+    const initialSearchTags = type === 'album' ? tags.selectedAlbumTags : tags.selectedSearchTags;
+    const [searchTags, setSearchTags] = useState(initialSearchTags);
     const [searchType, setSearchType] = useState('TAG');
 
     const startSearch = () => {dispatch(startSearching());}
@@ -70,9 +70,10 @@ const SearchModal = () => {
             ToastAndroid.show('검색에 사용될 태그가 없어요!', ToastAndroid.SHORT);
             return false;
         }
-        dispatch(getSearchPhotos.request({
+        dispatch(getPhotos.request({
+            type: type,
             userId: auth.data?.userId,
-            tags : searchTags
+            tags : searchTags,
         }));
         console.log("searchTags at submit  : " + searchTags)
         setKeyword('');
