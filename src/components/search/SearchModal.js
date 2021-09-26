@@ -18,6 +18,7 @@ import BackButton from '../../../assets/back-button.svg';
 import { getTags } from '../../core/redux/tags';
 import { TextInput } from 'react-native';
 import CancelIcon from '../../../assets/cancel-icon-round.svg';
+import SearchBoxTag from "./SearchBoxTag";
 
 const SearchModal = ({type, show, setShow}) => {
     const dispatch = useDispatch();
@@ -127,6 +128,15 @@ const SearchModal = ({type, show, setShow}) => {
         )
     };
 
+    const renderSelectedTags = ({item}) => {
+        return (
+                <Tag key={item.keyword}
+                     text={item.keyword}
+                     type={item.type}
+                     onRemoveTag={onRemoveTag}/>
+        )
+    }
+    console.log(searchTags)
   if(!show)
       return null;
 
@@ -169,9 +179,11 @@ const SearchModal = ({type, show, setShow}) => {
           </Pressable>
         </View>
         <View style={styles.tagBox}>
-          {searchTags.map(({type, keyword}) => {
+            <FlatList data={searchTags} renderItem={renderSelectedTags} horizontal = {true}
+                      keyExtractor={(item) => item.keyword}/>
+          {/*{searchTags.map(({type, keyword}) => {
               return <Tag key={keyword} text={keyword} type={type} onRemoveTag={onRemoveTag}/>
-          })}
+          })}*/}
         </View>
         <View style={styles.searchTypeContainer}>
           <Pressable
