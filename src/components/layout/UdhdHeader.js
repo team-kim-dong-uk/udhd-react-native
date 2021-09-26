@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-    Image,
+    FlatList,
+    Image, Pressable,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -35,6 +36,13 @@ const UdhdHeader = ({type}) => {
     const onPressUpload = () => {
         navigation.navigate('UploadSelect');
     }
+    const renderTags = ({item}) => {
+        return (
+            <Pressable onPress={startSearch}>
+                <SearchBoxTag key={item.keyword} {...item}/>
+            </Pressable>
+        )
+    }
 
   return (
     <View>
@@ -43,13 +51,23 @@ const UdhdHeader = ({type}) => {
           style={styles.tinyLogo}
           source={require('../../../assets/drawable-hdpi/symbol_black.webp')}
         />
-        <TouchableOpacity style={styles.searchBox} onPress={startSearch}>
+        {/*<TouchableOpacity style={styles.searchBox} onPress={startSearch}>
             {
                 selectedTags.length === 0
                     ? <Text style={styles.searchBoxText}>검색어를 입력해주세요</Text>
-                    : selectedTags.map((item) => <SearchBoxTag key={item.keyword} {...item}/>)
+                    : <FlatList data={selectedTags} renderItem={renderTags} horizontal = {true} />
+                    /*: selectedTags.map((item) => <SearchBoxTag key={item.keyword} {...item}/>)*/
             }
-        </TouchableOpacity>
+        {/*</TouchableOpacity>*!/*/}
+
+          {selectedTags.length === 0
+            ? (<TouchableOpacity style={styles.searchBox} onPress={startSearch}>
+                  <Text style={styles.searchBoxText}>검색어를 입력해주세요</Text>
+              </TouchableOpacity>)
+            : <FlatList data={selectedTags} renderItem={renderTags} horizontal = {true}
+                        keyExtractor={(item) => item.keyword}/>
+          }
+
         {isSearching.data && <SearchModal type={type} show={showSearchModal} setShow={setShowSearchModal}/>}
         <TouchableOpacity onPress={onPressFilter} style={styles.filterIcon}>
           <FilterIcon
