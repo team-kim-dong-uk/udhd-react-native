@@ -51,23 +51,14 @@ const UdhdHeader = ({type}) => {
           style={styles.tinyLogo}
           source={require('../../../assets/drawable-hdpi/symbol_black.webp')}
         />
-        {/*<TouchableOpacity style={styles.searchBox} onPress={startSearch}>
+        <TouchableOpacity style={styles.searchBox} onPress={startSearch}>
             {
                 selectedTags.length === 0
                     ? <Text style={styles.searchBoxText}>검색어를 입력해주세요</Text>
-                    : <FlatList data={selectedTags} renderItem={renderTags} horizontal = {true} />
-                    /*: selectedTags.map((item) => <SearchBoxTag key={item.keyword} {...item}/>)*/
+                    : <FlatList data={selectedTags} renderItem={renderTags} horizontal = {true}
+                                keyExtractor={(item) => item.keyword} style={{zIndex: 2}}/>
             }
-        {/*</TouchableOpacity>*!/*/}
-
-          {selectedTags.length === 0
-            ? (<TouchableOpacity style={styles.searchBox} onPress={startSearch}>
-                  <Text style={styles.searchBoxText}>검색어를 입력해주세요</Text>
-              </TouchableOpacity>)
-            : <FlatList data={selectedTags} renderItem={renderTags} horizontal = {true}
-                        keyExtractor={(item) => item.keyword}/>
-          }
-
+        </TouchableOpacity>
         {isSearching.data && <SearchModal type={type} show={showSearchModal} setShow={setShowSearchModal}/>}
         <TouchableOpacity onPress={onPressFilter} style={styles.filterIcon}>
           <FilterIcon
@@ -109,6 +100,7 @@ const styles = StyleSheet.create({
         marginLeft: 15 * width,
         flexDirection: 'row',
         alignItems: 'center',
+        zIndex:1,
     },
     searchBoxText: {
         fontFamily: fonts.NotoSansCJKkr,
