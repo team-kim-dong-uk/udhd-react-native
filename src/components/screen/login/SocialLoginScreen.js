@@ -40,7 +40,7 @@ const SocialLogin = () => {
           closeSocialModal={closeSocialModal}
         />
       ) : null}
-      <View>
+      <View style={{alignItems: 'center'}}>
         <Image
           style={styles.logo}
           source={require('../../../../assets/drawable-xxxhdpi/symbol_black.webp')}
@@ -112,7 +112,8 @@ const styles = StyleSheet.create({
   },
   brandText: {
     marginTop: 10 * height,
-    width: 106.5 * width,
+    width: 120.5 * width,
+    /*width: 106.5 * width,*/
     height: 33 * height,
   },
   buttonContainer: {
