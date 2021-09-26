@@ -56,7 +56,8 @@ const UdhdHeader = ({type}) => {
                 selectedTags.length === 0
                     ? <Text style={styles.searchBoxText}>검색어를 입력해주세요</Text>
                     : <FlatList data={selectedTags} renderItem={renderTags} horizontal = {true}
-                                keyExtractor={(item) => item.keyword} style={{zIndex: 2}}/>
+                                keyExtractor={(item) => item.keyword} style={{zIndex: 2}}
+                                showsHorizontalScrollIndicator={false}/>
             }
         </TouchableOpacity>
         {isSearching.data && <SearchModal type={type} show={showSearchModal} setShow={setShowSearchModal}/>}

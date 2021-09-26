@@ -180,10 +180,7 @@ const SearchModal = ({type, show, setShow}) => {
         </View>
         <View style={styles.tagBox}>
             <FlatList data={searchTags} renderItem={renderSelectedTags} horizontal = {true}
-                      keyExtractor={(item) => item.keyword}/>
-          {/*{searchTags.map(({type, keyword}) => {
-              return <Tag key={keyword} text={keyword} type={type} onRemoveTag={onRemoveTag}/>
-          })}*/}
+                      keyExtractor={(item) => item.keyword} showsHorizontalScrollIndicator={false}/>
         </View>
         <View style={styles.searchTypeContainer}>
           <Pressable
