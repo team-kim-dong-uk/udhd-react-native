@@ -38,7 +38,7 @@ const PhotoScreen = ({route, navigation}) => {
         return 2*space + textSize*text.length;
     }
     const makeTagLines = (tags) => {
-        const tagBoxSize = windowWidth * 0.8;
+        const tagBoxSize = windowWidth;
         let resultLines = [];
         let line = [];
         let sumSize = 0;
@@ -59,7 +59,6 @@ const PhotoScreen = ({route, navigation}) => {
 
   return (
       <View>
-        {/*<UdhdHeader/>*/}
           <CommonHeader title="이미지 상세" back="bottom">
           </CommonHeader>
           {!searching.data && (
@@ -76,9 +75,7 @@ const PhotoScreen = ({route, navigation}) => {
                           style={styles.photo}
                       />
                   </Pressable>
-                  {/*<PhotoTagBox tags={tagLines} isLoading={tagLoading}/>*/}
-                  {/*<Footer photoId={route.params?.photoId}/>*/}
-                  <PhotoInformation/>
+                  <PhotoInformation tags={tagLines} isLoading={tagLoading}/>
               </View>
           )}
       </View>

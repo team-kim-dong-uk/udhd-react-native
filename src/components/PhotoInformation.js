@@ -8,8 +8,9 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {addToAlbum} from "../core/redux/album";
 import ModalTemplate from "./ModalTemplate";
+import Tag from "./Tag";
 
-const PhotoInformation = ({style, photoId}) => {
+const PhotoInformation = ({style, photoId, tags, isLoading}) => {
     const {auth, photo} = useSelector(state => state);
     const dispatch  = useDispatch();
 
@@ -25,6 +26,7 @@ const PhotoInformation = ({style, photoId}) => {
             photoId: photoId
         }))
     }, [])
+
     return (
         <View style={styles.container}>
             <View style={styles.information}>
@@ -41,7 +43,7 @@ const PhotoInformation = ({style, photoId}) => {
                         <Text>다운</Text>
                     </Pressable>
                     <Pressable style={styles.button} onPress={addToByAlbum}>
-                        <Text>하트</Text>
+                        <Text>ㅎㅌ</Text>
                     </Pressable>
                     <Pressable style={styles.button} onPress={onPressSetting}>
                         <Text>---</Text>
@@ -50,9 +52,21 @@ const PhotoInformation = ({style, photoId}) => {
                 </View>
 
             </View>
-            <View style={styles.tagBox}>
+            <View style={styles.tagContainer}>
                 <Text>  태그</Text>
-                <Text>  태그</Text>
+                <View style={styles.tagBox}>
+                    {!isLoading && tags?.map((line) => {
+                        return (
+                            <View style={styles.tagLine}>
+                                {line?.map((tag) => {
+                                    return (<Tag key={tag} text={tag}/>
+                                    )
+                                })}
+                            </View>
+                        )
+                    })}
+                </View>
+
             </View>
             {showSetting && (
                 <ModalTemplate style={{backgroundColor:  'rgba(0, 0, 0, 0.5)'}} show={showSetting} onControlModal={onPressSetting}>
@@ -105,16 +119,19 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
     },
     functionBox:{
-        backgroundColor: 'skyblue',
         height: '100%',
         width: '50%',
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'flex-end',
     },
-    tagBox:{
+    tagContainer:{
         flex:2,
         height: '35%',
+    },
+    tagBox:{
+        height: '80%',
+        width: '100%',
     },
     profileImage: {
         width: 50,
@@ -163,5 +180,11 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: "#e51d1d"
     },
+    tagLine: {
+        width: '100%',
+        height: 40,
+        flexDirection: 'row',
+        alignItems: 'center',
+    }
 });
 
