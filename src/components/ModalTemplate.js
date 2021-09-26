@@ -9,6 +9,7 @@ const ModalTemplate = ({children, show, onControlModal, style}) => {
 
     return (
         <Modal
+            style={[style, {margin: 0}]}
             animationType="none"
             transparent={true}
             visible={show}
@@ -16,9 +17,7 @@ const ModalTemplate = ({children, show, onControlModal, style}) => {
             onBackdropPress={onControlModal}
             coverScreen={true}
         >
-            <View style={style}>
-                {children}
-            </View>
+            {children}
         </Modal>
 
     );

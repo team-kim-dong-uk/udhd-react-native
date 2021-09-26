@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import {
     Image,
     Pressable,
@@ -7,10 +7,17 @@ import {
 } from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 import {addToAlbum} from "../core/redux/album";
+import ModalTemplate from "./ModalTemplate";
 
 const PhotoInformation = ({style, photoId}) => {
     const {auth, photo} = useSelector(state => state);
     const dispatch  = useDispatch();
+
+    const [showSetting, setShowSetting] = useState(false);
+    const onPressSetting = useCallback(() => {
+        setShowSetting((prev) => !prev);
+    }, []);
+
     //TODO: 하트 여부는 어떻게 확인해?
     const addToByAlbum = useCallback(() => {
         dispatch(addToAlbum.request({
@@ -36,7 +43,7 @@ const PhotoInformation = ({style, photoId}) => {
                     <Pressable style={styles.button} onPress={addToByAlbum}>
                         <Text>하트</Text>
                     </Pressable>
-                    <Pressable style={styles.button}>
+                    <Pressable style={styles.button} onPress={onPressSetting}>
                         <Text>---</Text>
                     </Pressable>
 
@@ -47,6 +54,28 @@ const PhotoInformation = ({style, photoId}) => {
                 <Text>  태그</Text>
                 <Text>  태그</Text>
             </View>
+            {showSetting && (
+                <ModalTemplate style={{backgroundColor:  'rgba(0, 0, 0, 0.5)'}} show={showSetting} onControlModal={onPressSetting}>
+                    <View style={styles.modal}>
+                        <Pressable style={[{borderTopLeftRadius: 5, borderTopRightRadius: 5,borderBottomWidth: 0.2,}, styles.settingBox]}>
+                            <Text style={styles.text}>태그 수정</Text>
+                        </Pressable>
+                        <Pressable style={styles.settingBox}>
+                            <Text style={styles.text}>앨범에서 삭제</Text>
+                        </Pressable>
+                        <Pressable style={[{marginBottom:10, borderBottomLeftRadius: 5, borderBottomRightRadius:5,
+                                            borderTopWidth: 0.2,},
+                                            styles.settingBox,]}>
+                            <Text style={styles.redText}>신고</Text>
+                        </Pressable>
+
+                        <Pressable style={[{borderRadius: 5,}, styles.settingBox]}
+                                    onPress={onPressSetting}>
+                            <Text style={styles.text}>취소</Text>
+                        </Pressable>
+                    </View>
+                </ModalTemplate>
+            )}
         </View>
     );
 };
@@ -99,7 +128,40 @@ const styles = StyleSheet.create({
         height: '100%',
         alignItems: 'center',
         flexDirection: 'row',
-    }
-
+    },
+    modal:{
+        position: 'absolute',
+        bottom: 10,
+        width: '100%',
+        alignItems: 'center',
+    },
+    settingBox:{
+        width: '90%',
+        height: 50,
+        backgroundColor: "#ffffff",
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottomWidth: 0.2,
+    },
+    text: {
+        width: 100,
+        height: 22.3,
+        fontSize: 15,
+        fontWeight: "normal",
+        fontStyle: "normal",
+        letterSpacing: 0,
+        textAlign: "center",
+        color: "#222222"
+    },
+    redText: {
+        width: 100,
+        height: 22.3,
+        fontSize: 15,
+        fontWeight: "normal",
+        fontStyle: "normal",
+        letterSpacing: 0,
+        textAlign: "center",
+        color: "#e51d1d"
+    },
 });
 
