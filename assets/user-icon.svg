@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">
+    <defs>
+        <style>
+            .cls-3{fill:none}.cls-5{stroke:none}
+        </style>
+    </defs>
+    <g id="그룹_5665" data-name="그룹 5665" transform="translate(-750 -574)">
+        <g id="타원_244" data-name="타원 244" transform="translate(750 574)" style="stroke:#ddd;stroke-width:2px;fill:none">
+            <circle class="cls-5" cx="60" cy="60" r="60"/>
+            <circle class="cls-3" cx="60" cy="60" r="59"/>
+        </g>
+        <g id="그룹_5671" data-name="그룹 5671" transform="translate(13744 16392.822)">
+            <path id="account-box" d="M10 51.912v4.935h60.148v-4.935q0-4.7-5.521-8.458a37.217 37.217 0 0 0-12.335-5.4 52.679 52.679 0 0 0-12.218-1.644 52.679 52.679 0 0 0-12.218 1.644 37.217 37.217 0 0 0-12.335 5.4Q10 47.213 10 51.912z" transform="translate(-12973.985 -15785.684)" style="stroke-linecap:round;stroke-linejoin:round;stroke:#999;stroke-width:4px;fill:none"/>
+            <path id="사각형_3764" data-name="사각형 3764" class="cls-3" transform="translate(-12970 -15794.822)" d="M0 0h72v72H0z"/>
+            <g id="타원_478" data-name="타원 478" transform="translate(-12950 -15790.822)" style="stroke:#999;stroke-width:4px;fill:none">
+                <circle class="cls-5" cx="16.5" cy="16.5" r="16.5"/>
+                <circle class="cls-3" cx="16.5" cy="16.5" r="14.5"/>
+            </g>
+        </g>
+    </g>
+</svg>

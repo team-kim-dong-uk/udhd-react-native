@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48">
+    <g data-name="그룹 5701" transform="translate(12970 15795)">
+        <path data-name="사각형 3764" transform="translate(-12970 -15795)" style="fill:none" d="M0 0h48v48H0z"/>
+        <g data-name="그룹 5660">
+            <path data-name="제외 1" d="M40 12 32 0H0v24h32z" style="stroke:#999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;stroke-width:4px;fill:none" transform="translate(-12965.999 -15783)"/>
+        </g>
+        <circle data-name="타원 477" cx="3" cy="3" r="3" transform="translate(-12943 -15774)" style="fill:#999"/>
+    </g>
+</svg>

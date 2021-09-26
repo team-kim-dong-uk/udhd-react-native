@@ -5,10 +5,13 @@ export const colors = {
   black: '#222222',
   white: '#FFFFFF',
   grey: '#BBBBBB',
+  placeholderGrey: '#AAAAAA',
   inputGrey: '#F8F8F8',
   checkboxGrey: '#F2F2F2',
   switchGrey: '#D2D2D2',
+  tagGrey: '#4D4D63',
   blue: '#1E83DB',
+  darkBlue: '#121262',
   red: '#FF4A4A',
   kakaoYellow: '#FFDF00',
 };

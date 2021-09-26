@@ -39,7 +39,7 @@ const MyPageScreen = () => {
       </View>
       <View>
         <UserInfo user={user.data}/>
-        <PhotoGrid show={true} type='upload' style={styles.photos}/>
+        <PhotoGrid type='upload' style={styles.photos}/>
       </View>
     </View>
   );

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48">
+    <defs>
+        <style>
+            .cls-2{fill:none}
+        </style>
+    </defs>
+    <g id="그룹_5678" data-name="그룹 5678" transform="translate(12970 15795)">
+        <path id="account-box" d="M10 46.718V50h40v-3.282q0-3.125-3.672-5.625a24.75 24.75 0 0 0-8.2-3.593A35.033 35.033 0 0 0 30 36.407a35.033 35.033 0 0 0-8.125 1.093 24.75 24.75 0 0 0-8.2 3.593Q10 43.593 10 46.718z" transform="translate(-12976 -15801)" style="stroke-linecap:round;stroke-linejoin:round;stroke:#fff;stroke-width:4px;fill:none"/>
+        <path id="사각형_3764" data-name="사각형 3764" class="cls-2" transform="translate(-12970 -15795)" d="M0 0h48v48H0z"/>
+        <g id="타원_478" data-name="타원 478" transform="translate(-12957 -15792)" style="stroke:#fff;stroke-width:4px;fill:none">
+            <circle cx="11" cy="11" r="11" style="stroke:none"/>
+            <circle class="cls-2" cx="11" cy="11" r="9"/>
+        </g>
+    </g>
+</svg>

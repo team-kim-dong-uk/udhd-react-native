@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { height, width } from '../util/StyleUtil.js';
 
 
-const PhotoGrid = ({show, type}) => {
+const PhotoGrid = ({type}) => {
   const [numCols, setColumnNo] = useState(3);
   const dispatch = useDispatch();
   const { auth, photos, loading } = useSelector(state => state);
@@ -29,16 +29,11 @@ const PhotoGrid = ({show, type}) => {
               : type === 'search' ? photos.search
               :                     photos.upload;
 
-  
-
   useEffect(() => {
                       console.log(type);
     if (!data && !loading.data && !photos.error) {
-      const actionCreator = type === 'album' ? getAlbumPhotos
-                      : type === 'search' ? getSearchPhotos
-                      :                     getUploadPhotos;
-
-      dispatch(actionCreator.request({
+      dispatch(getPhotos.request({
+        type: type,
         userId: auth.data?.userId,
       }));
     }
@@ -63,8 +58,6 @@ const PhotoGrid = ({show, type}) => {
     )
   };
 
-    if(!show)
-        return null;
   return (
     <View>
       <FlatList

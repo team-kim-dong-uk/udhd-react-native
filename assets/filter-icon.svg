@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96">
+    <defs>
+        <style>
+            .cls-2{fill:none;stroke:#222;stroke-linecap:round;stroke-linejoin:round;stroke-width:6px}
+        </style>
+    </defs>
+    <g id="그룹_5621" data-name="그룹 5621" transform="translate(-1148 -158)">
+        <g id="그룹_5620" data-name="그룹 5620">
+            <path id="선_90" data-name="선 90" class="cls-2" transform="translate(1168 169)" d="M0 0v25"/>
+            <path id="선_91" data-name="선 91" class="cls-2" transform="translate(1168 222)" d="M0 0v21"/>
+            <path id="선_92" data-name="선 92" class="cls-2" transform="translate(1196 169)" d="M0 0v38"/>
+            <path id="선_93" data-name="선 93" class="cls-2" transform="translate(1196 235)" d="M0 0v8"/>
+            <path id="선_94" data-name="선 94" class="cls-2" transform="translate(1224 169)" d="M0 0v19"/>
+            <path id="선_95" data-name="선 95" class="cls-2" transform="translate(1224 215)" d="M0 0v28"/>
+            <ellipse id="타원_88" data-name="타원 88" class="cls-2" cx="8" cy="8.5" rx="8" ry="8.5" transform="translate(1160 195)"/>
+            <ellipse id="타원_89" data-name="타원 89" class="cls-2" cx="8" cy="8.5" rx="8" ry="8.5" transform="translate(1216 188)"/>
+            <ellipse id="타원_90" data-name="타원 90" class="cls-2" cx="8" cy="8.5" rx="8" ry="8.5" transform="translate(1188 208)"/>
+        </g>
+    </g>
+</svg>
