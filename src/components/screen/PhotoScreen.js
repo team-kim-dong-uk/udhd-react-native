@@ -93,14 +93,15 @@ const styles = StyleSheet.create({
   },
   photoContainer: {
     width: '100%',
-    height: '90%',
+  minHeight: '50%',
+    maxHeight: '70%',
   },
     photo: {
         backgroundColor: "gray",
         width: '100%',
         height: '100%',
         resizeMode: 'contain',
-    }
+    },
 });
 
 export default PhotoScreen;
