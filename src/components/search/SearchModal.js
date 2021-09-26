@@ -136,7 +136,7 @@ const SearchModal = ({type, show, setShow}) => {
                      onRemoveTag={onRemoveTag}/>
         )
     }
-    console.log(searchTags)
+
   if(!show)
       return null;
 
@@ -274,7 +274,6 @@ const styles = StyleSheet.create({
     color: colors.darkBlue,
     marginLeft: 15 * width,
   },
-  //TODO: 태그 많아지면 가로 스크롤
   tagBox:{
     width: 360 * width,
     height: 40 * height,
@@ -282,6 +281,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 10 * width,
+    paddingRight: 10 * width,
   },
   searchTypeContainer: {
     width: 360 * width,
