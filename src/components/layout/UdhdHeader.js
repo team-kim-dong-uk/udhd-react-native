@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
     Image,
     StyleSheet,
@@ -20,10 +20,13 @@ const UdhdHeader = ({type}) => {
     const navigation = useNavigation();
     const {tags, isSearching } = useSelector(state => state);
     const selectedTags = type === 'album' ? tags.selectedAlbumTags : tags.selectedSearchTags;
-
+    const [showSearchModal, setShowSearchModal] = useState(false);
     const [showFilter, setShowFilter] = useState(false);
 
-    const startSearch = () => {dispatch(startSearching());}
+    const startSearch = () => {
+        dispatch(startSearching());
+        setShowSearchModal(true);
+    }
 
     const onPressFilter = useCallback((e) => {
         setShowFilter((prev) => !prev);
@@ -41,13 +44,13 @@ const UdhdHeader = ({type}) => {
           source={require('../../../assets/drawable-hdpi/symbol_black.webp')}
         />
         <TouchableOpacity style={styles.searchBox} onPress={startSearch}>
-            { 
+            {
                 selectedTags.length === 0
                     ? <Text style={styles.searchBoxText}>검색어를 입력해주세요</Text>
                     : selectedTags.map((item) => <SearchBoxTag key={item.keyword} {...item}/>)
             }
         </TouchableOpacity>
-        {isSearching.data && <SearchModal type={type}/>}
+        {isSearching.data && <SearchModal type={type} show={showSearchModal} setShow={setShowSearchModal}/>}
         <TouchableOpacity onPress={onPressFilter} style={styles.filterIcon}>
           <FilterIcon
             width={24 * width}

@@ -19,7 +19,7 @@ import { getTags } from '../../core/redux/tags';
 import { TextInput } from 'react-native';
 import CancelIcon from '../../../assets/cancel-icon-round.svg';
 
-const SearchModal = ({type}) => {
+const SearchModal = ({type, show, setShow}) => {
     const dispatch = useDispatch();
     const inputRef = useRef();
     const { auth, tags, isSearching } = useSelector(state => state);
@@ -31,8 +31,14 @@ const SearchModal = ({type}) => {
     const [searchTags, setSearchTags] = useState(initialSearchTags);
     const [searchType, setSearchType] = useState('TAG');
 
-    const startSearch = () => {dispatch(startSearching());}
-    const finishSearch = () => {dispatch(finishSearching());}
+    const startSearch = () => {
+        dispatch(startSearching());
+        setShow(true);
+    }
+    const finishSearch = () => {
+        dispatch(finishSearching());
+        setShow(false);
+    }
 
     const onRemoveTag = useCallback((itemToRemove) => {
       setSearchTags([...searchTags.filter(item => !(itemToRemove.keyword === item.keyword && itemToRemove.type === item.type))])
@@ -120,6 +126,9 @@ const SearchModal = ({type}) => {
         <RecommendTag item={item} onSelectTag={addSearchTag}/>
         )
     };
+
+  if(!show)
+      return null;
 
   return (
     <ModalTemplate
