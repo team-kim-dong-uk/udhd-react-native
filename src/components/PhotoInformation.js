@@ -1,8 +1,8 @@
 import React, {useCallback, useState} from "react";
 import {
-    Image,
+    Image, Platform,
     Pressable,
-    StyleSheet, Text,
+    StyleSheet, Text, ToastAndroid,
     View
 } from "react-native";
 import {useDispatch, useSelector} from "react-redux";
@@ -11,6 +11,13 @@ import ModalTemplate from "./ModalTemplate";
 import Tag from "./Tag";
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+
+const options = {
+    mimeType: 'image/jpeg',
+    dialogTitle: 'Share the image',
+    UTI: 'image/jpeg',
+};
 
 const PhotoInformation = ({style, tags, isLoading}) => {
     const {auth, photo} = useSelector(state => state);
@@ -31,27 +38,51 @@ const PhotoInformation = ({style, tags, isLoading}) => {
         }))
     }, [addRequest])
 
+    const download = async () => {
+        const perm = await MediaLibrary.requestPermissionsAsync(true)
+        if (perm.status != 'granted') {
+            return;
+        }
+        let fileUri = FileSystem.cacheDirectory + `${photo.data?.photoId}.jpg`
+        FileSystem.downloadAsync(photo.data?.originalLink, fileUri, options)
+            .then(async (target)=>{
+                try {
+                    const album = await MediaLibrary.getAlbumAsync('UDHD');
+                    const asset = await MediaLibrary.createAssetAsync(fileUri);
+                    if (album == null) {
+                        await MediaLibrary.createAlbumAsync('UDHD', asset, false);
+                    } else {
+                        await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+                    }
+                    ToastAndroid.show('Pictures/UDHD 에 저장 완료!', ToastAndroid.SHORT);
+                } catch (e) {
+                    console.log(e)
+                }
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+
+    }
+
     const onShare = () => {
-        const options = {
-            mimeType: 'image/jpeg',
-            dialogTitle: 'Share the image',
-            UTI: 'image/jpeg',
-        };
         let fileUri = FileSystem.cacheDirectory + `${photo.data?.photoId}.jpg`
         FileSystem.downloadAsync(photo.data?.originalLink, fileUri)
             .then(()=>{
-                console.log(`download to cache - ${JSON.stringify(photo.data)}`)
+                Sharing.shareAsync(fileUri, options)
+                    .then(()=>{
+                        ToastAndroid.show('공유 완료!', ToastAndroid.SHORT);
+                    })
+                    .catch((e) => {
+                        console.log(e);
+                        ToastAndroid.show('다시 시도해주세요 :(', ToastAndroid.SHORT);
+                    });
             })
             .catch((e) => {
                 console.log(e);
+                ToastAndroid.show('다시 시도해주세요 :(', ToastAndroid.SHORT);
             });
-        Sharing.shareAsync(fileUri, options)
-            .then(()=>{
-                console.log(`share it`)
-            })
-            .catch((e) => {
-                console.log(e);
-            });
+
     }
 
     return (
@@ -66,9 +97,11 @@ const PhotoInformation = ({style, tags, isLoading}) => {
                     <Pressable style={styles.button} onPress={onShare}>
                         <Text>공유</Text>
                     </Pressable>
-                    <Pressable style={styles.button}>
-                        <Text>다운</Text>
-                    </Pressable>
+                    {Platform.OS !== 'ios' &&
+                        <Pressable style={styles.button} onPress={download}>
+                            <Text>다운</Text>
+                        </Pressable>
+                    }
                     <Pressable style={styles.button} onPress={addToByAlbum}>
                         {!addRequest && <Text>ㅎㅌ</Text>}
                         {addRequest && <Text>하투</Text>}
