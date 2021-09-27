@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from "react";
 import {
     Image,
-    Pressable,
+    Pressable, Share,
     StyleSheet, Text,
     View
 } from "react-native";
@@ -10,22 +10,24 @@ import {addToAlbum} from "../core/redux/album";
 import ModalTemplate from "./ModalTemplate";
 import Tag from "./Tag";
 
-const PhotoInformation = ({style, photoId, tags, isLoading}) => {
+const PhotoInformation = ({style, tags, isLoading}) => {
     const {auth, photo} = useSelector(state => state);
     const dispatch  = useDispatch();
 
     const [showSetting, setShowSetting] = useState(false);
+    const [addRequest, setAddRequest] = useState(false);
+
     const onPressSetting = useCallback(() => {
         setShowSetting((prev) => !prev);
     }, []);
 
-    //TODO: 하트 여부는 어떻게 확인해?
     const addToByAlbum = useCallback(() => {
+        setAddRequest(true);
         dispatch(addToAlbum.request({
             userId: auth.data.userId,
-            photoId: photoId
+            photoId: photo.data?.photoId
         }))
-    }, [])
+    }, [addRequest])
 
     return (
         <View style={styles.container}>
@@ -43,7 +45,9 @@ const PhotoInformation = ({style, photoId, tags, isLoading}) => {
                         <Text>다운</Text>
                     </Pressable>
                     <Pressable style={styles.button} onPress={addToByAlbum}>
-                        <Text>ㅎㅌ</Text>
+                        {!addRequest && <Text>ㅎㅌ</Text>}
+                        {addRequest && <Text>하투</Text>}
+
                     </Pressable>
                     <Pressable style={styles.button} onPress={onPressSetting}>
                         <Text>---</Text>
@@ -59,8 +63,7 @@ const PhotoInformation = ({style, photoId, tags, isLoading}) => {
                         return (
                             <View style={styles.tagLine}>
                                 {line?.map((tag) => {
-                                    return (<Tag key={tag} text={tag}/>
-                                    )
+                                    return (<Tag key={tag} text={tag}/>)
                                 })}
                             </View>
                         )
