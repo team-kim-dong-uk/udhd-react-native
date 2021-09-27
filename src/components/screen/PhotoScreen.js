@@ -14,7 +14,7 @@ const PhotoScreen = ({route, navigation}) => {
     const dispatch = useDispatch();
     const windowWidth = Dimensions.get('window').width;
     const [tagLines, setTagLines] = useState([]);
-    const [tagLoading, setTagLoading] = useState(true);
+    const [photoLoading, setPhotoLoading] = useState(true);
 
     useEffect(() => {
         dispatch(getPhoto.request({
@@ -29,8 +29,8 @@ const PhotoScreen = ({route, navigation}) => {
 
     useEffect(() => {
         if(route.params.photoId === photo.data?.photoId)
-            setTagLoading(false);
-    }, [tagLoading, photo])
+            setPhotoLoading(false);
+    }, [photoLoading, photo])
 
     const getTagSize = (text) => {
         const space = 11;
@@ -66,7 +66,7 @@ const PhotoScreen = ({route, navigation}) => {
                   <Pressable onPress={() => {
                                   navigation.navigate('PhotoFull', {
                                       photoId: route.params?.photoId,
-                                      image: route.params?.image
+                                      image: photo.data?.originalLink
                                   });
                               }}
                              style={styles.photoContainer}>
@@ -75,7 +75,7 @@ const PhotoScreen = ({route, navigation}) => {
                           style={styles.photo}
                       />
                   </Pressable>
-                  <PhotoInformation tags={tagLines} isLoading={tagLoading}/>
+                  <PhotoInformation tags={tagLines} isLoading={photoLoading}/>
               </View>
           )}
       </View>

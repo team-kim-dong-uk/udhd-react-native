@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from "react";
 import {
     Image,
-    Pressable, Share,
+    Pressable,
     StyleSheet, Text,
     View
 } from "react-native";
@@ -9,6 +9,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {addToAlbum} from "../core/redux/album";
 import ModalTemplate from "./ModalTemplate";
 import Tag from "./Tag";
+import * as Sharing from 'expo-sharing';
+import * as FileSystem from 'expo-file-system';
 
 const PhotoInformation = ({style, tags, isLoading}) => {
     const {auth, photo} = useSelector(state => state);
@@ -29,6 +31,29 @@ const PhotoInformation = ({style, tags, isLoading}) => {
         }))
     }, [addRequest])
 
+    const onShare = () => {
+        const options = {
+            mimeType: 'image/jpeg',
+            dialogTitle: 'Share the image',
+            UTI: 'image/jpeg',
+        };
+        let fileUri = FileSystem.cacheDirectory + `${photo.data?.photoId}.jpg`
+        FileSystem.downloadAsync(photo.data?.originalLink, fileUri)
+            .then(()=>{
+                console.log(`download to cache - ${JSON.stringify(photo.data)}`)
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+        Sharing.shareAsync(fileUri, options)
+            .then(()=>{
+                console.log(`share it`)
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.information}>
@@ -38,7 +63,7 @@ const PhotoInformation = ({style, tags, isLoading}) => {
                     <Text style={styles.uploaderName}>{photo.data?.uploaderNickname}</Text>
                 </View>
                 <View style={styles.functionBox}>
-                    <Pressable style={styles.button}>
+                    <Pressable style={styles.button} onPress={onShare}>
                         <Text>공유</Text>
                     </Pressable>
                     <Pressable style={styles.button}>
