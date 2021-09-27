@@ -13,11 +13,17 @@ import { Button } from 'react-native';
 import { checkProgress, removeCandidate, uploadPhotos } from '../../../core/redux/upload';
 import * as Progress from 'react-native-progress';
 import { UIButton } from '../../common/UIButton';
+import PlusIcon from '../../../../assets/plus-icon.svg';
+import { colors, height, width } from '../../../util/StyleUtil';
+import { Pressable } from 'react-native';
+import ModalTemplate from '../../ModalTemplate';
+import UploadOptionModal from '../../UploadOptionModal';
 
 const UploadSelectScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { auth, upload } = useSelector(state => state);
+  const [showModal, setShowModal] = useState(false);
 
   // 업로드 버튼 클릭해 업로드 진행상태로 변하면 progress를 1초마다 polling하는 동작을 추가한다.
   useEffect(() => {
@@ -51,7 +57,17 @@ const UploadSelectScreen = () => {
     }));
   }
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
+    if (index == 0) {
+      return (
+        <Pressable onPress={()=> setShowModal(true)} style={styles.addButton}>
+          <PlusIcon
+            width={25 * width}
+            height={25 * height}
+            viewBox='0 0 100 100'
+          />
+        </Pressable>)
+    }
     return (
         <View style={{flex: 1}}>
             <UIButton title='x' onPress={() => removeSelected(item.id)} style={styles.cancleBtn} textStyle={styles.cancleBtnText}/>
@@ -63,11 +79,10 @@ const UploadSelectScreen = () => {
   };
 
   return (
-     <View style={styles.scrollBox}>
-       <Button title='select from gallery' onPress={()=>alert('TODO')}></Button>
-       <Button title='select from google drive' onPress={openGoogleDrive}></Button>
-       <FlatList
-          data={upload.data}
+      <View style={styles.container}>
+        <UploadOptionModal show={showModal} closeModal={()=>setShowModal(false)} openGoogleDrive={openGoogleDrive}/>
+        <FlatList
+          data={[0, ...upload.data]}
           renderItem={renderItem}
           numColumns={3}
           keyExtractor={item => item.id}
@@ -79,9 +94,16 @@ const UploadSelectScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  scrollBox: {
-    width: '100%',
-    height: '100%',
+  container: {
+    flex: 1,
+    backgroundColor: colors.white,
+  },
+  addButton: {
+    width: 119 * width,
+    height: 118 * height,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.lightGrey,
   },
   thumbnail: {
     width: '100%',

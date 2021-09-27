@@ -62,7 +62,14 @@ const App = () => {
           <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name='Home' component={MainTabScreen} options={{ headerShown: false }}/>
-                <Stack.Screen name='UploadSelect' component={UploadSelectScreen} options={{ headerShown: false }}/>
+                <Stack.Screen 
+                  name='UploadSelect' 
+                  component={UploadSelectScreen} 
+                  options={{ 
+                    title: '이미지 업로드',
+                    header: (props) => <StackHeader {...props}/>
+                  }}
+                />
                 <Stack.Screen name='GooglePicker' component={GooglePickerScreen} options={{ headerShown: false }}/>
                 <Stack.Screen
                   name='Setting'

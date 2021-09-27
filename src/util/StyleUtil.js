@@ -5,6 +5,7 @@ export const colors = {
   black: '#222222',
   white: '#FFFFFF',
   grey: '#BBBBBB',
+  lightGrey: '#EEEEEE',
   placeholderGrey: '#AAAAAA',
   inputGrey: '#F8F8F8',
   checkboxGrey: '#F2F2F2',
