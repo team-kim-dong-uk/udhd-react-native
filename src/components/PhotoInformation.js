@@ -119,7 +119,7 @@ const PhotoInformation = ({style, tags, isLoading}) => {
                 <View style={styles.tagBox}>
                     {!isLoading && tags?.map((line) => {
                         return (
-                            <View style={styles.tagLine}>
+                            <View style={styles.tagLine} key={line}>
                                 {line?.map((tag) => {
                                     return (<Tag key={tag} text={tag}/>)
                                 })}
