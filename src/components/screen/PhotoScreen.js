@@ -1,10 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import { Dimensions } from 'react-native';
-import UdhdHeader from "../layout/UdhdHeader";
-import Footer from "../Footer";
 import {useDispatch, useSelector} from "react-redux";
-import PhotoTagBox from "../PhotoTagBox";
 import {getPhoto} from "../../core/redux/photo";
 import CommonHeader from "../layout/CommonHeader";
 import PhotoInformation from "../PhotoInformation";
