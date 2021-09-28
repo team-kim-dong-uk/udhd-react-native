@@ -17,10 +17,10 @@ import PersonalInfoScreen from './components/screen/login/PersonalInfoScreen';
 import GroupSelectScreen from './components/screen/login/GroupSelectScreen';
 import { StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native';
-import MainTabScreen from './components/screen/MainTabScreen';
 import UploadSelectScreen from './components/screen/upload/UploadSelectScreen';
 import GooglePickerScreen from './components/screen/upload/GooglePickerScreen';
 import {finishSearching} from "./core/redux/searching";
+
 import SettingScreen from './components/screen/SettingScreen';
 import { LoginHeader } from './components/layout/LoginHeader';
 import { colors } from './util/StyleUtil';
@@ -28,89 +28,101 @@ import { useFonts } from 'expo-font';
 import { StackHeader } from './components/layout/StackHeader';
 import SplashScreen from './components/screen/SplashScreen';
 
+import MainTabScreen from "./components/screen/MainTabScreen";
+import PhotoScreen from "./components/screen/PhotoScreen";
+import PhotoFullScreen from "./components/screen/PhotoFullScreen";
+
 
 const App = () => {
-  let [fontsLoaded] = useFonts({
-    'NotoSansCJKkr': require('../assets/fonts/NotoSansCJKkr-Regular.otf'),
-  });
-  
-  const dispatch = useDispatch();
-  const {auth, isSearching} = useSelector(state => state);
+    let [fontsLoaded] = useFonts({
+        'NotoSansCJKkr': require('../assets/fonts/NotoSansCJKkr-Regular.otf'),
+    });
+
+    const dispatch = useDispatch();
+    const {auth, searching} = useSelector(state => state);
 
 
     const onBackPressFromSearch = () => {
-        if(isSearching.data){
+        if(searching.data){
             dispatch(finishSearching())
             return true;
         }   return false;
     }
 
     useEffect(() => {
-        BackHandler.removeEventListener('hardwareBackPress', onBackPressFromSearch);
         BackHandler.addEventListener('hardwareBackPress', onBackPressFromSearch);
-    }, [isSearching]);
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', onBackPressFromSearch)
+        }
+    }, [searching]);
 
 
-  if (!fontsLoaded) {
-    return (
-      <SplashScreen/>
-    )
-  }
-  return (
-      auth.data && auth.data.nickname && auth.data.group ? (
-        <SafeAreaView style={styles.container}>
-          <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name='Home' component={MainTabScreen} options={{ headerShown: false }}/>
-                <Stack.Screen name='UploadSelect' component={UploadSelectScreen} options={{ headerShown: false }}/>
-                <Stack.Screen name='GooglePicker' component={GooglePickerScreen} options={{ headerShown: false }}/>
-                <Stack.Screen
-                  name='Setting'
-                  component={SettingScreen}
-                  options={{
-                    title: '설정',
-                    header: (props) => <StackHeader {...props}/>
-                  }}
-                />
-              </Stack.Navigator>
-          </NavigationContainer>
-        </SafeAreaView>
-        ) : (
-          <SafeAreaView style={styles.container}>
-            <NavigationContainer>
-              <Stack.Navigator>
-                <Stack.Screen name='SocialLogin' component={SocialLoginScreen} options={{ headerShown: false }}/>
-                <Stack.Screen
-                  name='PersonalInfo'
-                  component={PersonalInfoScreen}
-                  options={{
-                    title: '회원정보 설정',
-                    order: 1,
-                    header: (props) => <LoginHeader {...props}/>
-                  }}
-                />
-                <Stack.Screen
-                  name='GroupSelect'
-                  component={GroupSelectScreen}
-                  options={{
-                    title: '선호 연예인 설정',
-                    order: 2,
-                    header: (props) => <LoginHeader {...props}/>
-                  }}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
-      </SafeAreaView>
+    if (!fontsLoaded) {
+        return (
+            <SplashScreen/>
         )
-  );
+    }
+    return (
+        auth.data && auth.data.nickname && auth.data.group ? (
+            <SafeAreaView style={styles.container}>
+                <NavigationContainer>
+                    <Stack.Navigator>
+                        <Stack.Screen name='Home' component={MainTabScreen} options={{ headerShown: false }}/>
+                        <Stack.Screen name='UploadSelect' component={UploadSelectScreen} options={{ headerShown: false }}/>
+                        <Stack.Screen name='GooglePicker' component={GooglePickerScreen} options={{ headerShown: false }}/>
+                        <Stack.Screen
+                            name='Setting'
+                            component={SettingScreen}
+                            options={{
+                                title: '설정',
+                                header: (props) => <StackHeader {...props}/>
+                            }}
+                        />
+                        <Stack.Screen name="PhotoDetail"
+                                      component={PhotoScreen}
+                                      options={{headerShown: false}}/>
+                        <Stack.Screen name="PhotoFull"
+                                      component={PhotoFullScreen}
+                                      options={{headerShown: false}}/>
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </SafeAreaView>
+        ) : (
+            <SafeAreaView style={styles.container}>
+                <NavigationContainer>
+                    <Stack.Navigator>
+                        <Stack.Screen name='SocialLogin' component={SocialLoginScreen} options={{ headerShown: false }}/>
+                        <Stack.Screen
+                            name='PersonalInfo'
+                            component={PersonalInfoScreen}
+                            options={{
+                                title: '회원정보 설정',
+                                order: 1,
+                                header: (props) => <LoginHeader {...props}/>
+                            }}
+                        />
+                        <Stack.Screen
+                            name='GroupSelect'
+                            component={GroupSelectScreen}
+                            options={{
+                                title: '선호 연예인 설정',
+                                order: 2,
+                                header: (props) => <LoginHeader {...props}/>
+                            }}
+                        />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </SafeAreaView>
+        )
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop:StatusBar.currentHeight,
-    backgroundColor: colors.white,
-  },
+    container: {
+        flex: 1,
+        marginTop:StatusBar.currentHeight,
+        backgroundColor: colors.white,
+    },
 
 });
 

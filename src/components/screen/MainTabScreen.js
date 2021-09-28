@@ -15,65 +15,65 @@ import MypageIconActive from '../../../assets/mypage-icon-active.svg';
 const Tab = createBottomTabNavigator();
 
 const MainTabScreen = () => {
-  return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarShowLabel: false,
-        headerShown: false,
-        tabBarStyle: {
-          height: 60 * height,
-          width: 360 * width,
-          backgroundColor: colors.white,
-        },
-      }}
-    >
-      <Tab.Screen
-        name="Album!"
-        component={AlbumStackScreen}
-        options={{
-          tabBarIcon: ({focused}) => focused 
-          ? <AlbumIconActive width={25 * width}
-              height={25 * height}
-              viewBox='0 0 100 100'
+    return (
+        <Tab.Navigator
+            screenOptions={{
+                tabBarShowLabel: false,
+                headerShown: false,
+                tabBarStyle: {
+                    height: 60 * height,
+                    width: 360 * width,
+                    backgroundColor: colors.white,
+                },
+            }}
+        >
+            <Tab.Screen
+                name="Album!"
+                component={AlbumStackScreen}
+                options={{
+                    tabBarIcon: ({focused}) => focused
+                        ? <AlbumIconActive width={25 * width}
+                                           height={25 * height}
+                                           viewBox='0 0 100 100'
+                        />
+                        : <AlbumIcon width={25 * width}
+                                     height={25 * height}
+                                     viewBox='0 0 100 100'
+                        />,
+                }}
             />
-          : <AlbumIcon width={25 * width}
-              height={25 * height}
-              viewBox='0 0 100 100'
-            />,
-        }}
-      />
-      <Tab.Screen
-        name="Search"
-        component={SearchStackScreen}
-        options={{
-          tabBarIcon: ({focused}) => focused 
-          ? <SearchIconActive width={25 * width}
-              height={25 * height}
-              viewBox='0 0 100 100'
+            <Tab.Screen
+                name="Search"
+                component={SearchStackScreen}
+                options={{
+                    tabBarIcon: ({focused}) => focused
+                        ? <SearchIconActive width={25 * width}
+                                            height={25 * height}
+                                            viewBox='0 0 100 100'
+                        />
+                        : <SearchIcon width={25 * width}
+                                      height={25 * height}
+                                      viewBox='0 0 100 100'
+                        />,
+                }}
             />
-          : <SearchIcon width={25 * width}
-              height={25 * height}
-              viewBox='0 0 100 100'
-            />,
-        }}
-      />
-      <Tab.Screen
-        name="MyPage"
-        component={MyPageScreen}
-        options={{
-          tabBarIcon: ({focused}) => focused 
-          ? <MypageIconActive width={25 * width}
-              height={25 * height}
-              viewBox='0 0 100 100'
+            <Tab.Screen
+                name="MyPage"
+                component={MyPageScreen}
+                options={{
+                    tabBarIcon: ({focused}) => focused
+                        ? <MypageIconActive width={25 * width}
+                                            height={25 * height}
+                                            viewBox='0 0 100 100'
+                        />
+                        : <MypageIcon width={25 * width}
+                                      height={25 * height}
+                                      viewBox='0 0 100 100'
+                        />,
+                }}
             />
-          : <MypageIcon width={25 * width}
-              height={25 * height}
-              viewBox='0 0 100 100'
-            />,
-        }}
-      />
-      </Tab.Navigator>
-  );
+        </Tab.Navigator>
+    );
 }
 
 const styles = StyleSheet.create({

@@ -5,6 +5,9 @@ import { authSaga } from '../redux/auth';
 import { uploadSaga } from '../redux/upload';
 import {tagsSaga} from "../redux/tags";
 import { userSaga } from '../redux/user';
+import {albumSaga} from "../redux/album";
+// import { uploadSaga } from '../redux/upload';
+
 export default function* rootSaga() {
   yield all([
     authSaga(),
@@ -13,5 +16,7 @@ export default function* rootSaga() {
     uploadSaga(),
     tagsSaga(),
     userSaga(),
+    albumSaga(),
+    // uploadSaga(),
   ]);
 }

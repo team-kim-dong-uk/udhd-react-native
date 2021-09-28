@@ -13,7 +13,6 @@ const SearchStackScreen = () => {
       <Stack.Screen name="SearchMain"
                     component={SearchScreen}
                     options={{headerShown: false}}/>
-      <Stack.Screen name="PhotoDetail" component={PhotoScreen} />
   </Stack.Navigator>
   );
 }
