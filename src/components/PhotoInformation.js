@@ -39,7 +39,7 @@ const PhotoInformation = ({style, tags, isLoading}) => {
     }, [addRequest])
 
     const download = async () => {
-        const perm = await MediaLibrary.requestPermissionsAsync(true)
+        const perm = await MediaLibrary.requestPermissionsAsync();
         if (perm.status != 'granted') {
             return;
         }
