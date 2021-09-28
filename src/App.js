@@ -27,6 +27,8 @@ import { colors } from './util/StyleUtil';
 import { useFonts } from 'expo-font';
 import { StackHeader } from './components/layout/StackHeader';
 import SplashScreen from './components/screen/SplashScreen';
+import { GoogleDriveHeader } from './components/layout/GoogleDriveHeader';
+import { UploadHeader } from './components/layout/UploadHeader';
 
 
 const App = () => {
@@ -67,10 +69,17 @@ const App = () => {
                   component={UploadSelectScreen} 
                   options={{ 
                     title: '이미지 업로드',
-                    header: (props) => <StackHeader {...props}/>
+                    header: (props) => <UploadHeader {...props}/>
                   }}
                 />
-                <Stack.Screen name='GooglePicker' component={GooglePickerScreen} options={{ headerShown: false }}/>
+                <Stack.Screen 
+                  name='GooglePicker' 
+                  component={GooglePickerScreen} 
+                  options={{ 
+                    title: '구글 드라이브',
+                    header: (props) => <GoogleDriveHeader {...props}/>
+                  }}
+                />
                 <Stack.Screen
                   name='Setting'
                   component={SettingScreen}

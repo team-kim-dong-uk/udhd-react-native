@@ -21,6 +21,8 @@ import googlePicker, { backFolder, changeFolder, selectAll, setFileList, toggleS
 import { appendCandidates } from '../../../core/redux/upload';
 import { style } from 'styled-system';
 import { UIButton } from '../../common/UIButton';
+import SelectedIcon from '../../../../assets/selected-icon.svg';
+import { colors, height, width } from '../../../util/StyleUtil';
 
 const GooglePickerScreen = () => {
   const naviagtion = useNavigation();
@@ -74,11 +76,7 @@ const GooglePickerScreen = () => {
     dispatch(unselectAll());
   }
 
-  // 선택완료 클릭시 선택된 데이터들을 들고 업로드 화면으로 이동
-  const confirmSelect = () => {
-    dispatch(appendCandidates({data: googlePicker.data.filter(item => item.selected)}))
-    naviagtion.navigate('UploadSelect');
-  }
+  
 
   //google drive의 각 item 그리기. folder / image 종류에 따라 동작이 다르다.
   const renderItem = ({ item }) => {
@@ -97,9 +95,15 @@ const GooglePickerScreen = () => {
             : <TouchableHighlight onPress={() => selectItem(item)} style={styles.touchArea}>
                 <View>
                 <Image source={{uri: item.thumbnailLink}} style={styles.thumbnail}></Image>
-                <Text style={item.selected ? styles.selected : styles.unselected}>
-                  {item.name}
-                </Text>
+                {
+                  item.selected ? 
+                  <SelectedIcon
+                    width={20 * width}
+                    height={20 * height}
+                    viewBox='0 0 80 80'
+                    style={styles.selectedIcon}
+                  /> : null
+                }
                 </View>
               </TouchableHighlight>
           }
@@ -110,12 +114,6 @@ const GooglePickerScreen = () => {
 
   return (
     <View style={styles.scrollBox}>
-      <View style={styles.buttonContainer}>
-        <UIButton title='뒤로가기' onPress={()=>goBackFolder()} style={styles.buttons}/>
-        <UIButton title='이미지 전체선택' onPress={()=>selectAllPress()} style={styles.buttons}/>
-        <UIButton title='전체선택 해제' onPress={()=>unselectAllPress()} style={styles.buttons}/>
-        <UIButton title='선택 완료' onPress={()=>confirmSelect()} style={styles.buttons}/>
-      </View>
       <FlatList
         data={googlePicker.data}
         renderItem={renderItem}
@@ -133,11 +131,12 @@ const styles = StyleSheet.create({
   },
   thumbnail: {
     width: '100%',
-    height: '80%',
+    height: '100%',
   },
   touchArea: {
-    height: 140,
-    position: 'relative',
+    width: 119 * width,
+    height: 118 * height,
+    marginBottom: 1.5 * height,
   },
   buttons: {
     width: '25%',
@@ -147,12 +146,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 10,
   },
-  selected: {
-    color: 'blue',
+  selectedIcon: {
+    position: 'absolute',
+    top: 5 * height,
+    right: 5 * width,
   },
-  unselected: {
-    color: 'black',
-  }
 });
 
 export default GooglePickerScreen;

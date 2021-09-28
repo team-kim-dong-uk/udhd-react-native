@@ -49,13 +49,7 @@ const UploadSelectScreen = () => {
     dispatch(removeCandidate({id}));
   }
 
-  // 업로드 버튼 클릭 시 업로드 진행.
-  const uploadAll = () => {
-    dispatch(uploadPhotos.request({
-      data: upload.data,
-      googleDriveToken: auth.data.googleToken,
-    }));
-  }
+  
 
   const renderItem = ({ item, index }) => {
     if (index == 0) {
@@ -88,7 +82,6 @@ const UploadSelectScreen = () => {
           keyExtractor={item => item.id}
         />
         <Progress.Bar progress={upload.progress} width={410}/>
-        <Button title='upload' onPress={uploadAll}></Button>
      </View>
   );
 }
