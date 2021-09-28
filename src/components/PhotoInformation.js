@@ -1,8 +1,8 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useRef, useState} from "react";
 import {
     Image, Platform,
     Pressable,
-    StyleSheet, Text, ToastAndroid,
+    StyleSheet, Text,
     View
 } from "react-native";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,6 +12,7 @@ import Tag from "./Tag";
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
+import Toast from 'react-native-toast-message';
 
 const options = {
     mimeType: 'image/jpeg',
@@ -54,7 +55,13 @@ const PhotoInformation = ({style, tags, isLoading}) => {
                     } else {
                         await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
                     }
-                    ToastAndroid.show('Pictures/UDHD 에 저장 완료!', ToastAndroid.SHORT);
+                    Toast.show({
+                        type: 'success',
+                        position: 'bottom',
+                        text1: '다운로드 성공!',
+                        visibilityTime: 1000,
+                        autoHide: true,
+                    });
                 } catch (e) {
                     console.log(e)
                 }
@@ -65,24 +72,33 @@ const PhotoInformation = ({style, tags, isLoading}) => {
 
     }
 
-    const onShare = () => {
+    const onShare = async () => {
         let fileUri = FileSystem.cacheDirectory + `${photo.data?.photoId}.jpg`
-        FileSystem.downloadAsync(photo.data?.originalLink, fileUri)
+        console.log(fileUri);
+        await FileSystem.downloadAsync(photo.data?.originalLink, fileUri)
             .then(()=>{
-                Sharing.shareAsync(fileUri, options)
-                    .then(()=>{
-                        ToastAndroid.show('공유 완료!', ToastAndroid.SHORT);
-                    })
+                Sharing.shareAsync(fileUri, options).then(()=> {})
                     .catch((e) => {
-                        console.log(e);
-                        ToastAndroid.show('다시 시도해주세요 :(', ToastAndroid.SHORT);
+                        console.log('error is ' + e);
+                        Toast.show({
+                            type: 'error',
+                            position: 'bottom',
+                            text1: '다시 시도해주세요 :(',
+                            visibilityTime: 1000,
+                            autoHide: true,
+                        })
                     });
             })
             .catch((e) => {
                 console.log(e);
-                ToastAndroid.show('다시 시도해주세요 :(', ToastAndroid.SHORT);
-            });
-
+                Toast.show({
+                    type: 'error',
+                    position: 'bottom',
+                    text1: '다시 시도해주세요 :(!',
+                    visibilityTime: 1000,
+                    autoHide: true,
+                });
+            })
     }
 
     return (
