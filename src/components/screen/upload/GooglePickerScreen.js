@@ -25,7 +25,6 @@ import SelectedIcon from '../../../../assets/selected-icon.svg';
 import { colors, height, width } from '../../../util/StyleUtil';
 
 const GooglePickerScreen = () => {
-  const naviagtion = useNavigation();
   const dispatch = useDispatch();
   const { auth, googlePicker } = useSelector(state => state);
   const currentFolderId = googlePicker.folderIdStack.slice(-1)[0];
@@ -57,13 +56,6 @@ const GooglePickerScreen = () => {
   // 이미지 클릭 시 해당 이미지 선택 / 선택해제
   const selectItem = (item) => {
     dispatch(toggleSelect({item}));
-  }
-
-  // 뒤로가기 클릭 시 상위 폴더로 이동
-  const goBackFolder = () => {
-    if (currentFolderId !== 'root') {
-      dispatch(backFolder());
-    }
   }
 
   // 이미지 전체선택

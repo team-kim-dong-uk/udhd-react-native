@@ -7,6 +7,7 @@ import { Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { appendCandidates } from '../../core/redux/upload';
+import { backFolder } from '../../core/redux/googlePicker';
 
 
 export const GoogleDriveHeader = ({ navigation, route, options, back }) => {
@@ -15,8 +16,14 @@ export const GoogleDriveHeader = ({ navigation, route, options, back }) => {
   const naviagtion = useNavigation();
   const [count, setCount] = useState(0);
 
+  const currentFolderId = googlePicker.folderIdStack.slice(-1)[0];
+
   const goBack = () => {
-    navigation.goBack();
+    if (currentFolderId === 'root') {
+      navigation.goBack();
+    } else {
+      dispatch(backFolder());
+    }
   };
 
   useEffect(() => {
@@ -31,13 +38,14 @@ export const GoogleDriveHeader = ({ navigation, route, options, back }) => {
 
   return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.backButton} onPress={() => goBack()}>
+        <Pressable style={styles.backButton} onPress={goBack} hitSlop={10 * width}>
           <BackButton
             width={10 * width}
             height={20 * height}
             viewBox='0 0 40 80'
+            style={{width: 10*width, height: 20*height}}
           />
-        </TouchableOpacity>
+        </Pressable>
         <Text style={styles.title}> {options.title} </Text>
         <Pressable onPress={confirmSelect} style={styles.finishButtonContainer}>
           {
@@ -61,6 +69,7 @@ const styles = StyleSheet.create({
     backButton: {
       position: 'absolute',
       left: 15 * width,
+      zIndex: 1,
     },
     title: {
       fontFamily: fonts.NotoSansCJKkr,
