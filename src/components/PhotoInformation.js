@@ -12,6 +12,11 @@ import Tag from "./Tag";
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
+import { colors, fonts, height, width } from "../util/StyleUtil";
+import ShareIcon from '../../assets/share-icon.svg';
+import DownloadIcon from '../../assets/download-icon.svg';
+import HeartIcon from '../../assets/heart-icon.svg';
+import ThreeDotsIcon from '../../assets/three-dots.svg';
 
 const options = {
     mimeType: 'image/jpeg',
@@ -89,33 +94,52 @@ const PhotoInformation = ({style, tags, isLoading}) => {
         <View style={styles.container}>
             <View style={styles.information}>
                 <View style={styles.uploaderBox}>
-                    <Image style={styles.profileImage}
-                           source={{uri: "http://img.danawa.com/prod_img/500000/869/844/img/2844869_1.jpg?shrink=360:360&_v=20210325103140"}}/>
+                    <View style={styles.profileImage}/>
                     <Text style={styles.uploaderName}>{photo.data?.uploaderNickname}</Text>
                 </View>
                 <View style={styles.functionBox}>
                     <Pressable style={styles.button} onPress={onShare}>
-                        <Text>공유</Text>
+                        <ShareIcon
+                            width={25 * width}
+                            height={25 * height}
+                            viewBox='0 0 100 100'
+                            fill={colors.black}
+                        />
                     </Pressable>
                     {Platform.OS !== 'ios' &&
                         <Pressable style={styles.button} onPress={download}>
-                            <Text>다운</Text>
+                            <DownloadIcon
+                                width={25 * width}
+                                height={25 * height}
+                                viewBox='0 0 100 100'
+                                fill={colors.black}
+                            />
                         </Pressable>
                     }
                     <Pressable style={styles.button} onPress={addToByAlbum}>
-                        {!addRequest && <Text>ㅎㅌ</Text>}
+                        {!addRequest && <HeartIcon
+                                            width={25 * width}
+                                            height={25 * height}
+                                            viewBox='0 0 100 100'
+                                            fill={colors.black}
+                                        />}
                         {addRequest && <Text>하투</Text>}
 
                     </Pressable>
                     <Pressable style={styles.button} onPress={onPressSetting}>
-                        <Text>---</Text>
+                        <ThreeDotsIcon
+                            width={25 * width}
+                            height={25 * height}
+                            viewBox='0 0 100 100'
+                            fill={colors.black}
+                        />
                     </Pressable>
 
                 </View>
 
             </View>
             <View style={styles.tagContainer}>
-                <Text>  태그</Text>
+                <Text style={styles.tagTitle}>태그</Text>
                 <View style={styles.tagBox}>
                     {!isLoading && tags?.map((line) => {
                         return (
@@ -159,53 +183,63 @@ export default PhotoInformation;
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
-        width: '100%',
-        height: '30%',
+        backgroundColor: colors.white,
+        alignItems: 'center',
     },
     information: {
-        width: "100%",
-        height: '100%',
-        flex:1,
+        width: 330 * width,
+        height: 70 * height,
         borderBottomWidth: 1,
-        borderColor: 'gray',
-        justifyContent: 'space-between',
+        borderBottomColor: colors.grey,
         flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
     uploaderBox:{
-        height: '100%',
-        width: '50%',
         alignItems: 'center',
         flexDirection: 'row',
-        paddingLeft: 15,
-    },
-    functionBox:{
-        height: '100%',
-        width: '50%',
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
-    tagContainer:{
-        flex:2,
-        height: '35%',
-    },
-    tagBox:{
-        height: '80%',
-        width: '100%',
     },
     profileImage: {
-        width: 50,
-        height: 50,
+        width: 40 * width,
+        height: 40 * height,
+        backgroundColor: colors.grey,
+        borderRadius: 20 * width,
     },
     uploaderName:{
-        marginLeft:10,
+        fontFamily: fonts.NotoSansCJKkr,
+        fontSize: 14 * width,
+        fontWeight: "bold",
+        fontStyle: "normal",
+        lineHeight: 22 * height,
+        letterSpacing: 0,
+        textAlign: "left",
+        color: colors.black,
+        marginLeft: 10 * width,
     },
-    button:{
-        width: 40,
-        height: '100%',
-        alignItems: 'center',
+    functionBox:{
+        height: 25 * height,
+        width: 145 * width,
         flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    tagContainer:{
+        width: 330 * width,
+        height: 145 * height,
+    },
+    tagTitle: {
+        fontFamily: fonts.NotoSansCJKkr,
+        fontSize: 14 * width,
+        fontWeight: "bold",
+        fontStyle: "normal",
+        letterSpacing: -0.35 * width,
+        textAlign: "left",
+        color: colors.black,
+        marginTop: 20 * height,
+    },
+    tagBox:{
+        width: '100%',
+        marginTop: 10 * height,
     },
     modal:{
         position: 'absolute',
@@ -243,7 +277,6 @@ const styles = StyleSheet.create({
     },
     tagLine: {
         width: '100%',
-        height: 40,
         flexDirection: 'row',
         alignItems: 'center',
     }
