@@ -118,8 +118,7 @@ const GooglePickerScreen = () => {
 
 const styles = StyleSheet.create({
   scrollBox: {
-    width: '100%',
-    height: '100%',
+    backgroundColor: colors.white,
   },
   thumbnail: {
     width: '100%',
@@ -129,14 +128,6 @@ const styles = StyleSheet.create({
     width: 119 * width,
     height: 118 * height,
     marginBottom: 1.5 * height,
-  },
-  buttons: {
-    width: '25%',
-  },
-  buttonContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginBottom: 10,
   },
   selectedIcon: {
     position: 'absolute',

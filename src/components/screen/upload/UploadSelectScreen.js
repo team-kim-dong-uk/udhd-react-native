@@ -18,6 +18,7 @@ import { colors, height, width } from '../../../util/StyleUtil';
 import { Pressable } from 'react-native';
 import ModalTemplate from '../../ModalTemplate';
 import UploadOptionModal from '../../UploadOptionModal';
+import CancelIcon from '../../../../assets/cancel-icon-black.svg';
 
 const UploadSelectScreen = () => {
   const navigation = useNavigation();
@@ -43,6 +44,7 @@ const UploadSelectScreen = () => {
 
   const openGoogleDrive = () => {
     navigation.navigate('GooglePicker');
+    setShowModal(false);
   }
 
   const removeSelected = (id) => {
@@ -63,9 +65,15 @@ const UploadSelectScreen = () => {
         </Pressable>)
     }
     return (
-        <View style={{flex: 1}}>
-            <UIButton title='x' onPress={() => removeSelected(item.id)} style={styles.cancleBtn} textStyle={styles.cancleBtnText}/>
-            <TouchableHighlight style={styles.touchArea}>
+        <View style={styles.touchArea}>
+            <Pressable onPress={() => removeSelected(item.id)} style={styles.cancleBtn}>
+              <CancelIcon
+                width={20 * width}
+                height={20 * height}
+                viewBox='0 0 80 80'
+              />
+            </Pressable>
+            <TouchableHighlight >
               <Image source={{uri: item.thumbnailLink}} style={styles.thumbnail}></Image>
             </TouchableHighlight>
         </View>
@@ -75,13 +83,16 @@ const UploadSelectScreen = () => {
   return (
       <View style={styles.container}>
         <UploadOptionModal show={showModal} closeModal={()=>setShowModal(false)} openGoogleDrive={openGoogleDrive}/>
+        {
+          upload.uploading && 
+          <Progress.Bar progress={upload.progress} width={360 * width} height={10 * height} color={colors.orange}/>
+        }
         <FlatList
           data={[0, ...upload.data]}
           renderItem={renderItem}
           numColumns={3}
           keyExtractor={item => item.id}
-        />
-        <Progress.Bar progress={upload.progress} width={410}/>
+          />
      </View>
   );
 }
@@ -103,23 +114,18 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   touchArea: {
-    height: 140,
-    position: 'relative',
+    width: 119 * width,
+    height: 118 * height,
+    marginBottom: 1.5 * height,
   },
   cancleBtn: {
     position: 'absolute',
-    right: '2%',
-    top: '2%',
-    height: 30,
-    width: 30,
-    borderRadius: 15,
-    borderWidth: 1,
-    backgroundColor: '#ccc',
-    zIndex: 10,
+    right: 5 * width,
+    top: 5 * height,
+    height: 20 * height,
+    width: 20 * width,
+    zIndex: 1,
   },
-  cancleBtnText: {
-    fontSize: 15,
-  }
 });
 
 export default UploadSelectScreen;

@@ -26,7 +26,7 @@ export const UploadHeader = ({ navigation, route, options, back }) => {
 
   return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.backButton} onPress={() => goBack()}>
+        <TouchableOpacity style={styles.backButton} onPress={goBack}>
           <BackButton
             width={10 * width}
             height={20 * height}
@@ -56,6 +56,9 @@ const styles = StyleSheet.create({
     backButton: {
       position: 'absolute',
       left: 15 * width,
+      width: 10 * width,
+      height: 20 * height,
+      zIndex: 1,
     },
     title: {
       fontFamily: fonts.NotoSansCJKkr,
