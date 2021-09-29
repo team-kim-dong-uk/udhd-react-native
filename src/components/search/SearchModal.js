@@ -74,10 +74,6 @@ const SearchModal = ({type, show, setShow}) => {
     };
 
     const onSubmit = useCallback((e) => {
-        if(searchTags.length === 0){
-            ToastAndroid.show('검색에 사용될 태그가 없어요!', ToastAndroid.SHORT);
-            return false;
-        }
         dispatch(getPhotos.request({
             type: type,
             userId: auth.data?.userId,
