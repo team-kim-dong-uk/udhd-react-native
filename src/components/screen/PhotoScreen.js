@@ -3,6 +3,7 @@ import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import { Dimensions } from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import {getPhoto} from "../../core/redux/photo";
+import { height, width } from '../../util/StyleUtil';
 import CommonHeader from "../layout/CommonHeader";
 import PhotoInformation from "../PhotoInformation";
 
@@ -82,13 +83,13 @@ const PhotoScreen = ({route, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'black',
-    width: '100%',
-    height: '90%',
   },
   photoContainer: {
-    width: '100%',
-  minHeight: '50%',
-    maxHeight: '70%',
+      width: 360 * width,
+      height: 357 * height,
+    // width: '100%',
+//   minHeight: '50%',
+    // maxHeight: '70%',
   },
     photo: {
         backgroundColor: "gray",

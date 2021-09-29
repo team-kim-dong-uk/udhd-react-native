@@ -22,7 +22,7 @@ export const fonts = {
 };
 
 export const basicDimensions = {
-  height: 640,
+  height: 618,
   width: 360,
 };
 
