@@ -6,7 +6,13 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "android":{"softwareKeyboardLayoutMode": "pan"}
+    "android":{
+      "softwareKeyboardLayoutMode": "pan",
+      "orientation": "portrait"
+    },
+    "ios":{
+      "orientation": "portrait"
+    }
   },
   "name": "udhd-react-native"
 }
