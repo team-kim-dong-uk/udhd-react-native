@@ -23,7 +23,7 @@ import SearchBoxTag from "./SearchBoxTag";
 const SearchModal = ({type, show, setShow}) => {
     const dispatch = useDispatch();
     const inputRef = useRef();
-    const { auth, tags, isSearching } = useSelector(state => state);
+    const { auth, tags, searching } = useSelector(state => state);
 
     const [keyword, onChangeKeyword, setKeyword] = useInput('');
     const [recommendedTags, setRecommendedTags] = useState([]);
@@ -90,7 +90,7 @@ const SearchModal = ({type, show, setShow}) => {
 
     // when keyword is being changed, state must be searching
     const detectSearching = useCallback(() => {
-      if(!isSearching.data){
+      if(!searching.data){
           startSearch();
       }
   }, [keyword])
@@ -119,7 +119,6 @@ const SearchModal = ({type, show, setShow}) => {
       }
   }, [])
 
-
     // rendering text on FlatList that show recommended tags
     const renderItem = ({ item }) => {
       console.log(item);
@@ -143,7 +142,7 @@ const SearchModal = ({type, show, setShow}) => {
   return (
     <ModalTemplate
       style={styles.container}
-      show={isSearching.data}
+      show={searching.data}
       onControlModal={finishSearch}
       onShow={()=>{inputRef.current.focus()}}
     >

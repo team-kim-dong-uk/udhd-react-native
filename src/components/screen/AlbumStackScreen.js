@@ -5,14 +5,13 @@ import AlbumScreen from "./AlbumScreen";
 
 const Stack = createStackNavigator();
 
-const SearchStackScreen = () => {
+const AlbumStackScreen = () => {
     return (
         <Stack.Navigator>
             <Stack.Screen name="MyAlbum"
                           component={AlbumScreen}
                           options={{headerShown: false}}/>
-            <Stack.Screen name="PhotoDetail" component={PhotoScreen} />
         </Stack.Navigator>
     );
 }
-export default SearchStackScreen;
+export default AlbumStackScreen;

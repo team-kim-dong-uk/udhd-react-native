@@ -14,80 +14,82 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { height, width } from '../util/StyleUtil.js';
 
-
 const PhotoGrid = ({type}) => {
-  const [numCols, setColumnNo] = useState(3);
-  const dispatch = useDispatch();
-  const { auth, photos, loading } = useSelector(state => state);
-  const navigation = useNavigation();
+    const [numCols, setColumnNo] = useState(3);
+    const dispatch = useDispatch();
+    const { auth, photos, loading } = useSelector(state => state);
+    const navigation = useNavigation();
 
-  const loadMorePhotos = useCallback((e) => {
-      console.log("load photo :)");
-  }, []);
+    const loadMorePhotos = useCallback((e) => {
+        console.log("load photo :)");
+    }, []);
 
-  const data =  type === 'album' ? photos.album
-              : type === 'search' ? photos.search
-              :                     photos.upload;
+    const data =  type === 'album' ? photos.album
+        : type === 'search' ? photos.search
+            :                     photos.upload;
 
-  useEffect(() => {
-                      console.log(type);
-    if (!data && !loading.data && !photos.error) {
-      dispatch(getPhotos.request({
-        type: type,
-        userId: auth.data?.userId,
-      }));
-    }
-  }, [loading.data, type]);
+    useEffect(() => {
+        console.log(type);
+        if (!data && !loading.data && !photos.error) {
+            dispatch(getPhotos.request({
+                type: type,
+                userId: auth.data?.userId,
+            }));
+        }
+    }, [loading.data, type]);
 
-  const renderItem = ({ item }) => {
+    const renderItem = ({ item }) => {
+        return (
+            <View style={{flex: 1}}>
+                <TouchableHighlight
+                    style={styles.touchArea}
+                    key={item.photoId}
+                    onPress={() =>{
+                        navigation.navigate('PhotoDetail', {
+                            photoId: item.photoId,
+                            image: item.thumbnailLink,
+                        });
+                    }}
+                >
+                    <Image
+                        source={{uri: item.thumbnailLink}}
+                        style={styles.thumbnail}
+                    />
+                </TouchableHighlight>
+            </View>
+        )
+    };
+
     return (
-        <View style={{flex: 1}}>
-          <TouchableHighlight
-              style={styles.touchArea}
-              key={item.photoId}
-              onPress={() =>
-                  navigation.navigate('PhotoDetail', { photoId: item.photoId })
-              }
-          >
-            <Image
-                source={{uri: item.thumbnailLink}}
-                style={styles.thumbnail}
+        <View>
+            <FlatList
+                columnWrapperStyle={{justifyContent:'space-between'}}
+                data={data}
+                renderItem={renderItem}
+                keyExtractor={item => item.albumId || item.photoId}
+                numColumns={numCols}
+                key={numCols}
+                onEndReached={loadMorePhotos}
+                onEndReachedThreshold={0.01}
             />
-          </TouchableHighlight>
         </View>
-    )
-  };
-
-  return (
-    <View>
-      <FlatList
-        columnWrapperStyle={{justifyContent:'space-between'}}
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={item => item.albumId || item.photoId}
-        numColumns={numCols}
-        key={numCols}
-        onEndReached={loadMorePhotos}
-        onEndReachedThreshold={0.01}
-      />
-    </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
-  scrollBox: {
-    // width: '100%',
-    // height: '100%',
-    width: 360 * width,
-  },
-  thumbnail: {
-    width: '100%',
-    height: '100%',
-  },
-  touchArea: {
-    width: 119 * width,
-    height: 118 * height,
-  },
+    scrollBox: {
+        // width: '100%',
+        // height: '100%',
+        width: 360 * width,
+    },
+    thumbnail: {
+        width: '100%',
+        height: '100%',
+    },
+    touchArea: {
+        width: 119 * width,
+        height: 118 * height,
+    },
 });
 
 export default PhotoGrid;

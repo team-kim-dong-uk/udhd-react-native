@@ -6,10 +6,11 @@ import PhotoGrid from "../PhotoGrid";
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const AlbumScreen = () => {
+    const {searching} = useSelector(state => state);
   return (
       <View>
         <UdhdHeader type='album'/>
-        <PhotoGrid type='album'/>
+          {!searching.data && <PhotoGrid type='album'/>}
       </View>
   );
 }

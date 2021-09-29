@@ -1,9 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
+    Alert,
     FlatList,
     Image, Pressable,
     StyleSheet,
-    Text,
+    Text, ToastAndroid,
     TouchableOpacity,
     View
 } from 'react-native';
@@ -19,7 +20,7 @@ import { useNavigation } from '@react-navigation/native';
 const UdhdHeader = ({type}) => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
-    const {tags, isSearching } = useSelector(state => state);
+    const {tags, searching } = useSelector(state => state);
     const selectedTags = type === 'album' ? tags.selectedAlbumTags : tags.selectedSearchTags;
     const [showSearchModal, setShowSearchModal] = useState(false);
     const [showFilter, setShowFilter] = useState(false);
@@ -44,40 +45,40 @@ const UdhdHeader = ({type}) => {
         )
     }
 
-  return (
-    <View>
-      <View style={styles.headerContainer}>
-        <Image
-          style={styles.tinyLogo}
-          source={require('../../../assets/drawable-hdpi/symbol_black.webp')}
-        />
-        <TouchableOpacity style={styles.searchBox} onPress={startSearch}>
-            {
-                selectedTags.length === 0
-                    ? <Text style={styles.searchBoxText}>검색어를 입력해주세요</Text>
-                    : <FlatList data={selectedTags} renderItem={renderTags} horizontal = {true}
-                                keyExtractor={(item) => item.keyword} style={{zIndex: 2}}
-                                showsHorizontalScrollIndicator={false}/>
-            }
-        </TouchableOpacity>
-        {isSearching.data && <SearchModal type={type} show={showSearchModal} setShow={setShowSearchModal}/>}
-        <TouchableOpacity onPress={onPressFilter} style={styles.filterIcon}>
-          <FilterIcon
-            width={24 * width}
-            height={24 * height}
-            viewBox='0 0 96 96'
-            />
-        </TouchableOpacity>
-        <Filter
-            showFilter={showFilter}
-            onPressFilter={onPressFilter}
-        />
-        <TouchableOpacity onPress={onPressUpload} style={styles.uploadIcon}>
-          <Text style={{fontSize: 30 * width}}>+</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+    return (
+        <View>
+            <View style={styles.headerContainer}>
+                <Image
+                    style={styles.tinyLogo}
+                    source={require('../../../assets/drawable-hdpi/symbol_black.webp')}
+                />
+                <TouchableOpacity style={styles.searchBox} onPress={startSearch}>
+                    {
+                        selectedTags.length === 0
+                            ? <Text style={styles.searchBoxText}>검색어를 입력해주세요</Text>
+                            : <FlatList data={selectedTags} renderItem={renderTags} horizontal = {true}
+                                        keyExtractor={(item) => item.keyword} style={{zIndex: 2}}
+                                        showsHorizontalScrollIndicator={false}/>
+                    }
+                </TouchableOpacity>
+                {searching.data && <SearchModal type={type} show={showSearchModal} setShow={setShowSearchModal}/>}
+                <TouchableOpacity onPress={onPressFilter} style={styles.filterIcon}>
+                    <FilterIcon
+                        width={24 * width}
+                        height={24 * height}
+                        viewBox='0 0 96 96'
+                    />
+                </TouchableOpacity>
+                <Filter
+                    showFilter={showFilter}
+                    onPressFilter={onPressFilter}
+                />
+                <TouchableOpacity onPress={onPressUpload} style={styles.uploadIcon}>
+                    <Text style={{fontSize: 30 * width}}>+</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -89,9 +90,9 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
     },
     tinyLogo:{
-      width: 30 * width,
-      height: 30 * height,
-      marginLeft: 15 * width,
+        width: 30 * width,
+        height: 30 * height,
+        marginLeft: 15 * width,
     },
     searchBox: {
         width: 202 * width,
@@ -114,10 +115,10 @@ const styles = StyleSheet.create({
         marginLeft: 8 * width,
     },
     filterIcon: {
-      marginLeft: 20 * width,
+        marginLeft: 20 * width,
     },
     uploadIcon: {
-      marginLeft: 15 * width,
+        marginLeft: 15 * width,
     },
 
 });
