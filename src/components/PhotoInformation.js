@@ -71,35 +71,39 @@ const PhotoInformation = ({style, tags, isLoading}) => {
             });
 
     }
-
     const onShare = async () => {
-        let fileUri = FileSystem.cacheDirectory + `${photo.data?.photoId}.jpg`
-        console.log(fileUri);
-        await FileSystem.downloadAsync(photo.data?.originalLink, fileUri)
-            .then(()=>{
-                Sharing.shareAsync(fileUri, options).then(()=> {})
-                    .catch((e) => {
-                        console.log('error is ' + e);
-                        Toast.show({
-                            type: 'error',
-                            position: 'bottom',
-                            text1: '다시 시도해주세요 :(',
-                            visibilityTime: 1000,
-                            autoHide: true,
-                        })
-                    });
+        if (!(await Sharing.isAvailableAsync())) {
+            Toast.show({
+                type: 'error',
+                position: 'bottom',
+                text1: '공유가 불가능합니다.',
+                visibilityTime: 1000,
+                autoHide: true,
             })
-            .catch((e) => {
-                console.log(e);
+            return;
+        }
+        let fileUri = FileSystem.cacheDirectory + `${photo.data?.photoId}.jpg`
+        await FileSystem.downloadAsync(photo.data?.originalLink, fileUri);
+        await Sharing.shareAsync(fileUri).then(() => {
                 Toast.show({
-                    type: 'error',
+                    type: 'success',
                     position: 'bottom',
-                    text1: '다시 시도해주세요 :(!',
+                    text1: '공유 완료!',
                     visibilityTime: 1000,
                     autoHide: true,
-                });
+                })
+        }).catch((e)=> {
+            console.log(e);
+            Toast.show({
+                type: 'error',
+                position: 'bottom',
+                text1: '다시 시도해주세요 :(',
+                visibilityTime: 1000,
+                autoHide: true,
             })
-    }
+        })
+
+    };
 
     return (
         <View style={styles.container}>
