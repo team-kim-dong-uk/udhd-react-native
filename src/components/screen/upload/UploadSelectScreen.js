@@ -18,7 +18,7 @@ import { colors, height, width } from '../../../util/StyleUtil';
 import { Pressable } from 'react-native';
 import ModalTemplate from '../../ModalTemplate';
 import UploadOptionModal from '../../UploadOptionModal';
-import CancelIcon from '../../../../assets/cancel-icon-black.svg';
+import CancelIcon from '../../../../assets/cancel-icon-grey.svg';
 
 const UploadSelectScreen = () => {
   const navigation = useNavigation();
