@@ -72,7 +72,10 @@ const PhotoScreen = ({route, navigation}) => {
                           style={styles.photo}
                       />
                   </Pressable>
-                  <PhotoInformation tags={tagLines} isLoading={photoLoading}/>
+                  <PhotoInformation photoId={route.params?.photoId}
+                                    tags={tagLines}
+                                    isLoading={photoLoading}
+                                    inAlbum={route.params?.inAlbum}/>
               </View>
           )}
       </View>

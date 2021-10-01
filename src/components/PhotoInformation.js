@@ -13,6 +13,7 @@ import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import Toast from 'react-native-toast-message';
+import {addLike} from "../core/redux/photos";
 
 const options = {
     mimeType: 'image/jpeg',
@@ -20,7 +21,7 @@ const options = {
     UTI: 'image/jpeg',
 };
 
-const PhotoInformation = ({style, tags, isLoading}) => {
+const PhotoInformation = ({style, photoId, tags, isLoading, inAlbum}) => {
     const {auth, photo} = useSelector(state => state);
     const dispatch  = useDispatch();
 
@@ -35,8 +36,9 @@ const PhotoInformation = ({style, tags, isLoading}) => {
         setAddRequest(true);
         dispatch(addToAlbum.request({
             userId: auth.data.userId,
-            photoId: photo.data?.photoId
+            photoId: photoId
         }))
+        dispatch(addLike({photoId:photoId}))
     }, [addRequest])
 
     const download = async () => {
@@ -44,7 +46,7 @@ const PhotoInformation = ({style, tags, isLoading}) => {
         if (perm.status != 'granted') {
             return;
         }
-        let fileUri = FileSystem.cacheDirectory + `${photo.data?.photoId}.jpg`
+        let fileUri = FileSystem.cacheDirectory + `${photoId}.jpg`
         FileSystem.downloadAsync(photo.data?.originalLink, fileUri, options)
             .then(async (target)=>{
                 try {
@@ -82,7 +84,7 @@ const PhotoInformation = ({style, tags, isLoading}) => {
             })
             return;
         }
-        let fileUri = FileSystem.cacheDirectory + `${photo.data?.photoId}.jpg`
+        let fileUri = FileSystem.cacheDirectory + `${photoId}.jpg`
         await FileSystem.downloadAsync(photo.data?.originalLink, fileUri);
         await Sharing.shareAsync(fileUri).then(() => {
                 Toast.show({
@@ -123,8 +125,8 @@ const PhotoInformation = ({style, tags, isLoading}) => {
                         </Pressable>
                     }
                     <Pressable style={styles.button} onPress={addToByAlbum}>
-                        {!addRequest && <Text>ㅎㅌ</Text>}
-                        {addRequest && <Text>하투</Text>}
+                        {(!addRequest && !inAlbum) && <Text>ㅎㅌ</Text>}
+                        {(addRequest || inAlbum) && <Text>하투</Text>}
 
                     </Pressable>
                     <Pressable style={styles.button} onPress={onPressSetting}>

@@ -46,6 +46,8 @@ const PhotoGrid = ({type}) => {
                     key={item.photoId}
                     onPress={() =>{
                         navigation.navigate('PhotoDetail', {
+                            photo: item,
+                            inAlbum: item?.inAlbum,
                             photoId: item.photoId,
                             image: item.thumbnailLink,
                         });
