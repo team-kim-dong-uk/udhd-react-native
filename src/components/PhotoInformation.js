@@ -9,13 +9,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {addToAlbum} from "../core/redux/album";
 import ModalTemplate from "./ModalTemplate";
 import Tag from "./Tag";
-import * as Sharing from 'expo-sharing';
+import * as Sharing from 'expo-sharing'; 
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import { colors, fonts, height, width } from "../util/StyleUtil";
 import ShareIcon from '../../assets/share-icon.svg';
 import DownloadIcon from '../../assets/download-icon.svg';
 import HeartIcon from '../../assets/heart-icon.svg';
+import HeartIconFilled from '../../assets/heart-icon-filled.svg';
 import ThreeDotsIcon from '../../assets/three-dots.svg';
 
 const options = {
@@ -120,10 +121,13 @@ const PhotoInformation = ({style, tags, isLoading}) => {
                         {!addRequest && <HeartIcon
                                             width={25 * width}
                                             height={25 * height}
-                                            viewBox='0 0 100 100'
-                                            fill={colors.black}
+                                            viewBox='0 0 25 25'
                                         />}
-                        {addRequest && <Text>하투</Text>}
+                        {addRequest && <HeartIconFilled
+                                            width={25 * width}
+                                            height={25 * height}
+                                            viewBox='0 0 25 25'
+                                        />}
 
                     </Pressable>
                     <Pressable style={styles.button} onPress={onPressSetting}>
@@ -141,14 +145,8 @@ const PhotoInformation = ({style, tags, isLoading}) => {
             <View style={styles.tagContainer}>
                 <Text style={styles.tagTitle}>태그</Text>
                 <View style={styles.tagBox}>
-                    {!isLoading && tags?.map((line) => {
-                        return (
-                            <View style={styles.tagLine} key={line}>
-                                {line?.map((tag) => {
-                                    return (<Tag key={tag} text={tag}/>)
-                                })}
-                            </View>
-                        )
+                    {!isLoading && tags?.map((tag) => {
+                        return (<Tag key={tag} text={tag}/>)
                     })}
                 </View>
 
@@ -240,6 +238,8 @@ const styles = StyleSheet.create({
     tagBox:{
         width: '100%',
         marginTop: 10 * height,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
     },
     modal:{
         position: 'absolute',
