@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useRef} from 'react';
 import {BackHandler, SafeAreaViewComponent, StyleSheet, Text, View} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -34,6 +34,7 @@ import MainTabScreen from "./components/screen/MainTabScreen";
 import PhotoScreen from "./components/screen/PhotoScreen";
 import PhotoFullScreen from "./components/screen/PhotoFullScreen";
 
+import Toast from 'react-native-toast-message';
 
 const App = () => {
     let [fontsLoaded] = useFonts({
@@ -42,6 +43,7 @@ const App = () => {
 
     const dispatch = useDispatch();
     const {auth, searching} = useSelector(state => state);
+    const toastRef = useRef();
 
 
     const onBackPressFromSearch = () => {
@@ -105,6 +107,7 @@ const App = () => {
                     options={{headerShown: false}}
                 />
               </Stack.Navigator>
+              <Toast ref={(toastRef) => Toast.setRef(toastRef)} />
           </NavigationContainer>
         </SafeAreaView>
         ) : (

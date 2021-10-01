@@ -1,8 +1,8 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useRef, useState} from "react";
 import {
     Image, Platform,
     Pressable,
-    StyleSheet, Text, ToastAndroid,
+    StyleSheet, Text,
     View
 } from "react-native";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,6 +12,7 @@ import Tag from "./Tag";
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
+import Toast from 'react-native-toast-message';
 
 const options = {
     mimeType: 'image/jpeg',
@@ -54,7 +55,13 @@ const PhotoInformation = ({style, tags, isLoading}) => {
                     } else {
                         await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
                     }
-                    ToastAndroid.show('Pictures/UDHD 에 저장 완료!', ToastAndroid.SHORT);
+                    Toast.show({
+                        type: 'success',
+                        position: 'bottom',
+                        text1: '다운로드 성공!',
+                        visibilityTime: 1000,
+                        autoHide: true,
+                    });
                 } catch (e) {
                     console.log(e)
                 }
@@ -64,26 +71,39 @@ const PhotoInformation = ({style, tags, isLoading}) => {
             });
 
     }
-
-    const onShare = () => {
-        let fileUri = FileSystem.cacheDirectory + `${photo.data?.photoId}.jpg`
-        FileSystem.downloadAsync(photo.data?.originalLink, fileUri)
-            .then(()=>{
-                Sharing.shareAsync(fileUri, options)
-                    .then(()=>{
-                        ToastAndroid.show('공유 완료!', ToastAndroid.SHORT);
-                    })
-                    .catch((e) => {
-                        console.log(e);
-                        ToastAndroid.show('다시 시도해주세요 :(', ToastAndroid.SHORT);
-                    });
+    const onShare = async () => {
+        if (!(await Sharing.isAvailableAsync())) {
+            Toast.show({
+                type: 'error',
+                position: 'bottom',
+                text1: '공유가 불가능합니다.',
+                visibilityTime: 1000,
+                autoHide: true,
             })
-            .catch((e) => {
-                console.log(e);
-                ToastAndroid.show('다시 시도해주세요 :(', ToastAndroid.SHORT);
-            });
+            return;
+        }
+        let fileUri = FileSystem.cacheDirectory + `${photo.data?.photoId}.jpg`
+        await FileSystem.downloadAsync(photo.data?.originalLink, fileUri);
+        await Sharing.shareAsync(fileUri).then(() => {
+                Toast.show({
+                    type: 'success',
+                    position: 'bottom',
+                    text1: '공유 완료!',
+                    visibilityTime: 1000,
+                    autoHide: true,
+                })
+        }).catch((e)=> {
+            console.log(e);
+            Toast.show({
+                type: 'error',
+                position: 'bottom',
+                text1: '다시 시도해주세요 :(',
+                visibilityTime: 1000,
+                autoHide: true,
+            })
+        })
 
-    }
+    };
 
     return (
         <View style={styles.container}>

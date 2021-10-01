@@ -3,7 +3,7 @@ import {
     FlatList,
     Pressable,
     StyleSheet,
-    Text, ToastAndroid,
+    Text,
     View
 } from 'react-native';
 import ModalTemplate from "../ModalTemplate";
@@ -19,6 +19,7 @@ import { getTags } from '../../core/redux/tags';
 import { TextInput } from 'react-native';
 import CancelIcon from '../../../assets/cancel-icon-round.svg';
 import SearchBoxTag from "./SearchBoxTag";
+import Toast from "react-native-toast-message";
 
 const SearchModal = ({type, show, setShow}) => {
     const dispatch = useDispatch();
@@ -58,24 +59,48 @@ const SearchModal = ({type, show, setShow}) => {
       const keyword = item.keyword.replace(/\s/g, "");
         console.log("try to make tag :" + keyword);
         if (item.type === 'USER' && searchTags.filter(item => item.type === 'USER').length > 0) {
-          ToastAndroid.show('업로더로 검색은 한명만 지정가능합니다.', ToastAndroid.SHORT);
+            Toast.show({
+                type: 'info',
+                position: 'bottom',
+                text1: '업로더로 검색은 한명만 지정가능합니다.',
+                visibilityTime: 1000,
+                autoHide: true,
+            })
           return false;
         } else if(keyword !== '' && !searchTags.map(item => item.keyword).includes(keyword)) {
            setSearchTags(searchTags => [ ...searchTags, item]);
            setKeyword("");
         }  else if (tag === ''){
-            ToastAndroid.show('공백을 입력할 수 없습니다.', ToastAndroid.SHORT);
+            Toast.show({
+                type: 'info',
+                position: 'bottom',
+                text1: '공백을 입력할 수 없습니다.',
+                visibilityTime: 1000,
+                autoHide: true,
+            })
             setKeyword("");
             return false;
         } else {
-            ToastAndroid.show('이미 선택한 태그입니다.', ToastAndroid.SHORT);
+            Toast.show({
+                type: 'info',
+                position: 'bottom',
+                text1: '이미 선택한 태그입니다.',
+                visibilityTime: 1000,
+                autoHide: true,
+            })
             return false;
         }
     };
 
     const onSubmit = useCallback((e) => {
         if(searchTags.length === 0){
-            ToastAndroid.show('검색에 사용될 태그가 없어요!', ToastAndroid.SHORT);
+            Toast.show({
+                type: 'info',
+                position: 'bottom',
+                text1: '검색에 사용될 태그가 없어요!',
+                visibilityTime: 1000,
+                autoHide: true,
+            })
             return false;
         }
         dispatch(getPhotos.request({
