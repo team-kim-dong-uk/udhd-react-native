@@ -21,7 +21,7 @@ const options = {
     UTI: 'image/jpeg',
 };
 
-const PhotoInformation = ({style, photoId, tags, isLoading, inAlbum}) => {
+const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
     const {auth, photo} = useSelector(state => state);
     const dispatch  = useDispatch();
 
@@ -36,9 +36,9 @@ const PhotoInformation = ({style, photoId, tags, isLoading, inAlbum}) => {
         setAddRequest(true);
         dispatch(addToAlbum.request({
             userId: auth.data.userId,
-            photoId: photoId
+            photoId: photoSimpleInfo?.photoId
         }))
-        dispatch(addLike({photoId:photoId}))
+        dispatch(addLike({photoId:photoSimpleInfo?.photoId}))
     }, [addRequest])
 
     const download = async () => {
@@ -46,7 +46,7 @@ const PhotoInformation = ({style, photoId, tags, isLoading, inAlbum}) => {
         if (perm.status != 'granted') {
             return;
         }
-        let fileUri = FileSystem.cacheDirectory + `${photoId}.jpg`
+        let fileUri = FileSystem.cacheDirectory + `${photoSimpleInfo?.photoId}.jpg`
         FileSystem.downloadAsync(photo.data?.originalLink, fileUri, options)
             .then(async (target)=>{
                 try {
@@ -84,7 +84,7 @@ const PhotoInformation = ({style, photoId, tags, isLoading, inAlbum}) => {
             })
             return;
         }
-        let fileUri = FileSystem.cacheDirectory + `${photoId}.jpg`
+        let fileUri = FileSystem.cacheDirectory + `${photoSimpleInfo?.photoId}.jpg`
         await FileSystem.downloadAsync(photo.data?.originalLink, fileUri);
         await Sharing.shareAsync(fileUri).then(() => {
                 Toast.show({
@@ -125,8 +125,8 @@ const PhotoInformation = ({style, photoId, tags, isLoading, inAlbum}) => {
                         </Pressable>
                     }
                     <Pressable style={styles.button} onPress={addToByAlbum}>
-                        {(!addRequest && !inAlbum) && <Text>ㅎㅌ</Text>}
-                        {(addRequest || inAlbum) && <Text>하투</Text>}
+                        {(!addRequest && !photoSimpleInfo?.inAlbum) && <Text>ㅎㅌ</Text>}
+                        {(addRequest || photoSimpleInfo?.inAlbum) && <Text>하투</Text>}
 
                     </Pressable>
                     <Pressable style={styles.button} onPress={onPressSetting}>

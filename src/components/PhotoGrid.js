@@ -47,9 +47,9 @@ const PhotoGrid = ({type}) => {
                     onPress={() =>{
                         navigation.navigate('PhotoDetail', {
                             photo: item,
-                            inAlbum: item?.inAlbum,
+                            /*inAlbum: item?.inAlbum,
                             photoId: item.photoId,
-                            image: item.thumbnailLink,
+                            image: item.thumbnailLink,*/
                         });
                     }}
                 >

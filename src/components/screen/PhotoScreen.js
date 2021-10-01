@@ -16,7 +16,7 @@ const PhotoScreen = ({route, navigation}) => {
     useEffect(() => {
         dispatch(getPhoto.request({
             userId: auth.data?.userId,
-            photoId: route.params.photoId
+            photoId: route.params.photo.photoId
         }))
     }, [])
 
@@ -25,7 +25,7 @@ const PhotoScreen = ({route, navigation}) => {
     }, [photo])
 
     useEffect(() => {
-        if(route.params.photoId === photo.data?.photoId)
+        if(route.params.photo.photoId === photo.data?.photoId)
             setPhotoLoading(false);
     }, [photoLoading, photo])
 
@@ -62,20 +62,19 @@ const PhotoScreen = ({route, navigation}) => {
               <View style={styles.container}>
                   <Pressable onPress={() => {
                                   navigation.navigate('PhotoFull', {
-                                      photoId: route.params?.photoId,
+                                      photoId: route.params?.photo?.photoId,
                                       image: photo.data?.originalLink
                                   });
                               }}
                              style={styles.photoContainer}>
                       <Image
-                          source={{uri: route.params.image}}
+                          source={{uri: route.params.photo?.thumbnailLink}}
                           style={styles.photo}
                       />
                   </Pressable>
-                  <PhotoInformation photoId={route.params?.photoId}
-                                    tags={tagLines}
+                  <PhotoInformation tags={tagLines}
                                     isLoading={photoLoading}
-                                    inAlbum={route.params?.inAlbum}/>
+                                    photoSimpleInfo={route.params?.photo}/>
               </View>
           )}
       </View>
