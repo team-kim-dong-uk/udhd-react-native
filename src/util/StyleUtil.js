@@ -22,16 +22,16 @@ export const fonts = {
 };
 
 export const basicDimensions = {
-  height: 618,
+  height: 628,
   width: 360,
 };
 
 export const height = ( // 높이 변환 작업
-  Dimensions.get('screen').height *
+  Dimensions.get('window').height *
   (1 / basicDimensions.height)
 ).toFixed(2);
 
 export const width = ( // 가로 변환 작업
-  Dimensions.get('screen').width *
+  Dimensions.get('window').width *
   (1 / basicDimensions.width)
 ).toFixed(2);
