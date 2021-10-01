@@ -13,11 +13,18 @@ import { Button } from 'react-native';
 import { checkProgress, removeCandidate, uploadPhotos } from '../../../core/redux/upload';
 import * as Progress from 'react-native-progress';
 import { UIButton } from '../../common/UIButton';
+import PlusIcon from '../../../../assets/plus-icon.svg';
+import { colors, height, width } from '../../../util/StyleUtil';
+import { Pressable } from 'react-native';
+import ModalTemplate from '../../ModalTemplate';
+import UploadOptionModal from '../../UploadOptionModal';
+import CancelIcon from '../../../../assets/cancel-icon-grey.svg';
 
 const UploadSelectScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { auth, upload } = useSelector(state => state);
+  const [showModal, setShowModal] = useState(false);
 
   // 업로드 버튼 클릭해 업로드 진행상태로 변하면 progress를 1초마다 polling하는 동작을 추가한다.
   useEffect(() => {
@@ -37,25 +44,36 @@ const UploadSelectScreen = () => {
 
   const openGoogleDrive = () => {
     navigation.navigate('GooglePicker');
+    setShowModal(false);
   }
 
   const removeSelected = (id) => {
     dispatch(removeCandidate({id}));
   }
 
-  // 업로드 버튼 클릭 시 업로드 진행.
-  const uploadAll = () => {
-    dispatch(uploadPhotos.request({
-      data: upload.data,
-      googleDriveToken: auth.data.googleToken,
-    }));
-  }
+  
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
+    if (index == 0) {
+      return (
+        <Pressable onPress={()=> setShowModal(true)} style={styles.addButton}>
+          <PlusIcon
+            width={25 * width}
+            height={25 * height}
+            viewBox='0 0 100 100'
+          />
+        </Pressable>)
+    }
     return (
-        <View style={{flex: 1}}>
-            <UIButton title='x' onPress={() => removeSelected(item.id)} style={styles.cancleBtn} textStyle={styles.cancleBtnText}/>
-            <TouchableHighlight style={styles.touchArea}>
+        <View style={styles.touchArea}>
+            <Pressable onPress={() => removeSelected(item.id)} style={styles.cancleBtn}>
+              <CancelIcon
+                width={20 * width}
+                height={20 * height}
+                viewBox='0 0 80 80'
+              />
+            </Pressable>
+            <TouchableHighlight >
               <Image source={{uri: item.thumbnailLink}} style={styles.thumbnail}></Image>
             </TouchableHighlight>
         </View>
@@ -63,48 +81,51 @@ const UploadSelectScreen = () => {
   };
 
   return (
-     <View style={styles.scrollBox}>
-       <Button title='select from gallery' onPress={()=>alert('TODO')}></Button>
-       <Button title='select from google drive' onPress={openGoogleDrive}></Button>
-       <FlatList
-          data={upload.data}
+      <View style={styles.container}>
+        <UploadOptionModal show={showModal} closeModal={()=>setShowModal(false)} openGoogleDrive={openGoogleDrive}/>
+        {
+          upload.uploading && 
+          <Progress.Bar progress={upload.progress} width={360 * width} height={10 * height} color={colors.orange}/>
+        }
+        <FlatList
+          data={[0, ...upload.data]}
           renderItem={renderItem}
           numColumns={3}
           keyExtractor={item => item.id}
-        />
-        <Progress.Bar progress={upload.progress} width={410}/>
-        <Button title='upload' onPress={uploadAll}></Button>
+          />
      </View>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollBox: {
-    width: '100%',
-    height: '100%',
+  container: {
+    flex: 1,
+    backgroundColor: colors.white,
+  },
+  addButton: {
+    width: 119 * width,
+    height: 118 * height,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.lightGrey,
   },
   thumbnail: {
     width: '100%',
     height: '100%',
   },
   touchArea: {
-    height: 140,
-    position: 'relative',
+    width: 119 * width,
+    height: 118 * height,
+    marginBottom: 1.5 * height,
   },
   cancleBtn: {
     position: 'absolute',
-    right: '2%',
-    top: '2%',
-    height: 30,
-    width: 30,
-    borderRadius: 15,
-    borderWidth: 1,
-    backgroundColor: '#ccc',
-    zIndex: 10,
+    right: 5 * width,
+    top: 5 * height,
+    height: 20 * height,
+    width: 20 * width,
+    zIndex: 1,
   },
-  cancleBtnText: {
-    fontSize: 15,
-  }
 });
 
 export default UploadSelectScreen;

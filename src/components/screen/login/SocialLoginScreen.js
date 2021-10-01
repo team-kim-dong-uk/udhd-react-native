@@ -10,9 +10,11 @@ import KakaoIcon from '../../../../assets/kakao.svg';
 import AppleIcon from '../../../../assets/apple.svg';
 import BrandTextIcon from '../../../../assets/brand-text.svg';
 import { Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const SocialLogin = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const auth = useSelector(state  => state.auth);
   const [source, setSource] = useState(undefined);
 

@@ -27,6 +27,8 @@ import { colors } from './util/StyleUtil';
 import { useFonts } from 'expo-font';
 import { StackHeader } from './components/layout/StackHeader';
 import SplashScreen from './components/screen/SplashScreen';
+import { GoogleDriveHeader } from './components/layout/GoogleDriveHeader';
+import { UploadHeader } from './components/layout/UploadHeader';
 
 import MainTabScreen from "./components/screen/MainTabScreen";
 import PhotoScreen from "./components/screen/PhotoScreen";
@@ -65,31 +67,49 @@ const App = () => {
         )
     }
     return (
-        auth.data && auth.data.nickname && auth.data.group ? (
-            <SafeAreaView style={styles.container}>
-                <NavigationContainer>
-                    <Stack.Navigator>
-                        <Stack.Screen name='Home' component={MainTabScreen} options={{ headerShown: false }}/>
-                        <Stack.Screen name='UploadSelect' component={UploadSelectScreen} options={{ headerShown: false }}/>
-                        <Stack.Screen name='GooglePicker' component={GooglePickerScreen} options={{ headerShown: false }}/>
-                        <Stack.Screen
-                            name='Setting'
-                            component={SettingScreen}
-                            options={{
-                                title: '설정',
-                                header: (props) => <StackHeader {...props}/>
-                            }}
-                        />
-                        <Stack.Screen name="PhotoDetail"
-                                      component={PhotoScreen}
-                                      options={{headerShown: false}}/>
-                        <Stack.Screen name="PhotoFull"
-                                      component={PhotoFullScreen}
-                                      options={{headerShown: false}}/>
-                    </Stack.Navigator>
-                </NavigationContainer>
-                <Toast ref={(toastRef) => Toast.setRef(toastRef)} />
-            </SafeAreaView>
+      auth.data && auth.data.nickname && auth.data.group ? (
+        <SafeAreaView style={styles.container}>
+          <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name='Home' component={MainTabScreen} options={{ headerShown: false }}/>
+                <Stack.Screen 
+                  name='UploadSelect' 
+                  component={UploadSelectScreen} 
+                  options={{ 
+                    title: '이미지 업로드',
+                    header: (props) => <UploadHeader {...props}/>
+                  }}
+                />
+                <Stack.Screen 
+                  name='GooglePicker' 
+                  component={GooglePickerScreen} 
+                  options={{ 
+                    title: '구글 드라이브',
+                    header: (props) => <GoogleDriveHeader {...props}/>
+                  }}
+                />
+                <Stack.Screen
+                  name='Setting'
+                  component={SettingScreen}
+                  options={{
+                    title: '설정',
+                    header: (props) => <StackHeader {...props}/>
+                  }}
+                />
+                <Stack.Screen 
+                    name="PhotoDetail"
+                    component={PhotoScreen}
+                    options={{headerShown: false}}
+                />
+                <Stack.Screen 
+                    name="PhotoFull"
+                    component={PhotoFullScreen}
+                    options={{headerShown: false}}
+                />
+              </Stack.Navigator>
+              <Toast ref={(toastRef) => Toast.setRef(toastRef)} />
+          </NavigationContainer>
+        </SafeAreaView>
         ) : (
             <SafeAreaView style={styles.container}>
                 <NavigationContainer>
