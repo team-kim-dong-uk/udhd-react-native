@@ -5,6 +5,9 @@ import {
     View
 } from "react-native";
 import {useNavigation} from "@react-navigation/native";
+import BackButton from '../../../assets/back-button.svg';
+import DownButton from '../../../assets/down-arrow.svg';
+import { colors, fonts, height, width } from "../../util/StyleUtil";
 
 const CommonHeader = ({back, children, title}) => {
     const navigation = useNavigation();
@@ -13,14 +16,20 @@ const CommonHeader = ({back, children, title}) => {
             <Pressable onPress={()=>navigation.goBack()}
                        style={styles.backButton}
             >
-                {back === 'left' && <Text>(((</Text>}
-                {back === 'bottom' && <Text>V</Text>}
+                {back === 'left' && <BackButton
+                                        width={10 * width}
+                                        height={20 * height}
+                                        viewBox='0 0 40 80'
+                                    />}
+                {back === 'bottom' && <DownButton
+                                        width={20 * width}
+                                        height={20 * height}
+                                        viewBox='0 0 80 80'
+                                    />}
             </Pressable>
-            <View style={styles.title}>
-                    <Text>
-                        {title}
-                    </Text>
-            </View>
+            <Text style={styles.title}>
+                {title}
+            </Text>
             <View style={styles.rightBox}>
                 {children}
             </View>
@@ -30,34 +39,32 @@ const CommonHeader = ({back, children, title}) => {
 const styles = StyleSheet.create({
     headerContainer: {
         width: '100%',
-        height: 65,
+        height: 55 * height,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: 'white',
+        justifyContent: 'center',
+        backgroundColor: colors.white,
     },
     title:{
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        minHeight: 65,
-        alignItems: 'center',
-        justifyContent: "center",
-        zIndex: 1
+        fontFamily: fonts.NotoSansCJKkr,
+        fontSize: 16 * width,
+        fontWeight: "500",
+        fontStyle: "normal",
+        lineHeight: 22 * height,
+        letterSpacing: 0,
+        textAlign: "center",
+        color: colors.black,
     },
     rightBox:{
-        width: '25%',
-        height: '100%',
+        position: 'absolute',
         alignItems: 'center',
         justifyContent: "center",
-        zIndex: 2,
     },
     backButton:{
-        width: '15%',
-        height: '100%',
-        alignItems: 'center',
-        justifyContent: "center",
-        zIndex: 2,
+        position: 'absolute',
+        left: 15 * width,
+        width: 20 * width,
+        height: 20 * height,
     }
 })
 export default CommonHeader;
