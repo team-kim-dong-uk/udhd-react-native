@@ -93,16 +93,6 @@ const SearchModal = ({type, show, setShow}) => {
     };
 
     const onSubmit = useCallback((e) => {
-        if(searchTags.length === 0){
-            Toast.show({
-                type: 'info',
-                position: 'bottom',
-                text1: '검색에 사용될 태그가 없어요!',
-                visibilityTime: 1000,
-                autoHide: true,
-            })
-            return false;
-        }
         dispatch(getPhotos.request({
             type: type,
             userId: auth.data?.userId,
