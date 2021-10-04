@@ -12,7 +12,9 @@ import {
     View
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { height, width } from '../util/StyleUtil.js';
+import { colors, height, width } from '../util/StyleUtil.js';
+import NoAlbumResults from './NoAlbumResult.js';
+import NoSearchResults from './NoSearchResult.js';
 
 const PhotoGrid = ({type}) => {
     const [numCols, setColumnNo] = useState(3);
@@ -61,6 +63,7 @@ const PhotoGrid = ({type}) => {
     };
 
     return (
+        data?.length > 0 ?
         <View>
             <FlatList
                 columnWrapperStyle={{justifyContent:'flex-start'}}
@@ -74,6 +77,9 @@ const PhotoGrid = ({type}) => {
                 contentContainerStyle={{paddingBottom: 110* height}}
             />
         </View>
+        : (
+            type === 'search' ? <NoSearchResults/> : <NoAlbumResults/>
+        )
     );
 }
 
