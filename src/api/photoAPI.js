@@ -25,9 +25,9 @@ const getSearchPhotos = ({userId, tags, findAfter}) => {
         if (uploaderSearch.length > 0) {
             query += `&uploaderId=${uploaderSearch[0].userId}`
         }
-        if (findAfter) {
-            query += `&findAfter=${findAfter}`;
-        }
+    }
+    if (findAfter) {
+        query += `&findAfter=${findAfter}`;
     }
     return client.get(query);
 }
@@ -41,9 +41,9 @@ const getAlbumPhotos = ({userId, tags, findAfter}) => {
             if (uploaderSearch.length > 0) {
                 query += `&uploaderId=${uploaderSearch[0].userId}`
         }
-        if (findAfter) {
-            query += `&findAfter=${findAfter}`;
-        }
+    }
+    if (findAfter) {
+        query += `&findAfter=${findAfter}`;
     }
     return client.get(query);
 }
@@ -51,7 +51,7 @@ const getAlbumPhotos = ({userId, tags, findAfter}) => {
 const getUploadPhotos = ({userId, findAfter}) => {
     let query = `users/${userId}/uploaded`;
     if (findAfter) {
-        query += `findAfter=${findAfter}`;
+        query += `?findAfter=${findAfter}`;
     }
     return client.get(query);
 }

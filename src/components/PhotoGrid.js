@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAlbumPhotos, getPhotos, getSearchPhotos, getUploadPhotos } from '../core/redux/photos.js';
+import { getAlbumPhotos, getPhotos, getSearchPhotos, getUploadPhotos, morePhotos } from '../core/redux/photos.js';
 import { useInView } from 'react-intersection-observer';
 import {
     FlatList,
@@ -20,13 +20,20 @@ const PhotoGrid = ({type}) => {
     const { auth, photos, loading } = useSelector(state => state);
     const navigation = useNavigation();
 
+    const data =  type === 'album' ? photos.album
+    : type === 'search' ? photos.search
+        :                     photos.upload;
+
     const loadMorePhotos = useCallback((e) => {
         console.log("load photo :)");
-    }, []);
+        dispatch(morePhotos.request({
+            type: type,
+            userId: auth.data?.userId,
+            findAfter: data.length ? (data[data.length - 1].albumId || data[data.length - 1].photoId) : null,
+        }));
+    }, [auth, type, data]);
 
-    const data =  type === 'album' ? photos.album
-        : type === 'search' ? photos.search
-            :                     photos.upload;
+
 
     useEffect(() => {
         console.log(type);
