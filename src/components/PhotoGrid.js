@@ -64,7 +64,7 @@ const PhotoGrid = ({type}) => {
     return (
         <View>
             <FlatList
-                columnWrapperStyle={{justifyContent:'space-between'}}
+                columnWrapperStyle={{justifyContent:'flex-start'}}
                 data={data}
                 renderItem={renderItem}
                 keyExtractor={item => item.albumId || item.photoId}
@@ -72,6 +72,7 @@ const PhotoGrid = ({type}) => {
                 key={numCols}
                 onEndReached={loadMorePhotos}
                 onEndReachedThreshold={0.01}
+                contentContainerStyle={{paddingBottom: 110* height}}
             />
         </View>
     );
