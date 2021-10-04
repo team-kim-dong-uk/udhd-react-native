@@ -32,7 +32,7 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
         setShowSetting((prev) => !prev);
     }, []);
 
-    const addToByAlbum = useCallback(() => {
+    const addToMyAlbum = useCallback(() => {
         setAddRequest(true);
         dispatch(addToAlbum.request({
             userId: auth.data.userId,
@@ -124,9 +124,9 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                             <Text>다운</Text>
                         </Pressable>
                     }
-                    <Pressable style={styles.button} onPress={addToByAlbum}>
-                        {(!addRequest && !photoSimpleInfo?.inAlbum) && <Text>ㅎㅌ</Text>}
-                        {(addRequest || photoSimpleInfo?.inAlbum) && <Text>하투</Text>}
+                    <Pressable style={styles.button} onPress={addToMyAlbum}>
+                        {(!addRequest && !photo.data?.inAlbum) && <Text>ㅎㅌ</Text>}
+                        {(addRequest || photo.data?.inAlbum) && <Text>하투</Text>}
 
                     </Pressable>
                     <Pressable style={styles.button} onPress={onPressSetting}>
