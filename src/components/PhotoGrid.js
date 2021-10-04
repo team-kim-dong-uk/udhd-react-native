@@ -29,7 +29,6 @@ const PhotoGrid = ({type}) => {
             :                     photos.upload;
 
     useEffect(() => {
-        console.log(type);
         if (!data && !loading.data && !photos.error) {
             dispatch(getPhotos.request({
                 type: type,
