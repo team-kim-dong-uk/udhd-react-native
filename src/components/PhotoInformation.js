@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {
     Image, Platform,
     Pressable,
@@ -6,7 +6,7 @@ import {
     View
 } from "react-native";
 import {useDispatch, useSelector} from "react-redux";
-import {addToAlbum} from "../core/redux/album";
+import {addToAlbum, removeFromAlbum} from "../core/redux/album";
 import ModalTemplate from "./ModalTemplate";
 import Tag from "./Tag";
 import * as Sharing from 'expo-sharing';
@@ -26,20 +26,31 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
     const dispatch  = useDispatch();
 
     const [showSetting, setShowSetting] = useState(false);
-    const [addRequest, setAddRequest] = useState(false);
+    const [inAlbum, setInAlbum] = useState(photo.data?.inAlbum ? true : false);
 
     const onPressSetting = useCallback(() => {
         setShowSetting((prev) => !prev);
     }, []);
 
-    const addToMyAlbum = useCallback(() => {
-        setAddRequest(true);
-        dispatch(addToAlbum.request({
-            userId: auth.data.userId,
-            photoId: photoSimpleInfo?.photoId
-        }))
-        dispatch(addLike({photoId:photoSimpleInfo?.photoId}))
-    }, [addRequest])
+    useEffect(() => {
+        setInAlbum(photo.data?.inAlbum ? true : false);
+        console.log("change photo in PhotoInformation")
+    }, [photo])
+
+    const updateAsync = useCallback(() => {
+        if (inAlbum){
+            dispatch(removeFromAlbum.request({
+                userId: auth.data.userId,
+                albumId: photoSimpleInfo.albumId
+            }))
+        } else {
+            dispatch(addToAlbum.request({
+                userId: auth.data.userId,
+                photoId: photoSimpleInfo?.photoId
+            }))
+        }
+        setInAlbum(prev => !prev);
+    }, [inAlbum])
 
     const download = async () => {
         const perm = await MediaLibrary.requestPermissionsAsync();
@@ -124,9 +135,9 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                             <Text>다운</Text>
                         </Pressable>
                     }
-                    <Pressable style={styles.button} onPress={addToMyAlbum}>
-                        {(!addRequest && !photo.data?.inAlbum) && <Text>ㅎㅌ</Text>}
-                        {(addRequest || photo.data?.inAlbum) && <Text>하투</Text>}
+                    <Pressable style={styles.button} onPress={updateAsync}>
+                        {!inAlbum && <Text>ㅎㅌ</Text>}
+                        {inAlbum && <Text>하투</Text>}
 
                     </Pressable>
                     <Pressable style={styles.button} onPress={onPressSetting}>
