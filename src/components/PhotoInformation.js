@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {addToAlbum, removeFromAlbum} from "../core/redux/album";
 import ModalTemplate from "./ModalTemplate";
 import Tag from "./Tag";
-import * as Sharing from 'expo-sharing'; 
+import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import Toast from 'react-native-toast-message';
@@ -32,22 +32,24 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
     const dispatch  = useDispatch();
 
     const [showSetting, setShowSetting] = useState(false);
-    const [inAlbum, setInAlbum] = useState(photo.data?.inAlbum ? true : false);
+    const [inAlbum, setInAlbum] = useState(photoSimpleInfo?.albumId ? true : false);
 
     const onPressSetting = useCallback(() => {
         setShowSetting((prev) => !prev);
     }, []);
 
     useEffect(() => {
-        setInAlbum(photo.data?.inAlbum ? true : false);
-        console.log("change photo in PhotoInformation")
+        if (photoSimpleInfo?.albumId)
+            setInAlbum(photo.data?.photoId && !photo.data?.inAlbum ? false : true);
+        else
+            setInAlbum(photo.data?.photoId && photo.data?.inAlbum ? true : false);
     }, [photo])
 
     const updateAsync = useCallback(() => {
         if (inAlbum){
             dispatch(removeFromAlbum.request({
                 userId: auth.data.userId,
-                albumId: photoSimpleInfo.albumId
+                albumId: photoSimpleInfo?.albumId
             }))
         } else {
             dispatch(addToAlbum.request({
