@@ -29,7 +29,6 @@ const PhotoGrid = ({type}) => {
             :                     photos.upload;
 
     useEffect(() => {
-        console.log(type);
         if (!data && !loading.data && !photos.error) {
             dispatch(getPhotos.request({
                 type: type,
@@ -46,8 +45,10 @@ const PhotoGrid = ({type}) => {
                     key={item.photoId}
                     onPress={() =>{
                         navigation.navigate('PhotoDetail', {
+                            photo: item,
+                            /*inAlbum: item?.inAlbum,
                             photoId: item.photoId,
-                            image: item.thumbnailLink,
+                            image: item.thumbnailLink,*/
                         });
                     }}
                 >
