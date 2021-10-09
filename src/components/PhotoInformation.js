@@ -202,14 +202,22 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
 
             </View>
             <View style={styles.tagContainer}>
+                {!editTag &&
+                    <View style={styles.tagTitleLine}>
+                        <Text style={styles.tagTitle}>태그</Text>
+                    <Pressable onPress={startEditTag}>
+                        <Text style={styles.tagTitle}>수정</Text>
+                    </Pressable>
+                    </View>
+                }
+                {editTag &&
                 <View style={styles.tagTitleLine}>
-                    <Text style={styles.tagTitle}>태그 {editTag && "수정"}</Text>
-                    {editTag &&
-                        <Pressable onPress={submitTag}>
-                            <Text style={styles.tagTitle}>완료</Text>
-                        </Pressable>
-                    }
+                    <Text style={styles.tagTitle}>태그 수정</Text>
+                    <Pressable onPress={submitTag}>
+                        <Text style={styles.tagTitle}>완료</Text>
+                    </Pressable>
                 </View>
+                }
                 {!editTag && (
                     <View style={styles.tagBox}>
                         {!isLoading && tags?.map((tag) => {
