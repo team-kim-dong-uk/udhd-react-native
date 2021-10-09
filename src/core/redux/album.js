@@ -6,6 +6,7 @@ import createAsyncSaga, {
 } from '../../util/redux/index';
 import * as albumAPI from '../../api/albumAPI';
 import * as tagAPI from "../../api/tagAPI";
+import ToastUtil from "../../util/ToastUtil";
 
 // 1. 각 모듈별 함수 구분을 위한 prefix 각 모듈 파일명 + '/' 의 조합으로 구성합니다.
 const prefix = 'album/';
@@ -61,11 +62,13 @@ export default handleActions(
           };
       },
       [PATCH_TAGS.SUCCESS]: (state, action) => {
+          ToastUtil.success("업데이트 성공!");
           return {
               ...state,
           };
       },
       [PATCH_TAGS.FAILURE]: (state, action) => {
+          ToastUtil.error("다시 시도해주세요!");
           return {
               ...state,
               error: action.error,

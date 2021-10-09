@@ -84,7 +84,6 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
             ToastUtil.info('이미 존재하는 태그입니다.');
             return false;
         }
-        ToastUtil.info('update 실행됐댕');
     };
 
     const updateAlbum = useCallback(() => {
