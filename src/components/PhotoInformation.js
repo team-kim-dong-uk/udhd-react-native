@@ -1,10 +1,5 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
-import {
-    Image, Platform,
-    Pressable,
-    StyleSheet, Text,
-    View
-} from "react-native";
+import React, {useCallback, useEffect, useState} from "react";
+import {Platform, Pressable, StyleSheet, Text, View} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 import {addToAlbum, removeFromAlbum} from "../core/redux/album";
 import ModalTemplate from "./ModalTemplate";
@@ -14,12 +9,13 @@ import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import Toast from 'react-native-toast-message';
 
-import { colors, fonts, height, width } from "../util/StyleUtil";
+import {colors, fonts, height, width} from "../util/StyleUtil";
 import ShareIcon from '../../assets/share-icon.svg';
 import DownloadIcon from '../../assets/download-icon.svg';
 import HeartIcon from '../../assets/heart-icon.svg';
 import HeartIconFilled from '../../assets/heart-icon-filled.svg';
 import ThreeDotsIcon from '../../assets/three-dots.svg';
+import ToastUtil from "../util/ToastUtil";
 
 const options = {
     mimeType: 'image/jpeg',
@@ -45,7 +41,7 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
             setInAlbum(photo.data?.photoId && photo.data?.inAlbum ? true : false);
     }, [photo])
 
-    const updateAsync = useCallback(() => {
+    const updateAlbum = useCallback(() => {
         if (inAlbum){
             dispatch(removeFromAlbum.request({
                 userId: auth.data.userId,
@@ -76,13 +72,7 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                     } else {
                         await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
                     }
-                    Toast.show({
-                        type: 'success',
-                        position: 'bottom',
-                        text1: '다운로드 성공!',
-                        visibilityTime: 1000,
-                        autoHide: true,
-                    });
+                    ToastUtil.success('다운로드 성공!');
                 } catch (e) {
                     console.log(e)
                 }
@@ -94,34 +84,16 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
     }
     const onShare = async () => {
         if (!(await Sharing.isAvailableAsync())) {
-            Toast.show({
-                type: 'error',
-                position: 'bottom',
-                text1: '공유가 불가능합니다.',
-                visibilityTime: 1000,
-                autoHide: true,
-            })
+            ToastUtil.error('공유가 불가능합니다.');
             return;
         }
         let fileUri = FileSystem.cacheDirectory + `${photoSimpleInfo?.photoId}.jpg`
         await FileSystem.downloadAsync(photo.data?.originalLink, fileUri);
         await Sharing.shareAsync(fileUri).then(() => {
-                Toast.show({
-                    type: 'success',
-                    position: 'bottom',
-                    text1: '공유 완료!',
-                    visibilityTime: 1000,
-                    autoHide: true,
-                })
+                ToastUtil.success('공유 완료!');
         }).catch((e)=> {
             console.log(e);
-            Toast.show({
-                type: 'error',
-                position: 'bottom',
-                text1: '다시 시도해주세요 :(',
-                visibilityTime: 1000,
-                autoHide: true,
-            })
+            ToastUtil.error('다시 시도해주세요 :(');
         })
 
     };
@@ -152,7 +124,7 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                             />
                         </Pressable>
                     }
-                    <Pressable style={styles.button} onPress={updateAsync}>
+                    <Pressable style={styles.button} onPress={updateAlbum}>
                         {!inAlbum && <HeartIcon
                                             width={25 * width}
                                             height={25 * height}
