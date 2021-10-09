@@ -10,9 +10,9 @@ import TagIcon from '../../assets/tag-icon-no-border.svg';
 const Tag = ({text, onPressTag, onLayout}) => {
 
     return (
-        <Pressable 
+        <Pressable
             activeOpacity = { 0.5 }
-            onPress={() => onPressTag(text)}
+            onPress={() => {if(onPressTag) onPressTag(text)}}
             onLayout={onLayout}
             style={styles.tagContainer}
         >
