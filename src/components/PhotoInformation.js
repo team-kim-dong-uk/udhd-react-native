@@ -17,6 +17,7 @@ import ThreeDotsIcon from '../../assets/three-dots.svg';
 import ToastUtil from "../util/ToastUtil";
 import useInput from "../hooks/useInput";
 import CancelIcon from "../../assets/cancel-icon-round.svg";
+import SelectedTag from "./search/SelectedTag";
 
 const options = {
     mimeType: 'image/jpeg',
@@ -63,6 +64,10 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
     }
 
     const submitTag = () => {
+        if (tags == updateTags){
+            setEditTag(false);
+            return;
+        }
         dispatch(updateAlbumTags.request({
             userId: auth.data?.userId,
             albumId: photoSimpleInfo?.albumId,
@@ -85,6 +90,10 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
             return false;
         }
     };
+    const onRemoveTag = useCallback((tagToRemove) => {
+        console.log("tagToRemote is " + JSON.stringify(tagToRemove));
+        setUpdateTags([...updateTags.filter(tag => !(tagToRemove.keyword === tag))])
+    }, [updateTags]);
 
     const updateAlbum = useCallback(() => {
         if (inAlbum){
@@ -232,7 +241,11 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
 
                         {!isLoading && updateTags?.map((tag) => {
                             return (
-                                <Tag key={tag} text={tag}/>
+                                <SelectedTag key={tag}
+                                             text={tag}
+                                             type="TAG"
+                                             onRemoveTag={onRemoveTag}
+                                />
                             )
                         })}
                     </View>
