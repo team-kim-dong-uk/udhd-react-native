@@ -1,13 +1,12 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Platform, Pressable, StyleSheet, Text, TextInput, View} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
-import {addToAlbum, removeFromAlbum} from "../core/redux/album";
+import {addToAlbum, removeFromAlbum, updateAlbumTags} from "../core/redux/album";
 import ModalTemplate from "./ModalTemplate";
 import Tag from "./Tag";
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
-import Toast from 'react-native-toast-message';
 
 import {colors, fonts, height, width} from "../util/StyleUtil";
 import ShareIcon from '../../assets/share-icon.svg';
@@ -42,10 +41,9 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
         setShowSetting((prev) => !prev);
     }, []);
 
-    const startEditTag = useCallback(async () => {
+    const startEditTag = useCallback( () => {
         setEditTag((prev) => !prev);
         setShowSetting(false);
-        await setUpdateTags(tags);
     }, [])
 
     useEffect(() => {
@@ -55,14 +53,23 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
             setInAlbum(photo.data?.photoId && photo.data?.inAlbum ? true : false);
     }, [photo])
 
+    useEffect(() => {
+        setUpdateTags(tags);
+    }, [tags])
+
     const onClearInput = () => {
         inputRef.current.clear();
         inputRef.current.blur();
     }
-    const submitTag = useCallback(() => {
 
+    const submitTag = () => {
+        dispatch(updateAlbumTags.request({
+            userId: auth.data?.userId,
+            albumId: photoSimpleInfo?.albumId,
+            tags: updateTags
+        }))
         setEditTag(false);
-    }, [])
+    }
 
     const insertUpdateTag = () => {
         const keyword = inputTag.replace(/\s/g, "");
