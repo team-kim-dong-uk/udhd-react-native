@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from "react";
-import {Platform, Pressable, StyleSheet, Text, View} from "react-native";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {Platform, Pressable, StyleSheet, Text, TextInput, View} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 import {addToAlbum, removeFromAlbum} from "../core/redux/album";
 import ModalTemplate from "./ModalTemplate";
@@ -16,6 +16,8 @@ import HeartIcon from '../../assets/heart-icon.svg';
 import HeartIconFilled from '../../assets/heart-icon-filled.svg';
 import ThreeDotsIcon from '../../assets/three-dots.svg';
 import ToastUtil from "../util/ToastUtil";
+import useInput from "../hooks/useInput";
+import CancelIcon from "../../assets/cancel-icon-round.svg";
 
 const options = {
     mimeType: 'image/jpeg',
@@ -26,12 +28,21 @@ const options = {
 const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
     const {auth, photo} = useSelector(state => state);
     const dispatch  = useDispatch();
+    const inputRef = useRef();
 
     const [showSetting, setShowSetting] = useState(false);
     const [inAlbum, setInAlbum] = useState(photoSimpleInfo?.albumId ? true : false);
 
+    const [editTag, setEditTag] = useState(false);
+    const [newTag, onChangeNewTag, setNewTag] = useInput('');
+
+
     const onPressSetting = useCallback(() => {
         setShowSetting((prev) => !prev);
+    }, []);
+    const onPressEditTag = useCallback(() => {
+        setEditTag((prev) => !prev);
+        setShowSetting(false);
     }, []);
 
     useEffect(() => {
@@ -40,6 +51,11 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
         else
             setInAlbum(photo.data?.photoId && photo.data?.inAlbum ? true : false);
     }, [photo])
+
+    const onClearInput = () => {
+        inputRef.current.clear();
+        inputRef.current.blur();
+    }
 
     const updateAlbum = useCallback(() => {
         if (inAlbum){
@@ -149,19 +165,59 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
 
             </View>
             <View style={styles.tagContainer}>
-                <Text style={styles.tagTitle}>태그</Text>
-                <View style={styles.tagBox}>
-                    {!isLoading && tags?.map((tag) => {
-                        return (<Tag key={tag} text={tag}/>)
-                    })}
+                <View style={styles.tagTitleLine}>
+                    <Text style={styles.tagTitle}>태그 {editTag && "수정"}</Text>
+                    {editTag &&
+                        <Pressable>
+                            <Text style={styles.tagTitle}>완료 버튼</Text>
+                        </Pressable>
+                    }
                 </View>
+                {!editTag && (
+                    <View style={styles.tagBox}>
+                        {!isLoading && tags?.map((tag) => {
+                            return (<Tag key={tag} text={tag}/>)
+                        })}
+                    </View>
+                )}
+                {editTag && (
+                    <View style={styles.tagBox}>
+                        <View style={styles.newInputTag}>
+                            <TextInput
+                                style={{marginRight: 5}}
+                                placeholder="새로운 태그를 입력하세요!"
+                                onChangeText={onChangeNewTag}
+                                value={newTag}
+                                //onSubmitEditing={onSubmit}
+                                selectionColor={colors.black}
+                                ref={inputRef}
+                            />
+                            <Pressable style={styles.cancelIcon} onPress={onClearInput}>
+                                <CancelIcon
+                                    width={10 * width}
+                                    height={10 * height}
+                                    viewBox='0 0 60 60'
+                                />
+                            </Pressable>
+                        </View>
+
+                        {!isLoading && tags?.map((tag) => {
+                            return (
+                                <Tag key={tag} text={tag} />
+                            )
+                        })}
+                    </View>
+                )}
+
 
             </View>
             {showSetting && (
                 <ModalTemplate style={{backgroundColor:  'rgba(0, 0, 0, 0.5)'}} show={showSetting} onControlModal={onPressSetting}>
                     <View style={styles.modal}>
                         {photoSimpleInfo?.albumId &&
-                            (<Pressable style={[{borderTopLeftRadius: 5, borderTopRightRadius: 5,borderBottomWidth: 0.2,}, styles.settingBox]}>
+                            (<Pressable style={[{borderTopLeftRadius: 5, borderTopRightRadius: 5,borderBottomWidth: 0.2,}, styles.settingBox]}
+                                        onPress={onPressEditTag}
+                            >
                                 <Text style={styles.text}>태그 수정</Text>
                             </Pressable>)
                         }
@@ -236,6 +292,11 @@ const styles = StyleSheet.create({
         width: 330 * width,
         height: 145 * height,
     },
+    tagTitleLine: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
     tagTitle: {
         fontFamily: fonts.NotoSansCJKkr,
         fontSize: 14 * width,
@@ -290,6 +351,20 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-    }
+    },
+    newInputTag: {
+        marginRight: 5 * width,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 8 * width,
+        paddingRight: 5 * width,
+        borderRadius: 5 * width,
+        borderStyle: "solid",
+        borderWidth: 1 * width,
+        borderColor: colors.grey,
+        height: 24 * height,
+        marginBottom: 5 * height,
+    },
+
 });
 
