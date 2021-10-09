@@ -34,17 +34,19 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
     const [inAlbum, setInAlbum] = useState(photoSimpleInfo?.albumId ? true : false);
 
     const [editTag, setEditTag] = useState(false);
-    const [newTag, onChangeNewTag, setNewTag] = useInput('');
+    const [inputTag, onChangeInputTag, setInputTag] = useInput('');
 
+    const [updateTags, setUpdateTags] = useState([]);
 
     const onPressSetting = useCallback(() => {
         setShowSetting((prev) => !prev);
     }, []);
-    const onPressEditTag = useCallback(() => {
+
+    const startEditTag = useCallback(async () => {
         setEditTag((prev) => !prev);
         setShowSetting(false);
-        console.log("run press deit")
-    }, []);
+        await setUpdateTags(tags);
+    }, [])
 
     useEffect(() => {
         if (photoSimpleInfo?.albumId)
@@ -62,23 +64,20 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
         setEditTag(false);
     }, [])
 
-    const addSearchTag = (item) => {
-        const keyword = item.keyword.replace(/\s/g, "");
-        console.log("try to make tag :" + keyword);
-        if (item.type === 'USER' && searchTags.filter(item => item.type === 'USER').length > 0) {
-            ToastUtil.info('업로더로 검색은 한명만 지정가능합니다.')
-            return false;
-        } else if(keyword !== '' && !searchTags.map(item => item.keyword).includes(keyword)) {
-            setSearchTags(searchTags => [ ...searchTags, item]);
-            setKeyword("");
-        }  else if (tag === ''){
+    const insertUpdateTag = () => {
+        const keyword = inputTag.replace(/\s/g, "");
+        if(keyword !== '' && !updateTags.map(tag => tag).includes(keyword)) {
+            setUpdateTags(updateTags => [ ...updateTags, keyword]);
+            setInputTag("");
+        }  else if (keyword === ''){
             ToastUtil.info('공백을 입력할 수 없습니다.');
-            setKeyword("");
+            setInputTag("");
             return false;
         } else {
-            ToastUtil.info('이미 선택한 태그입니다.');
+            ToastUtil.info('이미 존재하는 태그입니다.');
             return false;
         }
+        ToastUtil.info('update 실행됐댕');
     };
 
     const updateAlbum = useCallback(() => {
@@ -200,7 +199,7 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                 {!editTag && (
                     <View style={styles.tagBox}>
                         {!isLoading && tags?.map((tag) => {
-                            return (<Tag key={tag} text={tag} onLongPress={onPressEditTag}/>)
+                            return (<Tag key={tag} text={tag} onLongPress={startEditTag}/>)
                         })}
                     </View>
                 )}
@@ -210,9 +209,9 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                             <TextInput
                                 style={{marginRight: 5}}
                                 placeholder="새로운 태그를 입력하세요!"
-                                onChangeText={onChangeNewTag}
-                                value={newTag}
-                                //onSubmitEditing={onSubmit}
+                                onChangeText={onChangeInputTag}
+                                value={inputTag}
+                                onSubmitEditing={insertUpdateTag}
                                 selectionColor={colors.black}
                                 ref={inputRef}
                             />
@@ -225,7 +224,7 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                             </Pressable>
                         </View>
 
-                        {!isLoading && tags?.map((tag) => {
+                        {!isLoading && updateTags?.map((tag) => {
                             return (
                                 <Tag key={tag} text={tag}/>
                             )
@@ -240,7 +239,7 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                     <View style={styles.modal}>
                         {photoSimpleInfo?.albumId &&
                             (<Pressable style={[{borderTopLeftRadius: 5, borderTopRightRadius: 5,borderBottomWidth: 0.2,}, styles.settingBox]}
-                                        onPress={onPressEditTag}
+                                        onPress={startEditTag}
                             >
                                 <Text style={styles.text}>태그 수정</Text>
                             </Pressable>)
