@@ -258,7 +258,8 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                             </Pressable>)
                         }
                         {photoSimpleInfo?.albumId &&
-                            (<Pressable style={styles.settingBox}>
+                            (<Pressable style={styles.settingBox}
+                                        onPress={updateAlbum}>
                                 <Text style={styles.text}>앨범에서 삭제</Text>
                             </Pressable>
                             )
@@ -389,9 +390,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     newInputTag: {
-        marginRight: 5 * width,
         flexDirection: 'row',
         alignItems: 'center',
+        marginLeft: 5 * width,
         paddingLeft: 8 * width,
         paddingRight: 5 * width,
         borderRadius: 5 * width,
