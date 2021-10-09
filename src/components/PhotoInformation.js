@@ -18,6 +18,7 @@ import ToastUtil from "../util/ToastUtil";
 import useInput from "../hooks/useInput";
 import CancelIcon from "../../assets/cancel-icon-round.svg";
 import SelectedTag from "./search/SelectedTag";
+import {setPhotoTags} from "../core/redux/photo";
 
 const options = {
     mimeType: 'image/jpeg',
@@ -62,7 +63,6 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
         inputRef.current.clear();
         inputRef.current.blur();
     }
-
     const submitTag = () => {
         if (tags == updateTags){
             setEditTag(false);
@@ -73,9 +73,9 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
             albumId: photoSimpleInfo?.albumId,
             tags: updateTags
         }))
+        dispatch(setPhotoTags({tags: updateTags}))
         setEditTag(false);
     }
-
     const insertUpdateTag = () => {
         const keyword = inputTag.replace(/\s/g, "");
         if(keyword !== '' && !updateTags.map(tag => tag).includes(keyword)) {
@@ -91,7 +91,6 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
         }
     };
     const onRemoveTag = useCallback((tagToRemove) => {
-        console.log("tagToRemote is " + JSON.stringify(tagToRemove));
         setUpdateTags([...updateTags.filter(tag => !(tagToRemove.keyword === tag))])
     }, [updateTags]);
 
@@ -238,20 +237,15 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                                 />
                             </Pressable>
                         </View>
-
                         {!isLoading && updateTags?.map((tag) => {
-                            return (
-                                <SelectedTag key={tag}
+                            return (<SelectedTag key={tag}
                                              text={tag}
                                              type="TAG"
                                              onRemoveTag={onRemoveTag}
-                                />
-                            )
+                                />)
                         })}
                     </View>
                 )}
-
-
             </View>
             {showSetting && (
                 <ModalTemplate style={{backgroundColor:  'rgba(0, 0, 0, 0.5)'}} show={showSetting} onControlModal={onPressSetting}>

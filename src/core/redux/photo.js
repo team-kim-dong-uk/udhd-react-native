@@ -1,4 +1,4 @@
-import { handleActions } from 'redux-actions';
+import {createAction, handleActions} from 'redux-actions';
 import { takeEvery } from 'redux-saga/effects';
 import createAsyncSaga, {
   asyncActionCreator,
@@ -11,9 +11,11 @@ const prefix = 'photo/';
 
 // 2. 액션타입에 대해서 정의합니다.
 const GET_PHOTO = asyncActionCreator(`${prefix}GET_PHOTO`);
+const SET_PHOTO_TAGS = `${prefix}SET_PHOTO_TAGS`;
 
 // 3. 액션함수에 대해서 정의합니다.
 export const getPhoto = createAsyncAction(GET_PHOTO);
+export const setPhotoTags = createAction(SET_PHOTO_TAGS, ({tags}) => ({tags}));
 
 // 4. saga 비동기 관련 함수가 필요할 경우 작성 합니다. (optional) saga함수들의 모음은 최하단에 나열합니다.
 const getPhotoSaga = createAsyncSaga(getPhoto, photoAPI.getPhoto);
@@ -38,6 +40,14 @@ export default handleActions(
       ...state,
       error: action,
     }),
+      [SET_PHOTO_TAGS]: (state, {payload: {tags}}) => {
+          return {
+              ...state,
+              data: {
+                  tags: tags || state.data.tags
+              }
+          };
+      },
   },
   initialState,
 );
