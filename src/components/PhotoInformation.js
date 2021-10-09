@@ -188,12 +188,17 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
             {showSetting && (
                 <ModalTemplate style={{backgroundColor:  'rgba(0, 0, 0, 0.5)'}} show={showSetting} onControlModal={onPressSetting}>
                     <View style={styles.modal}>
-                        <Pressable style={[{borderTopLeftRadius: 5, borderTopRightRadius: 5,borderBottomWidth: 0.2,}, styles.settingBox]}>
-                            <Text style={styles.text}>태그 수정</Text>
-                        </Pressable>
-                        <Pressable style={styles.settingBox}>
-                            <Text style={styles.text}>앨범에서 삭제</Text>
-                        </Pressable>
+                        {photoSimpleInfo?.albumId &&
+                            (<Pressable style={[{borderTopLeftRadius: 5, borderTopRightRadius: 5,borderBottomWidth: 0.2,}, styles.settingBox]}>
+                                <Text style={styles.text}>태그 수정</Text>
+                            </Pressable>)
+                        }
+                        {photoSimpleInfo?.albumId &&
+                            (<Pressable style={styles.settingBox}>
+                                <Text style={styles.text}>앨범에서 삭제</Text>
+                            </Pressable>
+                            )
+                        }
                         <Pressable style={[{marginBottom:10, borderBottomLeftRadius: 5, borderBottomRightRadius:5,
                                             borderTopWidth: 0.2,},
                                             styles.settingBox,]}>
