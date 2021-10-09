@@ -43,6 +43,7 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
     const onPressEditTag = useCallback(() => {
         setEditTag((prev) => !prev);
         setShowSetting(false);
+        console.log("run press deit")
     }, []);
 
     useEffect(() => {
@@ -56,6 +57,29 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
         inputRef.current.clear();
         inputRef.current.blur();
     }
+    const submitTag = useCallback(() => {
+
+        setEditTag(false);
+    }, [])
+
+    const addSearchTag = (item) => {
+        const keyword = item.keyword.replace(/\s/g, "");
+        console.log("try to make tag :" + keyword);
+        if (item.type === 'USER' && searchTags.filter(item => item.type === 'USER').length > 0) {
+            ToastUtil.info('업로더로 검색은 한명만 지정가능합니다.')
+            return false;
+        } else if(keyword !== '' && !searchTags.map(item => item.keyword).includes(keyword)) {
+            setSearchTags(searchTags => [ ...searchTags, item]);
+            setKeyword("");
+        }  else if (tag === ''){
+            ToastUtil.info('공백을 입력할 수 없습니다.');
+            setKeyword("");
+            return false;
+        } else {
+            ToastUtil.info('이미 선택한 태그입니다.');
+            return false;
+        }
+    };
 
     const updateAlbum = useCallback(() => {
         if (inAlbum){
@@ -168,15 +192,15 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                 <View style={styles.tagTitleLine}>
                     <Text style={styles.tagTitle}>태그 {editTag && "수정"}</Text>
                     {editTag &&
-                        <Pressable>
-                            <Text style={styles.tagTitle}>완료 버튼</Text>
+                        <Pressable onPress={submitTag}>
+                            <Text style={styles.tagTitle}>완료</Text>
                         </Pressable>
                     }
                 </View>
                 {!editTag && (
                     <View style={styles.tagBox}>
                         {!isLoading && tags?.map((tag) => {
-                            return (<Tag key={tag} text={tag}/>)
+                            return (<Tag key={tag} text={tag} onLongPress={onPressEditTag}/>)
                         })}
                     </View>
                 )}
@@ -203,7 +227,7 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
 
                         {!isLoading && tags?.map((tag) => {
                             return (
-                                <Tag key={tag} text={tag} />
+                                <Tag key={tag} text={tag}/>
                             )
                         })}
                     </View>
