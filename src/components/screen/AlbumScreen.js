@@ -5,6 +5,7 @@ import UdhdHeader from "../layout/UdhdHeader";
 import PhotoGrid from "../PhotoGrid";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { colors } from '../../util/StyleUtil';
 
 const AlbumScreen = () => {
     const {searching, auth} = useSelector(state => state);
@@ -15,7 +16,7 @@ const AlbumScreen = () => {
       }
     })
   return (
-      <View>
+      <View style={styles.container}>
         <UdhdHeader type='album'/>
           {!searching.data && <PhotoGrid type='album'/>}
       </View>
@@ -23,6 +24,10 @@ const AlbumScreen = () => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.lightGrey,
+    flex: 1,
+  }
 });
 
 export default AlbumScreen;

@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {
     Image, Platform,
     Pressable,
@@ -6,13 +6,14 @@ import {
     View
 } from "react-native";
 import {useDispatch, useSelector} from "react-redux";
-import {addToAlbum} from "../core/redux/album";
+import {addToAlbum, removeFromAlbum} from "../core/redux/album";
 import ModalTemplate from "./ModalTemplate";
 import Tag from "./Tag";
-import * as Sharing from 'expo-sharing'; 
+import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import Toast from 'react-native-toast-message';
+
 import { colors, fonts, height, width } from "../util/StyleUtil";
 import ShareIcon from '../../assets/share-icon.svg';
 import DownloadIcon from '../../assets/download-icon.svg';
@@ -26,31 +27,45 @@ const options = {
     UTI: 'image/jpeg',
 };
 
-const PhotoInformation = ({style, tags, isLoading}) => {
+const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
     const {auth, photo} = useSelector(state => state);
     const dispatch  = useDispatch();
 
     const [showSetting, setShowSetting] = useState(false);
-    const [addRequest, setAddRequest] = useState(false);
+    const [inAlbum, setInAlbum] = useState(photoSimpleInfo?.albumId ? true : false);
 
     const onPressSetting = useCallback(() => {
         setShowSetting((prev) => !prev);
     }, []);
 
-    const addToByAlbum = useCallback(() => {
-        setAddRequest(true);
-        dispatch(addToAlbum.request({
-            userId: auth.data.userId,
-            photoId: photo.data?.photoId
-        }))
-    }, [addRequest])
+    useEffect(() => {
+        if (photoSimpleInfo?.albumId)
+            setInAlbum(photo.data?.photoId && !photo.data?.inAlbum ? false : true);
+        else
+            setInAlbum(photo.data?.photoId && photo.data?.inAlbum ? true : false);
+    }, [photo])
+
+    const updateAsync = useCallback(() => {
+        if (inAlbum){
+            dispatch(removeFromAlbum.request({
+                userId: auth.data.userId,
+                albumId: photoSimpleInfo?.albumId
+            }))
+        } else {
+            dispatch(addToAlbum.request({
+                userId: auth.data.userId,
+                photoId: photoSimpleInfo?.photoId
+            }))
+        }
+        setInAlbum(prev => !prev);
+    }, [inAlbum])
 
     const download = async () => {
         const perm = await MediaLibrary.requestPermissionsAsync();
         if (perm.status != 'granted') {
             return;
         }
-        let fileUri = FileSystem.cacheDirectory + `${photo.data?.photoId}.jpg`
+        let fileUri = FileSystem.cacheDirectory + `${photoSimpleInfo?.photoId}.jpg`
         FileSystem.downloadAsync(photo.data?.originalLink, fileUri, options)
             .then(async (target)=>{
                 try {
@@ -88,7 +103,7 @@ const PhotoInformation = ({style, tags, isLoading}) => {
             })
             return;
         }
-        let fileUri = FileSystem.cacheDirectory + `${photo.data?.photoId}.jpg`
+        let fileUri = FileSystem.cacheDirectory + `${photoSimpleInfo?.photoId}.jpg`
         await FileSystem.downloadAsync(photo.data?.originalLink, fileUri);
         await Sharing.shareAsync(fileUri).then(() => {
                 Toast.show({
@@ -137,18 +152,17 @@ const PhotoInformation = ({style, tags, isLoading}) => {
                             />
                         </Pressable>
                     }
-                    <Pressable style={styles.button} onPress={addToByAlbum}>
-                        {!addRequest && <HeartIcon
+                    <Pressable style={styles.button} onPress={updateAsync}>
+                        {!inAlbum && <HeartIcon
                                             width={25 * width}
                                             height={25 * height}
                                             viewBox='0 0 25 25'
                                         />}
-                        {addRequest && <HeartIconFilled
+                        {inAlbum && <HeartIconFilled
                                             width={25 * width}
                                             height={25 * height}
                                             viewBox='0 0 25 25'
                                         />}
-
                     </Pressable>
                     <Pressable style={styles.button} onPress={onPressSetting}>
                         <ThreeDotsIcon

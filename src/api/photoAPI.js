@@ -1,7 +1,10 @@
 import client from './client';
 
-export const getPhoto = ({photoId}) => {
+export const getPhoto = ({photoId, userId}) => {
     let query = `photos/${photoId}`
+    if (userId)
+        query += `?userId=${userId}`;
+
     return client.get(query);
 }
 

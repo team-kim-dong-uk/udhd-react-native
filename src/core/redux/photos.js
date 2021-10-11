@@ -1,4 +1,4 @@
-import { handleActions } from 'redux-actions';
+import {createAction, handleActions} from 'redux-actions';
 import { takeEvery } from 'redux-saga/effects';
 import createAsyncSaga, {
   asyncActionCreator,
@@ -12,9 +12,11 @@ const prefix = 'photos/';
 
 // 2. 액션타입에 대해서 정의합니다.
 const GET_PHOTOS = asyncActionCreator(`${prefix}GET_PHOTOS`);
+const ADD_LIKE = `${prefix}ADD_LIKE`;
 
 // 3. 액션함수에 대해서 정의합니다.
 export const getPhotos = createAsyncAction(GET_PHOTOS, ({type, userId, tags}) => ({type, userId, tags}));
+export const addLike = createAction(ADD_LIKE, ({photoId}) => ({photoId}));
 
 // 4. saga 비동기 관련 함수가 필요할 경우 작성 합니다. (optional) saga함수들의 모음은 최하단에 나열합니다.
 const getPhotosSaga = createAsyncSaga(getPhotos, photoAPI.getPhotos);
@@ -56,6 +58,18 @@ export default handleActions(
       ...state,
       error: action.error,
     }),
+    [ADD_LIKE]: (state, {payload: {photoId}}) => {
+      let returnData =  state.search.map((photo) => {
+                          if(photo.photoId == photoId){
+                            photo.inAlbum = true
+                          }
+                          return photo
+                        })
+      return {
+        ...state,
+        search: returnData,
+      }
+    }
   },
   initialState,
 );
