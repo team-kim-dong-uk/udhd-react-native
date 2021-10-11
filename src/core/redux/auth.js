@@ -12,12 +12,14 @@ const LOGIN_SUCCESS = `${prefix}LOGIN_SUCCESS`;
 const LOGIN_FAILURE = `${prefix}LOGIN_FAILURE`;
 const SET_NICKNAME = asyncActionCreator(`${prefix}SET_NICKNAME`);
 const SET_GROUP = asyncActionCreator(`${prefix}SET_GROUP`);
+const SET_HAS_PHOTOS_SIGN_UP = `${prefix}SET_HAS_PHOTOS_SIGN_UP`;
 
 export const loginSuccess = createAction(LOGIN_SUCCESS, 
   ({userId, accessToken, refreshToken, email, nickname, group, googleToken}) => ({userId, accessToken, refreshToken, email, nickname, group, googleToken}));
 export const loginFailure = createAction(LOGIN_FAILURE);
 export const setNickname = createAsyncAction(SET_NICKNAME);
 export const setGroup = createAsyncAction(SET_GROUP);
+export const setHasPhotosSignUp = createAction(SET_HAS_PHOTOS_SIGN_UP);
 
 const setNicknameSaga = createAsyncSaga(setNickname, authAPI.setNickname);
 const setGroupSaga = createAsyncSaga(setGroup, authAPI.setGroup);
@@ -74,12 +76,23 @@ export default handleActions(
         data: {
           ...state.data,
           group: action.payload.data.group,
+          isSigningUp: true,
         }
       }
     },[SET_GROUP.FAILURE]: (state, action) => {
       console.log(action);
       return state;
     },
+    [SET_HAS_PHOTOS_SIGN_UP]: (state, action) => {
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          hasPhotos: action.payload,
+          isSigningUp: false,
+        },
+      }
+    }
   },
   initialState,
 );

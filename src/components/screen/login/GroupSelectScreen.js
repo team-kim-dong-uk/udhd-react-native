@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,10 +7,12 @@ import { colors, fonts, width, height } from '../../../util/StyleUtil';
 import CheckBox from '@react-native-community/checkbox';
 import { UIButton } from '../../common/UIButton';
 import { TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const GroupSelectScreen = () => {
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth); 
+  const navigation = useNavigation();
 
   const groups = ['오마이걸', '프로미스나인', '에스파', '트와이스', '더보이즈', '블랙핑크',
                   '소녀시대', '걸스데이', '이달의소녀'];
@@ -21,6 +23,13 @@ const GroupSelectScreen = () => {
     })),
     hasSelected: false,
   });
+
+  // 소셜로그인 진행중에 종료했었다면 중단 지점부터 다시 시작
+  useEffect(() => {
+    if (auth.data.isSigningUp) {
+      navigation.navigate('HasPhotos');
+    }
+  }, [auth]);
 
   
 

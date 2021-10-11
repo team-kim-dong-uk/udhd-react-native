@@ -35,6 +35,7 @@ import PhotoScreen from "./components/screen/PhotoScreen";
 import PhotoFullScreen from "./components/screen/PhotoFullScreen";
 
 import Toast from 'react-native-toast-message';
+import HasPhotosScreen from './components/screen/login/HasPhotosScreen';
 
 const App = () => {
     let [fontsLoaded] = useFonts({
@@ -67,7 +68,7 @@ const App = () => {
         )
     }
     return (
-      auth.data && auth.data.nickname && auth.data.group ? (
+      auth.data && auth.data.nickname && auth.data.group && !auth.data.isSigningUp ? (
         <SafeAreaView style={styles.container}>
           <NavigationContainer>
             <Stack.Navigator>
@@ -130,6 +131,15 @@ const App = () => {
                             options={{
                                 title: '선호 연예인 설정',
                                 order: 2,
+                                header: (props) => <LoginHeader {...props}/>
+                            }}
+                        />
+                        <Stack.Screen
+                            name='HasPhotos'
+                            component={HasPhotosScreen}
+                            options={{
+                                title: '이미지 업로드',
+                                order: 3,
                                 header: (props) => <LoginHeader {...props}/>
                             }}
                         />
