@@ -10,10 +10,12 @@ import { RadioButton } from 'react-native-paper';
 const RadioTemplate = ({currentChecked, value, text, onPress}) => {
     return (
         <Pressable style={styles.sortBox}
-                    onPress={() => {onPress(value); console.log("얍!!!" +value)}}>
+                    onPress={() => onPress(value)}
+        >
             <RadioButton
                 value={value}
                 status={ currentChecked === value ? 'checked' : 'unchecked' }
+                onPress={() => onPress(value)}
             />
             <Text>{text}</Text>
         </Pressable>
