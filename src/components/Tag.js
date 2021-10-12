@@ -7,12 +7,13 @@ import {
 import { colors, fonts, height, width } from "../util/StyleUtil";
 import TagIcon from '../../assets/tag-icon-no-border.svg';
 
-const Tag = ({text, onPressTag, onLayout}) => {
+const Tag = ({text, onPressTag, onLayout, onLongPress}) => {
 
     return (
-        <Pressable 
+        <Pressable
             activeOpacity = { 0.5 }
-            onPress={() => onPressTag(text)}
+            onPress={() => {if(onPressTag) onPressTag(text)}}
+            onLongPress={() => {if(onLongPress) onLongPress()}}
             onLayout={onLayout}
             style={styles.tagContainer}
         >

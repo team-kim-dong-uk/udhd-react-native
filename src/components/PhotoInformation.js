@@ -1,25 +1,24 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {
-    Image, Platform,
-    Pressable,
-    StyleSheet, Text,
-    View
-} from "react-native";
+import {Platform, Pressable, StyleSheet, Text, TextInput, View} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
-import {addToAlbum, removeFromAlbum} from "../core/redux/album";
+import {addToAlbum, removeFromAlbum, updateAlbumTags} from "../core/redux/album";
 import ModalTemplate from "./ModalTemplate";
 import Tag from "./Tag";
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
-import Toast from 'react-native-toast-message';
 
-import { colors, fonts, height, width } from "../util/StyleUtil";
+import {colors, fonts, height, width} from "../util/StyleUtil";
 import ShareIcon from '../../assets/share-icon.svg';
 import DownloadIcon from '../../assets/download-icon.svg';
 import HeartIcon from '../../assets/heart-icon.svg';
 import HeartIconFilled from '../../assets/heart-icon-filled.svg';
 import ThreeDotsIcon from '../../assets/three-dots.svg';
+import ToastUtil from "../util/ToastUtil";
+import useInput from "../hooks/useInput";
+import CancelIcon from "../../assets/cancel-icon-round.svg";
+import SelectedTag from "./search/SelectedTag";
+import {setPhotoTags} from "../core/redux/photo";
 
 const options = {
     mimeType: 'image/jpeg',
@@ -30,13 +29,24 @@ const options = {
 const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
     const {auth, photo} = useSelector(state => state);
     const dispatch  = useDispatch();
+    const inputRef = useRef();
 
     const [showSetting, setShowSetting] = useState(false);
     const [inAlbum, setInAlbum] = useState(photoSimpleInfo?.albumId ? true : false);
 
+    const [editTag, setEditTag] = useState(false);
+    const [inputTag, onChangeInputTag, setInputTag] = useInput('');
+
+    const [updateTags, setUpdateTags] = useState([]);
+
     const onPressSetting = useCallback(() => {
         setShowSetting((prev) => !prev);
     }, []);
+
+    const startEditTag = useCallback( () => {
+        setEditTag((prev) => !prev);
+        setShowSetting(false);
+    }, [])
 
     useEffect(() => {
         if (photoSimpleInfo?.albumId)
@@ -45,7 +55,46 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
             setInAlbum(photo.data?.photoId && photo.data?.inAlbum ? true : false);
     }, [photo])
 
-    const updateAsync = useCallback(() => {
+    useEffect(() => {
+        setUpdateTags(tags);
+    }, [tags])
+
+    const onClearInput = () => {
+        inputRef.current.clear();
+        inputRef.current.blur();
+    }
+    const submitTag = () => {
+        if (tags == updateTags){
+            setEditTag(false);
+            return;
+        }
+        dispatch(updateAlbumTags.request({
+            userId: auth.data?.userId,
+            albumId: photoSimpleInfo?.albumId,
+            tags: updateTags
+        }))
+        dispatch(setPhotoTags({tags: updateTags}))
+        setEditTag(false);
+    }
+    const insertUpdateTag = () => {
+        const keyword = inputTag.replace(/\s/g, "");
+        if(keyword !== '' && !updateTags.map(tag => tag).includes(keyword)) {
+            setUpdateTags(updateTags => [ ...updateTags, keyword]);
+            setInputTag("");
+        }  else if (keyword === ''){
+            ToastUtil.info('공백을 입력할 수 없습니다.');
+            setInputTag("");
+            return false;
+        } else {
+            ToastUtil.info('이미 존재하는 태그입니다.');
+            return false;
+        }
+    };
+    const onRemoveTag = useCallback((tagToRemove) => {
+        setUpdateTags([...updateTags.filter(tag => !(tagToRemove.keyword === tag))])
+    }, [updateTags]);
+
+    const updateAlbum = useCallback(() => {
         if (inAlbum){
             dispatch(removeFromAlbum.request({
                 userId: auth.data.userId,
@@ -76,13 +125,7 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                     } else {
                         await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
                     }
-                    Toast.show({
-                        type: 'success',
-                        position: 'bottom',
-                        text1: '다운로드 성공!',
-                        visibilityTime: 1000,
-                        autoHide: true,
-                    });
+                    ToastUtil.success('다운로드 성공!');
                 } catch (e) {
                     console.log(e)
                 }
@@ -94,34 +137,16 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
     }
     const onShare = async () => {
         if (!(await Sharing.isAvailableAsync())) {
-            Toast.show({
-                type: 'error',
-                position: 'bottom',
-                text1: '공유가 불가능합니다.',
-                visibilityTime: 1000,
-                autoHide: true,
-            })
+            ToastUtil.error('공유가 불가능합니다.');
             return;
         }
         let fileUri = FileSystem.cacheDirectory + `${photoSimpleInfo?.photoId}.jpg`
         await FileSystem.downloadAsync(photo.data?.originalLink, fileUri);
         await Sharing.shareAsync(fileUri).then(() => {
-                Toast.show({
-                    type: 'success',
-                    position: 'bottom',
-                    text1: '공유 완료!',
-                    visibilityTime: 1000,
-                    autoHide: true,
-                })
+                ToastUtil.success('공유 완료!');
         }).catch((e)=> {
             console.log(e);
-            Toast.show({
-                type: 'error',
-                position: 'bottom',
-                text1: '다시 시도해주세요 :(',
-                visibilityTime: 1000,
-                autoHide: true,
-            })
+            ToastUtil.error('다시 시도해주세요 :(');
         })
 
     };
@@ -152,7 +177,7 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                             />
                         </Pressable>
                     }
-                    <Pressable style={styles.button} onPress={updateAsync}>
+                    <Pressable style={styles.button} onPress={updateAlbum}>
                         {!inAlbum && <HeartIcon
                                             width={25 * width}
                                             height={25 * height}
@@ -177,23 +202,76 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
 
             </View>
             <View style={styles.tagContainer}>
-                <Text style={styles.tagTitle}>태그</Text>
-                <View style={styles.tagBox}>
-                    {!isLoading && tags?.map((tag) => {
-                        return (<Tag key={tag} text={tag}/>)
-                    })}
+                {!editTag &&
+                    <View style={styles.tagTitleLine}>
+                        <Text style={styles.tagTitle}>태그</Text>
+                    <Pressable onPress={startEditTag}>
+                        <Text style={styles.tagTitle}>수정</Text>
+                    </Pressable>
+                    </View>
+                }
+                {editTag &&
+                <View style={styles.tagTitleLine}>
+                    <Text style={styles.tagTitle}>태그 수정</Text>
+                    <Pressable onPress={submitTag}>
+                        <Text style={styles.tagTitle}>완료</Text>
+                    </Pressable>
                 </View>
-
+                }
+                {!editTag && (
+                    <View style={styles.tagBox}>
+                        {!isLoading && tags?.map((tag) => {
+                            return (<Tag key={tag} text={tag} onLongPress={startEditTag}/>)
+                        })}
+                    </View>
+                )}
+                {editTag && (
+                    <View style={styles.tagBox}>
+                        <View style={styles.newInputTag}>
+                            <TextInput
+                                style={{marginRight: 5}}
+                                placeholder="새로운 태그를 입력하세요!"
+                                onChangeText={onChangeInputTag}
+                                value={inputTag}
+                                onSubmitEditing={insertUpdateTag}
+                                selectionColor={colors.black}
+                                ref={inputRef}
+                            />
+                            <Pressable style={styles.cancelIcon} onPress={onClearInput}>
+                                <CancelIcon
+                                    width={10 * width}
+                                    height={10 * height}
+                                    viewBox='0 0 60 60'
+                                />
+                            </Pressable>
+                        </View>
+                        {!isLoading && updateTags?.map((tag) => {
+                            return (<SelectedTag key={tag}
+                                             text={tag}
+                                             type="TAG"
+                                             onRemoveTag={onRemoveTag}
+                                />)
+                        })}
+                    </View>
+                )}
             </View>
             {showSetting && (
                 <ModalTemplate style={{backgroundColor:  'rgba(0, 0, 0, 0.5)'}} show={showSetting} onControlModal={onPressSetting}>
                     <View style={styles.modal}>
-                        <Pressable style={[{borderTopLeftRadius: 5, borderTopRightRadius: 5,borderBottomWidth: 0.2,}, styles.settingBox]}>
-                            <Text style={styles.text}>태그 수정</Text>
-                        </Pressable>
-                        <Pressable style={styles.settingBox}>
-                            <Text style={styles.text}>앨범에서 삭제</Text>
-                        </Pressable>
+                        {photoSimpleInfo?.albumId &&
+                            (<Pressable style={[{borderTopLeftRadius: 5, borderTopRightRadius: 5,borderBottomWidth: 0.2,}, styles.settingBox]}
+                                        onPress={startEditTag}
+                            >
+                                <Text style={styles.text}>태그 수정</Text>
+                            </Pressable>)
+                        }
+                        {photoSimpleInfo?.albumId &&
+                            (<Pressable style={styles.settingBox}
+                                        onPress={updateAlbum}>
+                                <Text style={styles.text}>앨범에서 삭제</Text>
+                            </Pressable>
+                            )
+                        }
                         <Pressable style={[{marginBottom:10, borderBottomLeftRadius: 5, borderBottomRightRadius:5,
                                             borderTopWidth: 0.2,},
                                             styles.settingBox,]}>
@@ -259,6 +337,11 @@ const styles = StyleSheet.create({
         width: 330 * width,
         height: 145 * height,
     },
+    tagTitleLine: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
     tagTitle: {
         fontFamily: fonts.NotoSansCJKkr,
         fontSize: 14 * width,
@@ -313,6 +396,20 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-    }
+    },
+    newInputTag: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 5 * width,
+        paddingLeft: 8 * width,
+        paddingRight: 5 * width,
+        borderRadius: 5 * width,
+        borderStyle: "solid",
+        borderWidth: 1 * width,
+        borderColor: colors.grey,
+        height: 24 * height,
+        marginBottom: 5 * height,
+    },
+
 });
 
