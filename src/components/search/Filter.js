@@ -1,34 +1,44 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import ModalTemplate from '../ModalTemplate';
 import {fonts, width} from "../../util/StyleUtil";
 import RadioTemplate from "../RadioTemplate";
+import {useDispatch} from "react-redux";
+import {setSortBy} from "../../core/redux/tags";
 
 
-const Filter = ({style, showFilter, onPressFilter}) => {
-    const [checked, setChecked] = useState('recent-stage');
+const Filter = ({style, showFilter, onPressFilter, type}) => {
+    const dispatch = useDispatch();
 
+    const [checked, setChecked] = useState('recentStage');
+    const selectSortBy = useCallback((checkedString) => {
+        setChecked(checkedString);
+        dispatch(setSortBy({
+            type: type,
+            sortBy: checkedString
+        }))
+    }, [checked])
 
   return (
     <ModalTemplate style={styles.filter} show={showFilter} onControlModal={onPressFilter}>
         <View style={style}>
             <View><Text style={styles.mainText}>정렬</Text></View>
             <View style={styles.sortContainer}>
-                <RadioTemplate value="recent-stage"
+                <RadioTemplate value="recentStage"
                                currentChecked={checked}
-                               onPress={setChecked}
+                               onPress={selectSortBy}
                                text="최근행사순"/>
-                <RadioTemplate value="recent-registered"
+                <RadioTemplate value="recentRegistered"
                                currentChecked={checked}
-                               onPress={setChecked}
+                               onPress={selectSortBy}
                                text="최근등록"/>
-                <RadioTemplate value="last-view"
+                <RadioTemplate value="lastView"
                                currentChecked={checked}
-                               onPress={setChecked}
+                               onPress={selectSortBy}
                                text="열람시간순"/>
                 <RadioTemplate value="random"
                                currentChecked={checked}
-                               onPress={setChecked}
+                               onPress={selectSortBy}
                                text="무작위"/>
             </View>
         </View>

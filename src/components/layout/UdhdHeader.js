@@ -73,6 +73,7 @@ const UdhdHeader = ({type}) => {
                     style={styles.filter}
                     showFilter={showFilter}
                     onPressFilter={onPressFilter}
+                    type={type}
                 />
                 <TouchableOpacity onPress={onPressUpload} style={styles.uploadIcon}>
                     <Text style={{fontSize: 30 * width}}>+</Text>
