@@ -32,7 +32,7 @@ const Filter = ({style, showFilter, onPressFilter, type}) => {
                                currentChecked={checked}
                                onPress={selectSortBy}
                                text="최근등록"/>
-                <RadioTemplate value="lastView"
+                <RadioTemplate value="lastViewed"
                                currentChecked={checked}
                                onPress={selectSortBy}
                                text="열람시간순"/>
