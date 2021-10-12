@@ -1,17 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {Pressable, View} from 'react-native';
-import {
-    StyleSheet,
-    Text,
-} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import ModalTemplate from '../ModalTemplate';
-import {colors, fonts, height, width} from "../../util/StyleUtil";
-import { RadioButton } from 'react-native-paper';
+import {fonts, width} from "../../util/StyleUtil";
 import RadioTemplate from "../RadioTemplate";
 
 
 const Filter = ({style, showFilter, onPressFilter}) => {
     const [checked, setChecked] = useState('recent-stage');
+
 
   return (
     <ModalTemplate style={styles.filter} show={showFilter} onControlModal={onPressFilter}>
@@ -36,7 +32,6 @@ const Filter = ({style, showFilter, onPressFilter}) => {
                                text="무작위"/>
             </View>
         </View>
-
     </ModalTemplate>
   );
 }
@@ -70,7 +65,7 @@ filter:{
         textAlign: "left",
         color: "#222222",
         fontFamily: fonts.NotoSansCJKkr,
-        fontSize: 14 * width,
+        fontSize: 16 * width,
         fontWeight: "500",
         fontStyle: "normal",
         paddingLeft: 15 * width,
@@ -78,13 +73,9 @@ filter:{
     sortContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        width: '100%'
+        width: '100%',
+        padding: 15 * width
     },
-    sortBox: {
-      flexDirection: 'row',
-      width: '50%',
-      paddingLeft: 15 * width,
-    }
 });
 
 export default Filter;

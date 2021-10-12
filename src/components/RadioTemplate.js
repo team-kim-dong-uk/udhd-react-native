@@ -1,11 +1,7 @@
 import React from "react";
-import {
-    Pressable,
-    StyleSheet, Text,
-    View
-} from "react-native";
-import {width} from "../util/StyleUtil";
-import { RadioButton } from 'react-native-paper';
+import {Pressable, StyleSheet, Text} from "react-native";
+import {fonts} from "../util/StyleUtil";
+import {RadioButton} from 'react-native-paper';
 
 const RadioTemplate = ({currentChecked, value, text, onPress}) => {
     return (
@@ -16,8 +12,9 @@ const RadioTemplate = ({currentChecked, value, text, onPress}) => {
                 value={value}
                 status={ currentChecked === value ? 'checked' : 'unchecked' }
                 onPress={() => onPress(value)}
+                color="#fbae17"
             />
-            <Text>{text}</Text>
+            <Text style={styles.text}>{text}</Text>
         </Pressable>
     );
 };
@@ -25,8 +22,18 @@ const RadioTemplate = ({currentChecked, value, text, onPress}) => {
 const styles = StyleSheet.create({
     sortBox: {
         flexDirection: 'row',
+        alignItems: 'center',
         width: '50%',
-        paddingLeft: 15 * width,
+    },
+    text:{
+        fontFamily: fonts.NotoSansCJKkr,
+        fontSize: 15,
+        fontWeight: "normal",
+        fontStyle: "normal",
+        lineHeight: 22,
+        letterSpacing: 0,
+        textAlign: "left",
+        color: "#222222",
     }
 })
 export default RadioTemplate;
