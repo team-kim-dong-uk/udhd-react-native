@@ -64,7 +64,6 @@ export default handleActions(
         }
       },
       [SET_SORT_BY]: (state, {payload: {type, sortBy}}) => {
-          console.log("type is:" + type + "   sort is :" + sortBy)
           if (type === 'album') {
               return {
                   ...state,
