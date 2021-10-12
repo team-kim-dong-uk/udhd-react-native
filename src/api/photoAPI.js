@@ -19,8 +19,17 @@ export const getPhotos = (params) => {
     }
 }
 
-const getSearchPhotos = ({userId, tags, findAfter}) => {
+const getSearchPhotos = ({userId, tags, findAfter, sortBy}) => {
     let query = `users/${userId}/search?tags=`;
+    return putParams(query, {tags, findAfter, sortBy})
+}
+
+const getAlbumPhotos = ({userId, tags, findAfter, sortBy}) => {
+    let query = `users/${userId}/album?tags=`;
+    return putParams(query, {tags, findAfter, sortBy})
+}
+
+const putParams = (query, {tags, findAfter, sortBy}) => {
     if (tags) {
         const uploaderSearch = tags.filter(item => item.type === 'USER');
         tags = tags.filter(item => item.type === 'TAG').map(item => item.keyword);
@@ -32,21 +41,8 @@ const getSearchPhotos = ({userId, tags, findAfter}) => {
             query += `&findAfter=${findAfter}`;
         }
     }
-    return client.get(query);
-}
-
-const getAlbumPhotos = ({userId, tags, findAfter}) => {
-    let query = `users/${userId}/album?tags=`;
-    if (tags) {
-        const uploaderSearch = tags.filter(item => item.type === 'USER');
-        tags = tags.filter(item => item.type === 'TAG').map(item => item.keyword);
-            query += tags.toString();
-            if (uploaderSearch.length > 0) {
-                query += `&uploaderId=${uploaderSearch[0].userId}`
-        }
-        if (findAfter) {
-            query += `&findAfter=${findAfter}`;
-        }
+    if (sortBy) {
+        query += `&sortBy=${sortBy}`
     }
     return client.get(query);
 }

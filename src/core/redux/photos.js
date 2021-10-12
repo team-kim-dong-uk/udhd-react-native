@@ -15,7 +15,7 @@ const GET_PHOTOS = asyncActionCreator(`${prefix}GET_PHOTOS`);
 const ADD_LIKE = `${prefix}ADD_LIKE`;
 
 // 3. 액션함수에 대해서 정의합니다.
-export const getPhotos = createAsyncAction(GET_PHOTOS, ({type, userId, tags}) => ({type, userId, tags}));
+export const getPhotos = createAsyncAction(GET_PHOTOS, ({type, userId, tags, sortBy}) => ({type, userId, tags, sortBy}));
 export const addLike = createAction(ADD_LIKE, ({photoId}) => ({photoId}));
 
 // 4. saga 비동기 관련 함수가 필요할 경우 작성 합니다. (optional) saga함수들의 모음은 최하단에 나열합니다.
