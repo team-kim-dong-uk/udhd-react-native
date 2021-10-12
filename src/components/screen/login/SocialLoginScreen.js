@@ -39,6 +39,7 @@ const SocialLogin = () => {
       {source !== undefined ? (
         <LoginWebviewModal
           source={source}
+          setSource={setSource}
           closeSocialModal={closeSocialModal}
         />
       ) : null}

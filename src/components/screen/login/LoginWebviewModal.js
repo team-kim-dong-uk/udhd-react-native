@@ -1,8 +1,9 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {BackHandler, Dimensions, Modal, Platform, StyleSheet} from 'react-native';
 import WebView from 'react-native-webview';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import CommonHeader from '../../layout/CommonHeader';
 
 const userAgent = `userAgent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'`;
 const INJECTED_JAVASCRIPT =
@@ -43,9 +44,10 @@ const LoginWebviewModal = (props) => {
     <Modal
       animationType="slide"
       transparent={true}
-      visible={true}
+      visible={props.source !== null}
       style={styles.container}
     >
+      <CommonHeader back='left' title='소셜 로그인' goBack={()=>props.setSource(null)}/>
       <WebView
         ref={webview}
         originWhitelist={['*']}
