@@ -4,11 +4,13 @@ import PhotoGrid from '../PhotoGrid';
 import UdhdHeader from "../layout/UdhdHeader";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {useSelector} from "react-redux";
+import SearchHelpModal from '../guide/SearchHelpModal';
 
 const SearchScreen = () => {
   const {searching} = useSelector(state => state);
   return (
       <View>
+        <SearchHelpModal show={true}/>
         <UdhdHeader type='search'/>
         {!searching.data && <PhotoGrid type='search'/>}
       </View>
