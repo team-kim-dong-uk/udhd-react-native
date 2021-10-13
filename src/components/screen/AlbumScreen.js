@@ -5,7 +5,7 @@ import UdhdHeader from "../layout/UdhdHeader";
 import PhotoGrid from "../PhotoGrid";
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '../../util/StyleUtil';
-import HelpModal from '../guide/HelpModal';
+import AlbumHelpModal from '../guide/AlbumHelpModal';
 
 const AlbumScreen = () => {
     const {searching, auth} = useSelector(state => state);
@@ -17,7 +17,7 @@ const AlbumScreen = () => {
     })
   return (
       <View style={styles.container}>
-        <HelpModal show={true}/>
+        <AlbumHelpModal show={true}/>
         <UdhdHeader type='album'/>
           {!searching.data && <PhotoGrid type='album'/>}
       </View>
