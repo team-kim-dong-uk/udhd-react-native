@@ -1,25 +1,16 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {
-    FlatList,
-    Pressable,
-    StyleSheet,
-    Text,
-    View
-} from 'react-native';
+import {FlatList, Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import ModalTemplate from "../ModalTemplate";
 import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
-import { getPhotos } from "../../core/redux/photos";
+import {getPhotos} from "../../core/redux/photos";
 import Tag from "./SelectedTag";
 import {finishSearching, startSearching} from "../../core/redux/searching";
 import RecommendTag from "./RecommendTag";
-import { colors, fonts, height, width } from '../../util/StyleUtil';
+import {colors, fonts, height, width} from '../../util/StyleUtil';
 import BackButton from '../../../assets/back-button.svg';
-import { getTags } from '../../core/redux/tags';
-import { TextInput } from 'react-native';
+import {getTags} from '../../core/redux/tags';
 import CancelIcon from '../../../assets/cancel-icon-round.svg';
-import SearchBoxTag from "./SearchBoxTag";
-import Toast from "react-native-toast-message";
 import ToastUtil from "../../util/ToastUtil";
 
 const SearchModal = ({type, show, setShow}) => {
@@ -31,6 +22,7 @@ const SearchModal = ({type, show, setShow}) => {
     const [recommendedTags, setRecommendedTags] = useState([]);
 
     const initialSearchTags = type === 'album' ? tags.selectedAlbumTags : tags.selectedSearchTags;
+    const searchSortBy = type === 'album' ? tags.albumSortBy : tags.searchSortBy;
     const [searchTags, setSearchTags] = useState(initialSearchTags);
     const [searchType, setSearchType] = useState('TAG');
 
@@ -75,24 +67,17 @@ const SearchModal = ({type, show, setShow}) => {
         }
     };
 
-    const onSubmit = useCallback((e) => {
+    const onSubmit = useCallback(() => {
         dispatch(getPhotos.request({
             type: type,
             userId: auth.data?.userId,
             tags : searchTags,
+            sortBy: searchSortBy,
         }));
         console.log("searchTags at submit  : " + searchTags)
         setKeyword('');
         finishSearch();
     }, [keyword, searchTags]);
-
-    // when keyword is being changed, state must be searching
-    const detectSearching = useCallback(() => {
-      if(!searching.data){
-          startSearch();
-      }
-  }, [keyword])
-
 
     // when detect changing on keyword,
     useEffect(() => {

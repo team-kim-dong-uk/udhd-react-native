@@ -12,10 +12,12 @@ const prefix = 'tags/';
 // 2. 액션타입에 대해서 정의합니다.
 const GET_TAGS = asyncActionCreator(`${prefix}GET_TAGS`);
 const SET_SELECTED_TAGS = `${prefix}SET_SELECTED_TAGS`;
+const SET_SORT_BY = `${prefix}SET_SORT_BY`;
 
 // 3. 액션함수에 대해서 정의합니다.
 export const getTags = createAsyncAction(GET_TAGS);
 export const setSelectedTags = createAction(SET_SELECTED_TAGS, ({type, tags}) => ({type, tags}));
+export const setSortBy = createAction(SET_SORT_BY, ({type, sortBy}) => ({type, sortBy}));
 
 // 4. saga 비동기 관련 함수가 필요할 경우 작성 합니다. (optional) saga함수들의 모음은 최하단에 나열합니다.
 const getTagsSaga = createAsyncSaga(getTags, tagAPI.getTags);
@@ -29,6 +31,8 @@ const initialState = {
   data: [],
   selectedAlbumTags: [],
   selectedSearchTags: [],
+  albumSortBy: null,
+  searchSortBy: null,
   loading: false,
   error: null,
 };
@@ -58,6 +62,19 @@ export default handleActions(
             selectedSearchTags: tags || [],
           }
         }
+      },
+      [SET_SORT_BY]: (state, {payload: {type, sortBy}}) => {
+          if (type === 'album') {
+              return {
+                  ...state,
+                  albumSortBy: sortBy || null,
+              }
+          } else {
+              return {
+                  ...state,
+                  searchSortBy: sortBy || null,
+              }
+          }
       },
   },
   initialState,

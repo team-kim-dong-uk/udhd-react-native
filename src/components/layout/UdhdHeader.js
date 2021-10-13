@@ -70,8 +70,10 @@ const UdhdHeader = ({type}) => {
                     />
                 </TouchableOpacity>
                 <Filter
+                    style={styles.filter}
                     showFilter={showFilter}
                     onPressFilter={onPressFilter}
+                    type={type}
                 />
                 <TouchableOpacity onPress={onPressUpload} style={styles.uploadIcon}>
                     <Text style={{fontSize: 30 * width}}>+</Text>
@@ -117,9 +119,16 @@ const styles = StyleSheet.create({
     filterIcon: {
         marginLeft: 20 * width,
     },
+    filter: {
+        backgroundColor: 'white',
+        position: 'absolute',
+        top: 55 * height,
+        width: '100%',
+    },
     uploadIcon: {
         marginLeft: 15 * width,
     },
+
 
 });
 
