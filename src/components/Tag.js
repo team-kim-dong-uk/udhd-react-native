@@ -1,10 +1,6 @@
 import React from "react";
-import { Pressable } from "react-native";
-import {
-    StyleSheet, Text,
-    View
-} from "react-native";
-import { colors, fonts, height, width } from "../util/StyleUtil";
+import {Pressable, StyleSheet, Text, Vibration} from "react-native";
+import {colors, fonts, height, width} from "../util/StyleUtil";
 import TagIcon from '../../assets/tag-icon-no-border.svg';
 
 const Tag = ({text, onPressTag, onLayout, onLongPress}) => {
@@ -13,7 +9,7 @@ const Tag = ({text, onPressTag, onLayout, onLongPress}) => {
         <Pressable
             activeOpacity = { 0.5 }
             onPress={() => {if(onPressTag) onPressTag(text)}}
-            onLongPress={() => {if(onLongPress) onLongPress()}}
+            onLongPress={() => {if(onLongPress) {onLongPress(); Vibration.vibrate();}}}
             onLayout={onLayout}
             style={styles.tagContainer}
         >
