@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {Platform, Pressable, StyleSheet, Text, TextInput, View} from "react-native";
+import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View} from "react-native";
 import {useDispatch, useSelector} from "react-redux";
 import {addToAlbum, removeFromAlbum, updateAlbumTags} from "../core/redux/album";
 import ModalTemplate from "./ModalTemplate";
@@ -44,8 +44,13 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
     }, []);
 
     const startEditTag = useCallback( () => {
-        setEditTag((prev) => !prev);
+        setEditTag(true);
         setShowSetting(false);
+    }, [])
+
+    const cancleEditing = useCallback(() => {
+        setEditTag((prev) => !prev);
+        setUpdateTags(tags)
     }, [])
 
     useEffect(() => {
@@ -152,6 +157,7 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
     };
 
     return (
+        <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={90 * height}>
         <View style={styles.container}>
             <View style={styles.information}>
                 <View style={styles.uploaderBox}>
@@ -215,9 +221,14 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                 {editTag &&
                 <View style={styles.tagTitleLine}>
                     <Text style={styles.tagTitle}>태그 수정</Text>
-                    <Pressable onPress={submitTag}>
-                        <Text style={styles.tagTitle}>완료</Text>
-                    </Pressable>
+                    <View style={styles.tagTitleLine}>
+                        <Pressable onPress={cancleEditing}>
+                            <Text style={styles.tagTitle}>취소</Text>
+                        </Pressable>
+                        <Pressable onPress={submitTag}>
+                            <Text style={[styles.tagTitle, {marginLeft: 15 * width}]}>완료</Text>
+                        </Pressable>
+                    </View>
                 </View>
                 }
                 {!editTag && (
@@ -288,6 +299,7 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                 </ModalTemplate>
             )}
         </View>
+        </KeyboardAvoidingView>
     );
 };
 
