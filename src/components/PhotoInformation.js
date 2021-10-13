@@ -205,9 +205,11 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                 {!editTag &&
                     <View style={styles.tagTitleLine}>
                         <Text style={styles.tagTitle}>태그</Text>
-                    <Pressable onPress={startEditTag}>
-                        <Text style={styles.tagTitle}>수정</Text>
-                    </Pressable>
+                        {photoSimpleInfo?.albumId &&
+                            <Pressable onPress={startEditTag}>
+                                <Text style={styles.tagTitle}>수정</Text>
+                            </Pressable>
+                        }
                     </View>
                 }
                 {editTag &&
