@@ -12,6 +12,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {startSearching} from "../../core/redux/searching";
 import { colors, fonts, height, width } from '../../util/StyleUtil';
 import FilterIcon from '../../../assets/filter-icon.svg';
+import UploadIcon from '../../../assets/upload-icon.svg';
 import Filter from '../search/Filter';
 import SearchModal from '../search/SearchModal';
 import SearchBoxTag from '../search/SearchBoxTag';
@@ -74,7 +75,11 @@ const UdhdHeader = ({type}) => {
                     onPressFilter={onPressFilter}
                 />
                 <TouchableOpacity onPress={onPressUpload} style={styles.uploadIcon}>
-                    <Text style={{fontSize: 30 * width}}>+</Text>
+                    <UploadIcon
+                        width={24 * width}
+                        height={24 * height}
+                        viewBox='0 0 96 96'
+                    />
                 </TouchableOpacity>
             </View>
         </View>
