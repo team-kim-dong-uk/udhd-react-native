@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {FlatList, Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
+import {FlatList, Pressable, SafeAreaView, StyleSheet, Text, TextInput, View} from 'react-native';
 import ModalTemplate from "../ModalTemplate";
 import useInput from "../../hooks/useInput";
 import {useDispatch, useSelector} from "react-redux";
@@ -129,66 +129,68 @@ const SearchModal = ({type, show, setShow}) => {
       onControlModal={finishSearch}
       onShow={()=>{inputRef.current.focus()}}
     >
-        <View style={styles.headerContainer}>
-          <Pressable style={styles.backButton} onPress={()=>finishSearch()}>
-            <BackButton
-              width={10 * width}
-              height={20 * height}
-              viewBox='0 0 40 80'
+        <SafeAreaView>
+            <View style={styles.headerContainer}>
+              <Pressable style={styles.backButton} onPress={()=>finishSearch()}>
+                <BackButton
+                  width={10 * width}
+                  height={20 * height}
+                  viewBox='0 0 40 80'
+                />
+              </Pressable>
+              <View style={styles.searchBox}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="검색어를 입력해주세요"
+                  onChangeText={onChangeKeyword}
+                  value={keyword}
+                  onFocus={startSearch}
+                  onSubmitEditing={onSubmit}
+                  selectionColor={colors.black}
+                  ref={inputRef}
+                />
+                <Pressable style={styles.cancelIcon} onPress={onClearInput}>
+                  <CancelIcon
+                    width={15 * width}
+                    height={15 * height}
+                    viewBox='0 0 60 60'
+                  />
+                </Pressable>
+              </View>
+              <Pressable onPress={onSubmit} >
+                <Text style={styles.finishSearchBtn}>완료</Text>
+              </Pressable>
+            </View>
+            <View style={styles.tagBox}>
+                <FlatList data={searchTags} renderItem={renderSelectedTags} horizontal = {true}
+                          keyExtractor={(item) => item.keyword} showsHorizontalScrollIndicator={false}/>
+            </View>
+            <View style={styles.searchTypeContainer}>
+              <Pressable
+                onPress={()=>setSearchType('TAG')}
+                style={[styles.searchTypeOption, searchType === 'TAG' ? styles.searchTypeOptionActive : null ]}
+              >
+                <Text style={[styles.searchTypeText, searchType === 'TAG' ? styles.searchTypeTextActive : null ]}>
+                  태그
+                </Text>
+              </Pressable>
+              <Pressable
+                onPress={()=>setSearchType('USER')}
+                style={[styles.searchTypeOption, searchType === 'USER' ? styles.searchTypeOptionActive : null ]}
+              >
+                <Text style={[styles.searchTypeText, searchType === 'USER' ? styles.searchTypeTextActive : null ]}>
+                  업로더
+                </Text>
+              </Pressable>
+            </View>
+            <FlatList
+              contentContainerStyle={styles.recommendedTagsContainer}
+              data={recommendedTags.filter(item => item.type === searchType)}
+              renderItem={renderItem}
+              keyExtractor={item => item.keyword}
+              ListFooterComponent={<View style={{height: 65}}/>}
             />
-          </Pressable>
-          <View style={styles.searchBox}>
-            <TextInput
-              style={styles.input}
-              placeholder="검색어를 입력해주세요"
-              onChangeText={onChangeKeyword}
-              value={keyword}
-              onFocus={startSearch}
-              onSubmitEditing={onSubmit}
-              selectionColor={colors.black}
-              ref={inputRef}
-            />
-            <Pressable style={styles.cancelIcon} onPress={onClearInput}>
-              <CancelIcon
-                width={15 * width}
-                height={15 * height}
-                viewBox='0 0 60 60'
-              />
-            </Pressable>
-          </View>
-          <Pressable onPress={onSubmit} >
-            <Text style={styles.finishSearchBtn}>완료</Text>
-          </Pressable>
-        </View>
-        <View style={styles.tagBox}>
-            <FlatList data={searchTags} renderItem={renderSelectedTags} horizontal = {true}
-                      keyExtractor={(item) => item.keyword} showsHorizontalScrollIndicator={false}/>
-        </View>
-        <View style={styles.searchTypeContainer}>
-          <Pressable
-            onPress={()=>setSearchType('TAG')}
-            style={[styles.searchTypeOption, searchType === 'TAG' ? styles.searchTypeOptionActive : null ]}
-          >
-            <Text style={[styles.searchTypeText, searchType === 'TAG' ? styles.searchTypeTextActive : null ]}>
-              태그
-            </Text>
-          </Pressable>
-          <Pressable
-            onPress={()=>setSearchType('USER')}
-            style={[styles.searchTypeOption, searchType === 'USER' ? styles.searchTypeOptionActive : null ]}
-          >
-            <Text style={[styles.searchTypeText, searchType === 'USER' ? styles.searchTypeTextActive : null ]}>
-              업로더
-            </Text>
-          </Pressable>
-        </View>
-        <FlatList
-          contentContainerStyle={styles.recommendedTagsContainer}
-          data={recommendedTags.filter(item => item.type === searchType)}
-          renderItem={renderItem}
-          keyExtractor={item => item.keyword}
-          ListFooterComponent={<View style={{height: 65}}/>}
-        />
+        </SafeAreaView>
     </ModalTemplate>
   );
 }
