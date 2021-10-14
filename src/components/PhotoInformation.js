@@ -157,7 +157,7 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
     };
 
     return (
-        <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={90 * height}>
+        <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={Platform.OS == 'ios' ? 90 * height : -60 * height}>
         <View style={styles.container}>
             <View style={styles.information}>
                 <View style={styles.uploaderBox}>
