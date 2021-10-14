@@ -9,11 +9,11 @@ import BackButton from '../../../assets/back-button.svg';
 import DownButton from '../../../assets/down-arrow.svg';
 import { colors, fonts, height, width } from "../../util/StyleUtil";
 
-const CommonHeader = ({back, children, title}) => {
+const CommonHeader = ({back, children, title, goBack}) => {
     const navigation = useNavigation();
     return (
         <View style={styles.headerContainer}>
-            <Pressable onPress={()=>navigation.goBack()}
+            <Pressable onPress={()=>goBack ? goBack() : navigation.goBack()}
                        style={styles.backButton}
             >
                 {back === 'left' && <BackButton
