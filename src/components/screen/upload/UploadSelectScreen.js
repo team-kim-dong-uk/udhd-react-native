@@ -19,16 +19,22 @@ import { Pressable } from 'react-native';
 import ModalTemplate from '../../ModalTemplate';
 import UploadOptionModal from '../../UploadOptionModal';
 import CancelIcon from '../../../../assets/cancel-icon-grey.svg';
+import UploadHelpModal from '../../guide/UploadHelpModal';
+import { getShowGuideFromStorage } from '../../../util/AsyncStorageUtil';
 
 const UploadSelectScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { auth, upload } = useSelector(state => state);
   const [showModal, setShowModal] = useState(false);
+  const [showGuide, setShowGuide] = useState(undefined);
 
   // 업로드 버튼 클릭해 업로드 진행상태로 변하면 progress를 1초마다 polling하는 동작을 추가한다.
   useEffect(() => {
     let interval;
+    if (upload.data.length > 0 && showGuide === undefined) {
+      getShowGuideFromStorage(setShowGuide, 'upload');
+    }
     if (upload.uploading) {
       interval = setInterval(() => dispatch(checkProgress.request({pollingKey: upload.pollingKey})), 1000);
     }
@@ -40,7 +46,7 @@ const UploadSelectScreen = () => {
         navigation.navigate('Search');
       }
     }
-  }, [upload.uploading]);
+  }, [upload, showGuide]);
 
   const openGoogleDrive = () => {
     navigation.navigate('GooglePicker');
@@ -82,6 +88,7 @@ const UploadSelectScreen = () => {
 
   return (
       <View style={styles.container}>
+        {showGuide && <UploadHelpModal show={true}/>}
         <UploadOptionModal show={showModal} closeModal={()=>setShowModal(false)} openGoogleDrive={openGoogleDrive}/>
         {
           upload.uploading && 

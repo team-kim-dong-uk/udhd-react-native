@@ -43,8 +43,7 @@ const styles = StyleSheet.create({
     width: 360 * width,
     height: 628 * height,
     marginTop:StatusBar.currentHeight,
-    backgroundColor: colors.black,
-    opacity: 0.7,
+    backgroundColor: 'rgba(50, 50, 50, 0.6)',
     zIndex: 3,
   },
 });
