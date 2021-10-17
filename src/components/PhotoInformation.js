@@ -269,7 +269,10 @@ const PhotoInformation = ({style, tags, isLoading, photoSimpleInfo}) => {
                 )}
             </View>
             {showSetting && (
-                <ModalTemplate style={{backgroundColor:  'rgba(0, 0, 0, 0.5)'}} show={showSetting} onControlModal={onPressSetting}>
+                <ModalTemplate style={{backgroundColor:  'rgba(0, 0, 0, 0.5)'}}
+                               show={showSetting}
+                               onControlModal={onPressSetting}
+                                animation='slide'>
                     <View style={styles.modal}>
                         {photoSimpleInfo?.albumId &&
                             (<Pressable style={[{borderTopLeftRadius: 5, borderTopRightRadius: 5,borderBottomWidth: 0.2,}, styles.settingBox]}
