@@ -10,7 +10,7 @@ import {setSortBy} from "../../core/redux/tags";
 const Filter = ({style, showFilter, onPressFilter, type}) => {
     const dispatch = useDispatch();
 
-    const [checked, setChecked] = useState('recentStage');
+    const [checked, setChecked] = useState('');
     const selectSortBy = useCallback((checkedString) => {
         setChecked(checkedString);
         dispatch(setSortBy({
@@ -24,7 +24,8 @@ const Filter = ({style, showFilter, onPressFilter, type}) => {
         <View style={style}>
             <View><Text style={styles.mainText}>정렬</Text></View>
             <View style={styles.sortContainer}>
-                <RadioTemplate value="recentStage"
+                {/*기본 정렬 기준인 id가 시간 순임*/}
+                <RadioTemplate value=""
                                currentChecked={checked}
                                onPress={selectSortBy}
                                text="최근행사순"/>
