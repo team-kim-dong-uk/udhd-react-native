@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAlbumPhotos, getPhotos, getSearchPhotos, getUploadPhotos, morePhotos } from '../core/redux/photos.js';
 import { useInView } from 'react-intersection-observer';
 import {
+    ActivityIndicator,
     FlatList,
     Image,
     SafeAreaView,
@@ -12,7 +13,7 @@ import {
     View
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { height, width } from '../util/StyleUtil.js';
+import { colors, height, width } from '../util/StyleUtil.js';
 
 const PhotoGrid = ({type}) => {
     const [numCols, setColumnNo] = useState(3);
@@ -25,11 +26,14 @@ const PhotoGrid = ({type}) => {
         :                     photos.upload;
 
     const loadMorePhotos = useCallback((e) => {
+        if (data?.done) {
+            return;
+        }
         console.log("load photo :)");
         dispatch(morePhotos.request({
             type: type,
             userId: auth.data?.userId,
-            findAfter: data.length ? (data[data.length - 1].albumId || data[data.length - 1].photoId) : null,
+            findAfter: data?.data.length ? (data?.data[data?.data.length - 1].albumId || data?.data[data?.data.length - 1].photoId) : null,
         }));
     }, [auth, type, data]);
 
@@ -71,13 +75,17 @@ const PhotoGrid = ({type}) => {
         <View>
             <FlatList
                 columnWrapperStyle={{justifyContent:'flex-start'}}
-                data={data}
+                data={data?.data}
                 renderItem={renderItem}
                 keyExtractor={item => item.albumId || item.photoId}
                 numColumns={numCols}
                 key={numCols}
                 onEndReached={loadMorePhotos}
                 onEndReachedThreshold={0.01}
+                ListFooterComponent={<View style={{padding: 10 * height}}>
+                                        {loading.data ? <ActivityIndicator size='large' color={colors.orange}/>
+                                        :null}
+                                    </View>}
                 contentContainerStyle={{paddingBottom: 110* height}}
             />
         </View>

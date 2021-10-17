@@ -40,17 +40,26 @@ export default handleActions(
       if (requestURL.includes('album')) {
         return {
           ...state,
-          album: action.payload.data,
+          album: {
+            data: action.payload.data,
+            done: action.payload.data.length === 0,
+          },
         };
       } else if (requestURL.includes('search')) {
         return {
           ...state,
-          search: action.payload.data,
+          search: {
+            data: action.payload.data,
+            done: action.payload.data.length === 0,
+          },
         };
       } else if (requestURL.includes('upload')) {
         return {
           ...state,
-          upload: action.payload.data,
+          upload: {
+            data: action.payload.data,
+            done: action.payload.data.length === 0,
+          },
         };
       } else {
         return state;
@@ -61,17 +70,26 @@ export default handleActions(
       if (requestURL.includes('album')) {
         return {
           ...state,
-          album: [...state.album, ...action.payload.data],
+          album: {
+            data: [...state.album.data, ...action.payload.data],
+            done: action.payload.data.length === 0,
+          },
         };
       } else if (requestURL.includes('search')) {
         return {
           ...state,
-          search: [...state.search, ...action.payload.data],
+          search: {
+            data: [...state.search.data, ...action.payload.data],
+            done: action.payload.data.length === 0,
+          },
         };
       } else if (requestURL.includes('upload')) {
         return {
           ...state,
-          upload: [...state.upload, ...action.payload.data],
+          upload: {
+            data: [...state.upload.data, ...action.payload.data],
+            done: action.payload.data.length === 0,
+          },
         };
       } else {
         return state;
