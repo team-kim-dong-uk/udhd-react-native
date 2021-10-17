@@ -20,7 +20,7 @@ const Filter = ({style, showFilter, onPressFilter, type}) => {
     }, [checked])
 
   return (
-    <ModalTemplate style={styles.filter} show={showFilter} onControlModal={onPressFilter}>
+    <ModalTemplate show={showFilter} onControlModal={onPressFilter}>
         <View style={style}>
             <View><Text style={styles.mainText}>정렬</Text></View>
             <View style={styles.sortContainer}>

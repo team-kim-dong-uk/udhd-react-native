@@ -5,12 +5,12 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 
-const ModalTemplate = ({children, show, onControlModal, onShow, style}) => {
+const ModalTemplate = ({children, show, onControlModal, onShow, animation}) => {
 
     return (
         <Modal
-            style={[style, {margin: 0}]}
-            animationType="slide"
+            style={{margin: 0}}
+            animationType={animation ? animation : 'none'}
             transparent={true}
             visible={show}
             onRequestClose={onControlModal}
