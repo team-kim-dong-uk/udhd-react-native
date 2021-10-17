@@ -44,6 +44,7 @@ export default handleActions(
           return {
               ...state,
               data: {
+                  ...state.data,
                   tags: tags || state.data.tags
               }
           };
