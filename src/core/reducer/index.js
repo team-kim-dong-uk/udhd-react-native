@@ -10,5 +10,6 @@ import googlePicker from '../redux/googlePicker';
 import searching from "../redux/searching";
 import album from "../redux/album";
 import searchTags from "../redux/searchTags";
-const rootReducer = combineReducers({auth, photo, photos, loading, googlePicker, upload, tags, user, searching, album, searchTags});
+import keyboard from "../redux/keyboard";
+const rootReducer = combineReducers({auth, photo, photos, loading, googlePicker, upload, tags, user, searching, album, searchTags, keyboard});
 export default rootReducer;

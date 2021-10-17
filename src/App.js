@@ -1,5 +1,5 @@
 import React, {useCallback, useRef} from 'react';
-import {BackHandler, SafeAreaViewComponent, StyleSheet, Text, View} from 'react-native';
+import {BackHandler, Keyboard, SafeAreaViewComponent, StyleSheet, Text, View} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -36,6 +36,7 @@ import PhotoFullScreen from "./components/screen/PhotoFullScreen";
 
 import Toast from 'react-native-toast-message';
 import HasPhotosScreen from './components/screen/login/HasPhotosScreen';
+import {keyboardInvisible, keyboardVisible} from "./core/redux/keyboard";
 
 const App = () => {
     let [fontsLoaded] = useFonts({
@@ -53,6 +54,20 @@ const App = () => {
             return true;
         }   return false;
     }
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            () => {dispatch(keyboardVisible()); console.log("ssssssss");}
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            () => {dispatch(keyboardInvisible()); console.log("dddddd");}
+        );
+        return () => {
+            keyboardDidHideListener.remove();
+            keyboardDidShowListener.remove();
+        };
+    }, []);
 
     useEffect(() => {
         BackHandler.addEventListener('hardwareBackPress', onBackPressFromSearch);
@@ -73,18 +88,18 @@ const App = () => {
           <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name='Home' component={MainTabScreen} options={{ headerShown: false }}/>
-                <Stack.Screen 
-                  name='UploadSelect' 
-                  component={UploadSelectScreen} 
-                  options={{ 
+                <Stack.Screen
+                  name='UploadSelect'
+                  component={UploadSelectScreen}
+                  options={{
                     title: '이미지 업로드',
                     header: (props) => <UploadHeader {...props}/>
                   }}
                 />
-                <Stack.Screen 
-                  name='GooglePicker' 
-                  component={GooglePickerScreen} 
-                  options={{ 
+                <Stack.Screen
+                  name='GooglePicker'
+                  component={GooglePickerScreen}
+                  options={{
                     title: '구글 드라이브',
                     header: (props) => <GoogleDriveHeader {...props}/>
                   }}
@@ -97,12 +112,12 @@ const App = () => {
                     header: (props) => <StackHeader {...props}/>
                   }}
                 />
-                <Stack.Screen 
+                <Stack.Screen
                     name="PhotoDetail"
                     component={PhotoScreen}
                     options={{headerShown: false}}
                 />
-                <Stack.Screen 
+                <Stack.Screen
                     name="PhotoFull"
                     component={PhotoFullScreen}
                     options={{headerShown: false}}

@@ -1,4 +1,5 @@
 import {Dimensions} from 'react-native';
+import {getStatusBarHeight} from "react-native-status-bar-height";
 
 export const colors = {
   orange: '#FBAE17',
@@ -30,6 +31,8 @@ export const height = ( // 높이 변환 작업
   Dimensions.get('screen').height *
   (1 / basicDimensions.height)
 ).toFixed(2);
+
+export const notchHeight = getStatusBarHeight();
 
 export const width = ( // 가로 변환 작업
   Dimensions.get('screen').width *

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Image, Keyboard, Pressable, StyleSheet, Text, View} from 'react-native';
 import { Dimensions } from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import {getPhoto} from "../../core/redux/photo";
@@ -8,7 +8,7 @@ import CommonHeader from "../layout/CommonHeader";
 import PhotoInformation from "../PhotoInformation";
 
 const PhotoScreen = ({route, navigation}) => {
-    const {auth, searching, photo } = useSelector(state => state);
+    const {auth, searching, photo, keyboard} = useSelector(state => state);
     const dispatch = useDispatch();
     const [photoLoading, setPhotoLoading] = useState(true);
 
@@ -31,10 +31,14 @@ const PhotoScreen = ({route, navigation}) => {
           {!searching.data && (
               <View style={styles.container}>
                   <Pressable onPress={() => {
-                                  navigation.navigate('PhotoFull', {
-                                      photoId: route.params?.photo?.photoId,
-                                      image: photo.data?.originalLink
-                                  });
+                                    if (keyboard.visible){
+                                        Keyboard.dismiss();
+                                    } else {
+                                        navigation.navigate('PhotoFull', {
+                                            photoId: route.params?.photo?.photoId,
+                                            image: photo.data?.originalLink
+                                        });
+                                    }
                               }}
                              style={styles.photoContainer}>
                       <Image
@@ -42,7 +46,7 @@ const PhotoScreen = ({route, navigation}) => {
                           style={styles.photo}
                       />
                   </Pressable>
-                  <PhotoInformation tags={photo.data?.tags} 
+                  <PhotoInformation tags={photo.data?.tags}
                                     isLoading={photoLoading}
                                     photoSimpleInfo={route.params?.photo}/>
               </View>
@@ -59,7 +63,7 @@ const styles = StyleSheet.create({
         height: 357 * height,
     },
     photo: {
-        backgroundColor: colors.grey,
+        //backgroundColor: colors.grey,
         width: '100%',
         height: '100%',
         resizeMode: 'contain',
