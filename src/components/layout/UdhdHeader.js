@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
     Alert,
     FlatList,
-    Image, Pressable,
+    Image, Pressable, StatusBar,
     StyleSheet,
     Text, ToastAndroid,
     TouchableOpacity,
@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from "react-redux";
 import {startSearching} from "../../core/redux/searching";
-import { colors, fonts, height, width } from '../../util/StyleUtil';
+import {colors, fonts, height, notchHeight, width} from '../../util/StyleUtil';
 import FilterIcon from '../../../assets/filter-icon.svg';
 import Filter from '../search/Filter';
 import SearchModal from '../search/SearchModal';
@@ -122,7 +122,8 @@ const styles = StyleSheet.create({
     filter: {
         backgroundColor: 'white',
         position: 'absolute',
-        top: 55 * height,
+        top: 55 * height + notchHeight,
+        paddingTop: 10 * height,
         width: '100%',
     },
     uploadIcon: {
